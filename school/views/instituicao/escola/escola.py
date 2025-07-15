@@ -156,7 +156,6 @@ def cadastrar(request:HttpRequest):
         direitor_administrativo_id = request.POST.get('direitor_administrativo')
         logo = request.FILES.get('logo')
         alvara = request.FILES.get('alvara')
-        ano_fundacao_raw = request.POST.get("ano_fundacao", "").strip()
         tipo_escola = request.POST.get('tipo_escola')
        
        
@@ -179,28 +178,10 @@ def cadastrar(request:HttpRequest):
         
         
           # Validações
-        if not all([nome, nif, provincia_id, municipio_id, bairro_id, direitor_id, direitor_pedagogico_id,       direitor_administrativo_id, tipo_escola, ano_fundacao_raw]):
+        if not all([nome, nif, provincia_id, municipio_id, bairro_id, direitor_id, direitor_pedagogico_id,       direitor_administrativo_id, tipo_escola]):
             messages.error(request, "Todos os campos obrigatórios devem ser preenchidos.")
             return render(request, 'apps/instituicao/escola/cadastrar.html', dados)
-          
-    
-        print(f"[DEBUG] Valor recebido para ano_fundacao: '{ano_fundacao_raw}'")
-
-
-        # Validar ano de fundação
-        try:
-            # Convertendo para data e pegando apenas o ano
-            data_fundacao = datetime.strptime(ano_fundacao_raw, "%Y-%m-%d")
-            ano_fundacao_int = data_fundacao.year
-
-            ano_atual = datetime.now().year
-            if ano_fundacao_int < 1900 or ano_fundacao_int > ano_atual:
-                messages.error(request, f"O ano de fundação deve estar entre 1900 e {ano_atual}.")
-                return render(request, 'apps/instituicao/escola/cadastrar.html', dados)
-        except (ValueError, TypeError):
-            messages.error(request, "Ano de fundação inválido. Insira uma data válida.")
-            return render(request, 'apps/instituicao/escola/cadastrar.html', dados)
-                
+         
           
         if Escola.objects.filter(direitor=direitor_id):
             messages.error(request, "O direitor já existe.")
@@ -242,7 +223,6 @@ def cadastrar(request:HttpRequest):
             bairro=bairro,
             logo=logo,
             alvara=alvara,
-            ano_fundacao=ano_fundacao_raw,
             tipo_escola=tipo_escola,
        
         )
@@ -317,7 +297,6 @@ def atualizar(request: HttpRequest, id: int):
         direitor_administrativo_id = request.POST.get('direitor_administrativo')
         logo = request.FILES.get('logo') or escola.logo
         alvara = request.FILES.get('alvara')
-        ano_fundacao = request.POST.get('ano_fundacao')
         tipo_escola = request.POST.get('tipo_escola')
         
        
@@ -380,7 +359,6 @@ def atualizar(request: HttpRequest, id: int):
         escola.bairro=bairro
         
         escola.alvara=alvara
-        escola.ano_fundacao=ano_fundacao
         escola.tipo_escola=tipo_escola
         
         if logo:

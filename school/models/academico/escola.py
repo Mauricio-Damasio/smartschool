@@ -34,8 +34,6 @@ class Escola(Base):
   direitor_administrativo = models.ForeignKey(DiretorAdministrativo, on_delete=models.SET_NULL, null=True)
   logo = models.ImageField(upload_to='media/logo/', blank=True, null=True)
   alvara = models.FileField(upload_to='alvara/', blank=True, null=True)
-  ano_fundacao = models.DateField(null=True, blank=True)
-
   tipo_escola = models.CharField(max_length=2, choices=TIPO_ESCOLA)
   classes = models.ManyToManyField(Classe, blank=True)
   
