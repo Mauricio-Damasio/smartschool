@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h2 { text-align: center; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border: 1px solid #444; padding: 6px; text-align: left; }
+    th { background-color: #f0f0f0; }
+    .footer {
+      margin-top: 80px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+  }
+
+  .assinatura {
+      text-align: center;
+      margin-top: 40px;
+  }
+
+  .data-footer {
+      text-align: right;
+      margin-top: 60px;
+      font-size: 13px;
+  }
+
+  hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 30px 0;
+  }
+  .header {
+      text-align: center;
+      margin-bottom: 40px;
+  }
+  img{
+      width:65px;
+      hight:65px;
+  }
+  .data{
+    margin-top:65px;
+    margin-bottom:85px;
+  }
+  </style>
+</head>
+<body>
+  
+  <div class="header">
+    <img
+        src="{{logo_url}}"
+        alt="Insígnia da República de Angola"
+        class="insignia"
+    />
+    <p>
+        REPÚBLICA DE ANGOLA<br />
+        GOVERNO PROVINCIAL DO MOXICO<br />
+        GABINETE DA EDUCAÇÃO<br />
+        {{escola.nome|upper}} - {{escola.municipio.cidade|upper}}
+    </p>
+   
+</div>
+  <div class="header">
+    <h4>Lista de Alunos</h4>
+   
+  </div>
+
+  <p><strong class="">Professor:</strong> {{ professor.nome }}</p>
+  <p><strong class="">Turma:</strong> {{ turma.nome }}</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Nº Ordem</th>
+        <th>Nome do Aluno</th>
+        <th>Gênero</th>
+        <th>Curso</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for aluno in alunos %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td> 
+        {{ aluno.nome }}</td>
+        <td> 
+        {{ aluno.get_genero_display }}</td>
+        <td>{{ aluno.turma.curso.nome }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="data">Aos, {{data_hoje}}</div>
+ 
+
+  <div class="signature">
+      <p>
+          O Subdiretor Administrativo<br />
+          __________________________<br />
+          
+          <p class="nome"><strong>{{escola.direitor_administrativo.nome}}</strong></p>
+      </p>
+  </div>
+</body>
+</html>

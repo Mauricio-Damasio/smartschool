@@ -1,0 +1,102 @@
+{% load static %}
+<a
+			id="menu-opcao"
+			class="nav-link d-flex justify-content-between align-items-center"
+			data-bs-toggle="collapse"
+			data-bs-target="#relatoriosSubmenu"
+			role="button"
+			aria-expanded="false"
+			aria-controls="relatoriosSubmenu"
+		>
+			<span> <i class="bi bi-bar-chart me-2"></i> Relatórios </span>
+			<i 	class="bi bi-chevron-down transition rotate-icon"
+			id="arrowIcon"
+			data-arrow="relatoriosSubmenu"></i>
+		</a>
+
+		<div class="collapse" id="relatoriosSubmenu">
+			<ul
+				class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3 submenu-list"
+			>
+	<!--Admin Perfil-->
+	{% if request.user.diretor %}
+			<!---->
+				<li>
+					<a href="{% url "school:filtrar_aluno" %}" class="nav-link">
+						<i class="bi bi-check2-square me-2"></i>Certificados
+					</a>
+					</a>
+				</li>
+				<!---->
+				<li>
+					<a href="{% url "school:relatorio_estatisticas_gerais" %}" class="nav-link">
+						<i class="bi bi-graph-up me-2"></i>Estatísticas gerais
+					</a>
+					</a>
+				</li>
+				<!---->
+				<li>
+					<a href="#" class="nav-link">
+						<i class="bi bi-pencil-square me-2"></i> Nota do Aluno
+					</a>
+				</li>
+				<!---->
+				<li>
+					<a href="#" class="nav-link">
+						<i class="bi bi-bar-chart me-2"></i> Relatório financeiro
+					</a>
+				</li>
+				<!---->
+								<!---->
+				<li>
+					<a href="{% url "school:relatorio_alunos_por_ano" %}" class="nav-link">
+						<i class="bi bi-person me-2"></i> Alunos por ano
+					</a>
+				</li>
+				<!---->
+								<!---->
+				<!---->
+
+					<!--professor Perfil-->
+			
+
+					<!--Admin Perfil-->
+					{% elif request.user.aluno %}
+				<li>
+					<a href="#" class="nav-link">
+						<i class="bi bi-card-checklist me-2"></i> Notas por disciplina
+					</a>
+				</li>
+				<!---->
+					<!---->
+					<li>
+						<a href="#" class="nav-link">
+
+							<i class="bi bi-journal-text me-2"></i> Mini Pauta
+						</a>
+					</li>
+					<!---->
+						<!---->
+						<li>
+							<a href="#" class="nav-link">
+								<i class="bi bi-journal-richtext me-2"></i> Pauta Geral
+							</a>
+						</li>
+						<!---->
+						<!---->
+						<li>
+							<a href="#" class="nav-link">
+								<i class="bi bi-person-badge me-2"></i> Meu Perfil
+							</a>
+						</li>
+						<!---->
+					
+						
+								
+				{% endif %}
+				
+				
+			</ul>
+		</div>
+	</li>
+	<!---->

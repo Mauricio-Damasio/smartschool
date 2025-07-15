@@ -1,0 +1,163 @@
+{% extends "base/_dashboard_.html" %} {% block title%}Atualizar Disciplina
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Atualizar Disciplina</h4>
+	</div>
+
+
+
+  <form action="" method="post" id="formCadastro">
+		{% csrf_token %}
+
+		<!--Begin::Messages-->
+		{% include "layout/message.html" %}
+		<!--End::Messages-->
+
+		
+		<div id="secao-dados-pessoais" class="fade-in">
+			<div class="header-2 mt-3 mb-4">
+				<h5>Dados da disciplina</h5>
+				<hr />
+			</div>
+
+		
+			<div class="row">
+				<div class="input-group">
+					<!-- Nome -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-person text-white ps-2 pe-2 pt-3"></i>Nome
+							<i class="asterisco">*</i>
+						</span>
+						<input
+							class="form-control"
+							placeholder="Nome"
+							type="text"
+							name="nome"
+              value="{{disciplina.nome}}"
+							required
+						/>
+					</div>
+				
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-group">
+
+       	<!--Begin::Classe-->
+					<div class="col input-group me-4 mb-4">
+						<label
+							class="select-description text-white ps-2 pe-2 pt-2"
+							for="classe"
+							><i class="bi bi-diagram-3 text-white"></i>    Classe <i class="asterisco">*</i></label
+						>
+						<select name="classe" class="form-select" id="classe" >
+							<option value="" selected>Selecionar...</option>
+							{% for classe in classes  %}
+							{% if classe.ensino_primario or classe.primeiro_ciclo or classe.segundo_ciclo %}
+							<option value="{{classe.id}}" {% if classe.id == disciplina.classe.id %} selected
+								
+							{% endif %}> {{ classe }}</option>
+							{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+					<!--End::Classe-->
+							<!--Begin::curso-->
+					<div class="col input-group me-4 mb-4">
+						<label
+							class="select-description text-white ps-2 pe-2 pt-2"
+							for="curso"
+							><i class="bi bi-diagram-3 text-white"></i>    Curso <i class="asterisco">*</i></label
+						>
+						<select name="curso" class="form-select" id="curso" >
+							<option value="" selected>Selecionar...</option>
+							{% for c in cursos  %}
+							<option value="{{c.id}}" {% if c.id == disciplina.curso.id %} selected
+								
+							{% endif %}> {{ c.nome }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!--End::curso-->
+
+					  
+				</div>
+			</div>
+
+      
+      <div class="row">
+				<div class="input-group">
+      <!-- Nome -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-4 pe-2">
+							<i class="bi bi-person text-white ps-2 pe-2 pt-3"></i>Descrição
+						
+						</span>
+						<textarea
+							class="form-control"
+							placeholder="Descreva a disciplina"
+							name="descricao"
+              rows="4"
+              cols="50"
+             
+						
+						>{{disciplina.descricao}}</textarea>
+					</div>
+
+        </div>
+			</div>
+				
+	
+
+	
+
+			<div class="row button-groups ms-2 me-5 mt-1">
+				<div class="col">
+					<button
+						type="button"
+						class="btn-add"
+						onclick="mostrarDadosPessoais()"
+					>
+						Voltar
+					</button>
+				</div>
+
+				<div class="col text-end">
+					<button class="btn btn-success" type="submit" id="btnSalvar">
+						<span id="iconSalvar"><i class="bi bi-save me-2"></i>Atualizar</span>
+						<span id="loadingSalvar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+
+					<button
+						class="btn btn-success ms-2"
+						type="submit"
+						id="btnSalvarCadastrar"
+					>
+						<span id="iconSalvarCadastrar"
+							><i class="bi bi-plus me-2"></i>Atualizar e Cadastrar</span
+						>
+						<span id="loadingSalvarCadastrar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+				</div>
+		
+		</div>
+	</form>
+</div>
+	{% endblock %}
+

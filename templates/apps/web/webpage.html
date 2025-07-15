@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>SmartSchool-Webpage</title>
+		<link
+			rel="stylesheet"
+			href="{% static 'icon/font/bootstrap-icons.min.css' %}"
+		/>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+		<link rel="stylesheet" href="{% static 'web/webpage.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'web/animacao.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/aos.css' %}" />
+		<link rel="stylesheet" href="{% static 'custom/css/footer.css' %}" />
+	</head>
+	<body>
+		<div class="overlay">
+			<!---->
+
+			<!---->
+
+			<section class="hero" id="topo">
+				<div class="overlay"></div>
+				<div class="main-content text-white">
+					<h1 class="fade-in-title">
+						Bem-vindo ao
+						<span class="highlight">SmartSchool</span>
+					</h1>
+					<h2 class="slide-up">
+						Transforme a gestão da sua escola com tecnologia de ponta
+					</h2>
+					<p class="fade-in-delay">
+						Controle completo de alunos, professores, turmas, notas e frequência
+						— tudo em um só lugar.
+					</p>
+					<p class="fade-in-delay-2">
+						Automatize tarefas, ganhe tempo e foque no que realmente importa: a
+						educação.
+					</p>
+					<a href="#auth" class="btn-entrar">Entrar no Sistema</a>
+				</div>
+			</section>
+
+			<!---->
+			<section id="auth" class="mb-5">
+				<div class="listagem-escolas">
+					<div class="listar">
+						<div class="header">
+							<h2 class="integrado" data-aos="fade-up">
+								Sistema de Gestão Escolar Integrado
+							</h2>
+						</div>
+						<div class="row localizacao">
+							<div class="col provincia mt-2" data-aos="fade-up">
+								<a href="#" class="text-decoration-none text-center text-white">
+									Províncias <span class="ms-4">|</span>
+								</a>
+							</div>
+							<div class="col mt-2" data-aos="fade-up">
+								<a href="#" class="text-decoration-none text-center text-white"
+									>Municípios <span class="ms-4">|</span></a
+								>
+							</div>
+							<div class="col mt-2" data-aos="fade-up">
+								<a href="#" class="text-decoration-none text-center text-white"
+									>Bairros <span class="ms-4">|</span></a
+								>
+							</div>
+						</div>
+
+						<div class="container">
+							<div class="row bg bg-white card-escolas">
+								<div class="legenda mt-2" data-aos="fade-up">
+									Escolas do SmartSchool
+								</div>
+								{% for escola in escolas %}
+								<div
+									class="col-12 col-sm-6 col-md-2 mb-2 d-flex justify-content-center mt-5"
+									data-aos="fade-up"
+								>
+									<a
+										href="{% url 'school:autenticacao' %}"
+										class="text-decoration-none text-center"
+									>
+										{% if escola.logo %}
+										<img
+											src="{{ escola.logo.url }}"
+											alt="Logo"
+											class="rounded-circle"
+											style="width: 120px; height: 120px; object-fit: cover"
+										/>
+										{% else %}
+										<img
+											src="{% static 'img/default-user.jpg' %}"
+											alt="Logo padrão"
+											class="rounded-circle"
+											style="width: 120px; height: 120px; object-fit: cover"
+										/>
+
+										{% endif %}
+										<p class="mt-2 nav-escola">{{ escola.nome }}</p>
+									</a>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+
+						<div class="mt-5">
+							<!--Footer-->
+							{% include "layout/footer.html" %}
+						</div>
+					</div>
+				</div>
+				<!---->
+				<!---->
+				<!---->
+				<!---->
+				<!---->
+			</section>
+		</div>
+
+		<script src="{% static 'js/aos.js' %}"></script>
+		<script>
+			AOS.init();
+		</script>
+	</body>
+</html>

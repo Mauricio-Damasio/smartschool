@@ -1,0 +1,33 @@
+{% load static %}
+
+
+<form action="" method="get">
+
+  <div class="row mt-2">
+		<!--Begin::departamento-->
+		<div class="col input-group mt-3">
+			<label
+				class="select-description text-white ps-2 pe-2 pt-2"
+				for="departamento"
+				><i class="bi bi-diagram-3 text-white"></i>  Departamento</label
+			>
+			<select name="departamento" class="form-select" id="curso" onchange="this.form.submit()" >
+				<option  id="option-select"  value="" selected>Selecionar...</option>
+				
+        {% for departamento in departamentos  %}
+        
+        <option  id="option-select"  value="{{departamento.id}}" {% if departamento.id|stringformat:"s" == request.GET.departamento %} selected{% endif %}>{{departamento.nome}}</option>
+        
+        {% endfor %}
+			</select>
+		</div>
+
+
+    <!--End::departamento-->
+
+
+
+
+		
+	</div>
+</form>

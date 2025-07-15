@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Certificado de Habilitações Literárias</title>
+		<style>
+			@page {
+				size: A4;
+				margin: 2cm;
+			}
+
+			body {
+				font-family: "Times New Roman", serif;
+				margin: 0;
+				padding: 2cm;
+				border: 5px double black;
+				box-sizing: border-box;
+			}
+
+			.header {
+				text-align: center;
+				margin-bottom: 20px;
+			}
+
+			.header img {
+				width: 70px;
+				height: 70px;
+			}
+
+			.header p {
+				margin: 5px 0;
+				font-size: 14px;
+				font-weight: bold;
+			}
+
+			h1 {
+				text-align: center;
+				font-size: 18px;
+				text-transform: uppercase;
+				margin-top: 20px;
+				text-decoration: underline;
+			}
+
+			.conteudo {
+				text-align: justify;
+				font-size: 14px;
+				line-height: 1.6;
+				margin-top: 20px;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 25px;
+				font-size: 14px;
+			}
+
+			table,
+			th,
+			td {
+				border: 1px solid black;
+			}
+
+			th,
+			td {
+				padding: 6px;
+				text-align: center;
+			}
+
+			.assinaturas {
+				margin-top: 50px;
+				display: flex;
+				justify-content: space-between;
+				font-size: 14px;
+			}
+
+			.assinaturas div {
+				width: 45%;
+				text-align: center;
+			}
+
+			.footer {
+				margin-top: 30px;
+				text-align: right;
+				font-size: 14px;
+			}
+
+			.destacado {
+				font-weight: bold;
+				color: red;
+				text-transform: uppercase;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<img src="{{ logo_url }}" alt="Insígnia da República de Angola" />
+			<p>REPÚBLICA DE ANGOLA</p>
+			<p>MINISTÉRIO DA EDUCAÇÃO</p>
+			<p>{{ escola.nome|upper }}</p>
+		</div>
+
+		<h1>CERTIFICADO DE HABILITAÇÕES LITERÁRIAS</h1>
+
+		<div class="conteudo">
+			<p>
+				O(a) <strong>{{ escola.direitor }}</strong>, Director(a) da Escola
+				<strong>{{ escola.nome }}</strong>, criada sob o Decreto nº 665/15 de 30
+				de Novembro, certifica que o(a) aluno(a)
+				<span class="destacado">{{ aluno.nome }}</span>, filho(a) de
+				<strong>{{ aluno.nome_pai }}</strong> e de
+				<strong>{{ aluno.nome_mae }}</strong>, natural de
+				<strong>{{ aluno.municipio }}</strong>, Município de "<strong
+					>{{ aluno.municipio }}</strong
+				>", Província de "<strong>{{ aluno.provincia }}</strong>", portador do
+				Bilhete de Identidade nº "<strong>{{ aluno.bi_numero }}</strong>",
+				passado pelo Arquivo de Identificação de "<strong
+					>{{ aluno.bi_local_emissao }}</strong
+				>", concluiu no ano lectivo de <strong>{{ ano_letivo }}</strong> a
+				<strong>{{ turma.classe }}</strong> classe, na especialidade de
+				<strong>{{ curso.nome }}</strong>, conforme o disposto na alínea (f) do
+				artigo 109º da LBSEE 17/16, de 7 de Outubro, com a média final de
+				<strong>{{ media_final }}</strong> valores, obtida nas seguintes
+				classificações por disciplina:
+			</p>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Disciplina</th>
+						<th>10ª Classe</th>
+						<th>11ª Classe</th>
+						<th>12ª Classe</th>
+						<th>13ª Classe</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for nota in notas %}
+					<tr>
+						<td>{{ nota.disciplina.nome }}</td>
+						<td>{{ nota.nota_10 }}</td>
+						<td>{{ nota.nota_11 }}</td>
+						<td>{{ nota.nota_12 }}</td>
+						<td>{{ nota.nota_13 }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<p>
+				Para efeitos legais, é passado o presente CERTIFICADO, que consta no
+				livro de registros nº ___, folha ___, assinado por mim e autenticado com
+				o carimbo a óleo/selo branco em uso neste estabelecimento de ensino.
+			</p>
+		</div>
+
+		<div class="footer">
+			{{ escola.municipio.cidade }}, aos {{ data_emissao }}
+		</div>
+
+		<div class="assinaturas">
+			<div>
+				<strong>Conferido por</strong><br /><br /><br />
+				___________________________<br />
+				{{ pedagogico.nome }}
+			</div>
+			<div>
+				<strong>O Director da Escola</strong><br /><br /><br />
+				___________________________<br />
+				{{ direitor.nome }}
+			</div>
+		</div>
+	</body>
+</html>

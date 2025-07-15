@@ -1,0 +1,93 @@
+{% extends "apps/ui/coordenador/perfil/_dashboard_coordenador.html" %}
+
+
+{% load static %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+    <h4>Professores do Curso: {{ curso.nome }}</h4>
+
+    </div>
+
+
+    <!-- Formulário de Filtro por Turma -->
+    <form method="get" class="mb-4">
+       
+
+        <!---->
+        <div class="row g-2">
+            <div class="col-md-6 input-group">
+                <label for="turma" class="select-description text-white ps-2 pe-2 pt-2">Turma</label>
+                <select name="turma_id" id="turma" class="form-select" onchange="this.form.submit()" required >
+                    <option value="">--- Escolha uma turma ---</option>
+                    {% for turma in turmas %}
+                        <option value="{{ turma.id }}" {% if turma == turma_selecionada %}selected{% endif %}>
+                            {{ turma.nome }} - {{ turma.classe }} - {{ turma.curso.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+        </div>
+        <!---->
+    </form>
+
+    {% if turma_selecionada %}
+
+    <!---->
+   
+  <div class="col-auto">
+    <a href="{% url 'school:gerar_pdf_professores' %}?turma_id={{ turma_selecionada.id }}" class="btn btn-danger mb-3">
+        <i class="bi bi-file-earmark-pdf me-1"></i>  Exportar PDF
+    </a>
+    
+</div>
+    <!---->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0 text-primary">Professores da Turma: {{ turma_selecionada.nome }}</h5>
+            </div>
+            <div class="card-body">
+                {% if professores_com_disciplinas %}
+                    <ul class="list-group">
+                        {% for professor, disciplinas in professores_com_disciplinas.items %}
+                            <li class="list-group-item">
+                                <ul
+                                class="list-unstyled m-0 avatar-group d-flex align-items-center"
+                            >
+                                <li class="avatar avatar-xs pull-up ms-4">
+                                    {% if professor.image %}
+                                    <img
+                                        src="{{ professor.image.url }}"
+                                        alt="Avatar"
+                                        class="img-perfil rounded-circle"
+                                    />
+                                    {% else %}
+                                    <img
+                                        src="{% static 'img/default-user.jpg' %}"
+                                        alt="Avatar"
+                                        class="img-perfil rounded-circle"
+                                    />
+                                    {% endif %}
+                                </li>
+                            </ul>
+                                <strong>{{ professor.nome }}</strong>
+                                <ul class="mt-2">
+                                    {% for disciplina in disciplinas %}
+                                        <li class="body-itens">{{ disciplina.nome }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nenhum professor registrado para esta turma.</p>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p class="text-muted">Por favor, selecione uma turma para visualizar os professores.</p>
+    {% endif %}
+</div>
+{% endblock %}

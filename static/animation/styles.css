@@ -1,0 +1,110 @@
+/****************************************************/
+/*Visualizar*/
+/*****************************************************/
+
+body {
+	background-color: #f8f9fa;
+}
+
+.profile-card {
+	border-radius: 1rem;
+	box-shadow: 0 4px 10px cyan;
+}
+
+.profile-image {
+	width: 180px;
+	height: 180px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-top: -90px;
+	border: 3px solid #fff;
+	box-shadow: 0 0 10px #f80f8f;
+}
+
+.head-img {
+	background: linear-gradient(to bottom, rgb(20, 65, 150), rgb(6, 24, 58));
+
+	box-shadow: 0 4px 5px cyan;
+}
+
+.text-view {
+	color: rgb(62, 9, 110);
+}
+
+.view-nome {
+	color: rgb(62, 9, 110);
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	margin-bottom: 45px;
+}
+
+/***********************************************************************/
+/* Eliminar */
+/**********************************************************************/
+
+.confirm-box {
+	margin-top: 40px;
+	padding: 30px;
+	border-radius: 10px;
+	background-color: white;
+	box-shadow: 0 5px 10px cyan;
+}
+
+.profile-image-de {
+	width: 180px;
+	height: 180px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-top: -255px;
+	border: 3px solid #fff;
+	box-shadow: 0 0 10px #f80f8f;
+}
+
+/***********************************************************************/
+/* Update*/
+/**********************************************************************/
+
+.dados-perfil {
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	color: rgb(82, 12, 148);
+}
+
+.nav-image {
+	width: 75px;
+	height: 75px;
+	border-radius: 55px;
+	border: 1px solid cyan;
+	box-shadow: 0 0 10px #f80f8f;
+}
+
+.turma {
+	box-shadow: 0 0 5px cyan;
+}
+
+.card-itens {
+	color: rgb(82, 12, 148);
+}
+
+/******************************/
+
+.card-elevated {
+	box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.3) !important;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-elevated:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 1.25rem 2rem rgba(0, 0, 0, 0.4) !important;
+}
+
+.btn-custom:hover {
+	opacity: 0.9;
+	transform: scale(1.02);
+	transition: all 0.3s ease-in-out;
+}
+
+.tipo-funcionario {
+	margin-left: 375px;
+}

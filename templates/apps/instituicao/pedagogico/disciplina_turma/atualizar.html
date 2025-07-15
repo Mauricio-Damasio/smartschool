@@ -1,0 +1,136 @@
+{% extends "base/_dashboard_.html" %} {% block title %}Atualizar Atribuições
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="row filtragem mb-5">
+
+	
+
+	<div class="header mt-2 mb-4">
+
+		<h4 class="col mt-5">Atribuíndo turma e disciplina ao professor</h4>
+	</div>
+
+	<form action="" method="post" enctype="multipart/form-data" id="formCadastro">
+		{% csrf_token %}
+
+		<!--Begin::Messages-->
+		{% include "layout/message.html" %}
+		<!--End::Messages-->
+
+	                         
+		<div id="secao-dados-pessoais" class="fade-in">
+			<div class="header-2 mt-3 mb-4">
+				<h5>Turmas e disciplinas</h5>
+				<hr />
+			</div>
+
+			<!-- Campos de dados -->
+			<div class="row">
+				<div class="input-group">
+				  <!--Begin::Professor-->
+          <div class="col input-group me-4">
+            <label
+              class="select-description text-white ps-2 pe-2 pt-2"
+              for="professor"
+              ><i class="bi bi-person text-white"></i>    Professor <i class="asterisco">*</i></label
+            >
+            <select name="professor" class="form-select" id="turma">
+              <option selected>Selecionar...</option>
+              {% for professor in professores  %}
+              <option value="{{professor.id}}" {% if professor.id == disciplinaLecionada.professor.id %} selected
+                
+              {% endif %}> {{ professor.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <!--End::Professor-->
+            <!--Begin::Disciplina-->
+        <div class="col input-group me-4">
+          <label
+            class="select-description text-white ps-2 pe-2 pt-2"
+            for="disciplina"
+            ><i class="bi bi-people text-white"></i>    Disciplina <i class="asterisco">*</i></label
+          >
+          <select name="disciplina" class="form-select" id="turma">
+            <option selected>Selecionar...</option>
+            {% for disciplina in disciplinas  %}
+            <option value="{{disciplina.id}}" {% if disciplina.id == disciplinaLecionada.disciplina.id %} selected
+              
+            {% endif %}> {{ disciplina.nome }} </option>
+            {% endfor %}
+          </select>
+        </div>
+        <!--End::Disciplina-->
+			
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-group">
+			
+
+			  <!--Begin::Turma-->
+        <div class="col input-group me-4">
+          <label
+            class="select-description text-white ps-2 pe-2 pt-2"
+            for="turma"
+            ><i class="bi bi-people text-white"></i>    Turma <i class="asterisco">*</i></label
+          >
+          <select name="turma" class="form-select" id="turma">
+            <option selected>Selecionar...</option>
+            {% for t in turmas  %}
+            <option value="{{t.id}}" {% if t.id == disciplinaLecionada.turma.id %} selected
+              
+            {% endif %}> {{ t.nome }} - {{ t.classe }} - {{ t.curso.nome }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <!--End::Turma-->
+				</div>
+			</div>
+
+        
+
+			
+		</div>
+
+
+			
+	
+
+				<div class="col text-end">
+					<button class="btn btn-success" type="submit" id="btnSalvar">
+						<span id="iconSalvar"><i class="bi bi-save me-2"></i>Atualizar</span>
+						<span id="loadingSalvar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando</span
+						>
+					</button>
+
+					<button
+						class="btn btn-success ms-2"
+						type="submit"
+						id="btnSalvarCadastrar"
+					>
+						<span id="iconSalvarCadastrar"
+							><i class="bi bi-plus me-2"></i>Atualizar e Cadastrar</span
+						>
+						<span id="loadingSalvarCadastrar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+				</div>
+		
+		</div>
+	</form>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,320 @@
+{% extends "base/_dashboard_.html" %} {% block title%}Atualizar Escola
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Atualizar Escola</h4>
+	</div>
+
+
+
+  <form action="" method="post" enctype="multipart/form-data" id="formCadastro">
+		{% csrf_token %}
+
+		<!--Begin::Messages-->
+		{% include "layout/message.html" %}
+		<!--End::Messages-->
+
+		<div id="secao-dados-pessoais" class="fade-in">
+			<div class="header-2 mt-3 mb-4">
+				<h4>Dados da escola</h4>
+				<hr />
+			</div>
+
+      <div class="dados-perfil mb-5">
+        {% if escola.logo %}
+        <img src="{{ escola.logo.url }}" alt="Logo atual" class="nav-image mt-2">
+    {% endif %}
+    
+    <h4 class="nome">{{escola.nome}}</h4>
+    
+      </div>
+		
+			<div class="row">
+				<div class="input-group">
+					<!-- Nome -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-person text-white ps-2 pe-2 pt-3"></i>Nome
+							<i class="asterisco">*</i>
+						</span>
+						<input
+							class="form-control"
+							placeholder="Nome"
+							type="text"
+							name="nome"
+              value="{{escola.nome}}"
+							required
+						/>
+					</div>
+					<!-- NIF -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-card-text text-white ps-2 pe-2 pt-3"></i>NIF
+							<i class="asterisco">*</i>
+						</span>
+						<input
+							class="form-control"
+							placeholder="NIF"
+							type="text"
+							name="nif"
+              value={{escola.nif}}
+							required
+						/>
+					</div>
+				
+					
+				</div>
+			</div>
+
+
+      <div class="row">
+				<div class="input-group">
+          
+    
+       	<!--Begin::Direitor-->
+					<div class="col input-group me-4 mb-mb-4">
+						<label
+							class="select-description text-white ps-2 pe-2 pt-2"
+							for="direitor"
+							><i class="bi bi-person text-white"></i>    Direitor Geral <i class="asterisco">*</i></label
+						>
+						<select name="direitor" class="form-select" id="direitor" >
+							<option value="" selected>Selecionar...</option>
+							{% for direitor in direitores  %}
+							<option value="{{direitor.id}}" {% if direitor.id == escola.direitor.id %} selected
+								
+							{% endif %}> {{ direitor.nome }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!--End::Direitor-->
+					           	<!--Begin::Direitor-->
+											 <div class="col input-group me-4 mb-mb-4">
+												<label
+													class="select-description text-white ps-2 pe-2 pt-2"
+													for="direitor"
+													><i class="bi bi-person text-white"></i>    Direitor Pedagógico <i class="asterisco">*</i></label
+												>
+												<select name="direitor_pedagogico" class="form-select" id="direitor_pedagogico" >
+													<option value="" selected>Selecionar...</option>
+													{% for pedagogico in pedagogicos  %}
+													<option value="{{pedagogico.id}}" {% if pedagogico.id == escola.direitor_pedagogico.id %} selected
+														
+													{% endif %}> {{ pedagogico.nome }}</option>
+													{% endfor %}
+												</select>
+											</div>
+
+        </div>
+			</div>
+
+      <div class="row">
+				<div class="input-group">
+    
+					<!--End::Direitor-->
+               	<!--Begin::Direitor-->
+					<div class="col input-group me-4 mb-4">
+						<label
+							class="select-description text-white ps-2 pe-2 pt-2"
+							for="administrativo"
+							><i class="bi bi-person-lines-fill text-white"></i>    Direitor Administrativo <i class="asterisco">*</i></label
+						>
+						<select name="direitor_administrativo" class="form-select" id="classe" >
+							<option value="" selected>Selecionar...</option>
+							{% for administrativo in administrativos  %}
+							<option value="{{administrativo.id}}" {% if administrativo.id == escola.direitor_administrativo.id %} selected
+								
+							{% endif %}> {{ administrativo.nome }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!--End::Direitor-->
+					
+       
+            	<!--Begin::Alvará-->
+							<div class="col input-group mb-4 me-4">
+								<span class="select-description text-white pt-2 pe-2">
+									<i class="bi bi-image text-white ps-2 pe-2 pt-3"></i> Alvará
+								</span>
+								<input
+									class="form-control"
+									type="file"
+									name="alvara"
+									accept="application/pdf"
+								/>
+							</div>
+							<!--End::Alvará-->
+
+        </div>
+			</div>
+
+
+      <div class="row mt-3">
+				<div class="input-group">
+                   	<!--Begin::Provincia-->
+					<div class="col input-group me-4 mb-4">
+						<label
+							class="select-description text-white ps-2 pe-2 pt-2"
+							for="provincia"
+							><i class="bi bi-geo-alt text-white"></i>    Província <i class="asterisco">*</i></label
+						>
+						<select name="provincia" class="form-select" id="provincia" >
+							<option value="" selected>Selecionar...</option>
+							{% for provincia in provincias  %}
+							<option value="{{provincia.id}}" {% if provincia.id == escola.provincia.id %} selected
+								
+							{% endif %}> {{ provincia.nome }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!--End::Provincia-->
+                   	<!--Begin::Município-->
+					<div class="col input-group me-4 mb-4">
+						<label
+							class="select-description text-white ps-2 pe-2 pt-2"
+							for="municipio"
+							><i class="bi bi-geo-alt-fill text-white"></i>    Município <i class="asterisco">*</i></label
+						>
+						<select name="municipio" class="form-select" id="classe" >
+							<option value="" selected>Selecionar...</option>
+							{% for municipio in municipios  %}
+							<option value="{{municipio.id}}" {% if municipio.id == escola.municipio.id %} selected
+								
+							{% endif %}> {{ municipio.nome }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!--End::Município-->
+
+        </div>
+			</div>
+      <div class="row mt-3">
+				<div class="input-group">
+                        	<!--Begin::Bairro-->
+					<div class="col input-group me-4 mb-4">
+						<label
+							class="select-description text-white ps-2 pe-2 pt-2"
+							for="bairro"
+							><i class="bi bi-geo-fill text-white"></i>    Bairro <i class="asterisco">*</i></label
+						>
+						<select name="bairro" class="form-select" id="classe" >
+							<option value="" selected>Selecionar...</option>
+							{% for bairro in bairros  %}
+							<option value="{{bairro.id}}" {% if bairro.id == escola.bairro.id %} selected
+								
+							{% endif %}> {{ bairro.nome }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!--End::Bairro-->
+       
+					       
+            	<!--Begin::Alvará-->
+              <div class="col input-group mb-4 me-4">
+                <span class="select-description text-white pt-2 pe-2">
+                  <i class="bi bi-image text-white ps-2 pe-2 pt-3"></i> Logo
+                </span>
+                <input
+                  class="form-control"
+                  type="file"
+                  name="logo"
+                  
+                />
+              </div>
+              <!--End::Alvará-->
+				
+        </div>
+			</div>
+      <div class="row mt-3">
+				<div class="input-group">
+          
+          	<!-- Ano Fundação -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-calendar3 text-white ps-2 pe-2 pt-3"></i>Ano de fundação
+							<i class="asterisco">*</i>
+						</span>
+						<input
+							class="form-control"
+							placeholder="Ano de fundação"
+							type="date"
+							name="ano_fundacao"
+              value={{escola.ano_fundacao|date:"Y-m-d"}}
+							required
+						/>
+					</div>
+        <!--Begin::Tipo de escola-->
+					<div class="col input-group mb-mb-3 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-building text-white ps-2 pe-2 pt-3"></i>
+							Tipo de escola <i class="asterisco">*</i>
+						</span>
+						<select name="tipo_escola" id="tipo_escola" class="form-select">
+							<option value="">Selecionar...</option>
+							<option value="EP" {% if escola.tipo_escola == "EP" %} selected
+                
+              {% endif %}>Ensino Primário</option>
+							<option value="PC" {% if escola.tipo_escola == "PC" %} selected
+                
+              {% endif %}>Primeiro Ciclo</option>
+							<option value="SC" {% if escola.tipo_escola == "SC" %} selected
+                
+              {% endif %}>Segundo Ciclo</option>
+						</select>
+					</div>
+					<!--End::Gênero-->
+      
+        </div>
+			</div>
+	
+	
+
+				
+
+			<div class="row button-groups ms-2 me-5 mt-1">
+				<div class="col">
+					<button
+						type="button"
+						class="btn-add"
+						onclick="mostrarDadosPessoais()"
+					>
+						Voltar
+					</button>
+				</div>
+
+				<div class="col text-end">
+					<button class="btn btn-success" type="submit" id="btnSalvar">
+						<span id="iconSalvar"><i class="bi bi-save me-2"></i>Atualizar</span>
+						<span id="loadingSalvar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+
+					<button
+						class="btn btn-success ms-2"
+						type="submit"
+						id="btnSalvarCadastrar"
+					>
+						<span id="iconSalvarCadastrar"
+							><i class="bi bi-plus me-2"></i>Atualizar e Cadastrar</span
+						>
+						<span id="loadingSalvarCadastrar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+				</div>
+		
+		</div>
+	</form>
+</div>
+	{% endblock %}
+

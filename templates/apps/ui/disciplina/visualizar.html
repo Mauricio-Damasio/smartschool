@@ -1,0 +1,45 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}Visualizar Disciplina
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="container py-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="profile-card p-4">
+				<div class="text-center">
+					<div class="head-img text-white rounded-top py-1">
+			
+            <h5 class="view-nome mt-4 text-white"><strong></strong> {{ disciplina.nome }}</h5>
+					</div>
+					
+				</div>
+				<div class="card-bodys mt-4">
+		
+				
+					<h5 class="text-view">
+						<strong>Classe: </strong> {{ disciplina.classe }}
+					</h5>
+          <h5 class="text-view">
+						<strong>Descrição: </strong> {{ disciplina.descricao }}
+					</h5>
+					<h5 class="text-view">
+						<strong>Curso: </strong> {{ curso.nome }}
+					</h5>
+					
+		
+				
+					<div class="mt-4 text-end">
+						{% if request.user.diretor %}
+						<a href="{% url "school:atualizar_disciplina" disciplina.id %}" class="btn btn-success text-white"><i class="bi bi-pencil me-2 text-white"></i>Editar</a>
+						{% endif %}
+						<a href="{% url "school:listar_disciplinas" %}" class="btn btn-warning"> <i class="bi bi-arrow-left me-2 text-white"></i>Voltar</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}
+<!---->
+Turma{% endblock %}
+
+<!---->
+
+{% block content %}
+
+<!---->
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Turma</h4>
+		{% if request.user.diretor %}
+		<a href="{% url "school:cadastrar_turma" %}" class="add-link mt-3">
+			<i class="bi bi-plus text-white"></i>Cadastrar
+		</a>
+		{% endif %}
+	</div>
+
+	<div class="header-2 mt-3 mb-4">
+		<h5>Listagem de Turmas</h5>
+		<hr />
+	</div>
+
+	<!--Begin::Messages-->
+	{% include "layout/message.html" %}
+	<!--End::Messages-->
+
+	<!--Begin::Listagem de disciplina-->
+	{% include "apps/ui/turma/layout/tabela.html" %}
+	<!--End::Listagem de  disciplina-->
+</div>
+{% endblock %}

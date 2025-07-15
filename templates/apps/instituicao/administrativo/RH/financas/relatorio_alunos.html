@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Alunos por Curso</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 30px;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .escola-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+        .footer {
+            margin-top: 80px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .assinatura {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .data-footer {
+            text-align: right;
+            margin-top: 60px;
+            font-size: 13px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 95px;
+        }
+        img{
+            width:65px;
+            hight:65px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img
+            src="{{logo_url}}"
+            alt="Insígnia da República de Angola"
+            class="insignia"
+        />
+        <p>
+            REPÚBLICA DE ANGOLA<br />
+            GOVERNO PROVINCIAL DO MOXICO<br />
+            GABINETE DA EDUCAÇÃO<br />
+            {{escola.nome|upper}} - {{escola.municipio.cidade|upper}}
+        </p>
+       
+    </div>
+    <h4>Relatório de Alunos por Curso</h4>
+   
+
+    <table>
+        <thead>
+            <tr>
+                <th>Curso</th>
+               
+                <th>Total de Alunos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in alunos_por_curso %}
+            <tr>
+                <td>{{ item.turma__curso__nome }}</td>
+                
+                <td>{{ item.total }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">Nenhum aluno encontrado para os cursos desta escola.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+    <div class="data-footer">
+        {{escola.municipio.nome}}, {{ data_hoje }}
+    </div>
+    <div class="footer">
+        <div class="assinatura">
+           O Diretor Administrativo
+            ___________________________<br>
+            {{escola.direitor_administrativo.nome}}
+         
+        </div>
+        <div class="assinatura">
+            O Diretor Geral
+            ___________________________<br>
+            {{escola.direitor.nome}}
+           
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,172 @@
+{% extends "base/_dashboard_.html" %} {% block title %}Atualizar Professor
+<!---->
+{% endblock %} {% block content %}
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Atualizar Professor</h4>
+	</div>
+
+
+
+  <form action="" method="post" enctype="multipart/form-data" id="formCadastro">
+		{% csrf_token %}
+
+		<!--Begin::Messages-->
+		{% include "layout/message.html" %}
+		<!--End::Messages-->
+
+
+		
+
+
+		<!-- DADOS PESSOAIS -->
+		<div id="secao-dados-pessoais" class="fade-in mb-5">
+			<div class="header-2 mt-3 mb-4">
+				<h5>Dados do professor</h5>
+				<hr />
+			</div>
+
+
+			<div class="dados-perfil">
+				{% if professor.image %}
+				<img src="{{ professor.image.url }}" alt="Imagem atual" class="nav-image mt-2">
+		{% endif %}
+ 
+		<h4 class="nome">{{professor.nome}}</h4>
+
+			</div>
+			
+
+			<!-- Campos de dados pessoais -->
+			<div class="row mt-5">
+				<div class="input-group">
+					<!-- Nome -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-person text-white ps-2 pe-2 pt-3"></i>Nome
+							<i class="asterisco">*</i>
+						</span>
+						<input
+							class="form-control"
+							placeholder="Nome"
+							type="text"
+							name="nome"
+              value="{{professor.nome}}"
+							required
+						/>
+					</div>
+					<!--Begin::Gênero-->
+					<div class="col input-group mb-mb-3 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-gender-ambiguous text-white ps-2 pe-2 pt-3"></i>
+							Gênero <i class="asterisco">*</i>
+						</span>
+						<select name="genero" id="genero" class="form-select">
+							<option value="">Selecionar...</option>
+							<option value="M" {% if professor.genero == "M" %}selected {% endif %}>Masculino</option>
+							<option value="F" {% if professor.genero == "F" %}selected {% endif %}>Femenino</option>
+						</select>
+					</div>
+					<!--End::Gênero-->
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-group">
+
+          	<!--Begin::Número de agente-->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-person-badge text-white ps-2 pe-2 pt-3"></i>Número de agente
+							<i class="asterisco">*</i>
+						</span>
+						<input
+							class="form-control"
+							placeholder="Número de agente"
+							type="text"
+							name="numAgente"
+							value={{professor.numAgente}}
+							required
+						/>
+					</div>
+          <!--End::Número de agente-->
+						<!--Begin::Imagem-->
+				<div class="col input-group mb-mb-4 me-4">
+				
+					<span class="select-description text-white pt-2 pe-2">
+						<i class="bi bi-image text-white ps-2 pe-2 pt-3"></i> Nova imagem
+					</span>
+					<input
+						class="form-control"
+						placeholder="Carregar nova imagem"
+						type="file"
+						name="image"
+						accept="image/*"
+					
+					/>
+				</div>
+				<!--End::Imagem-->
+							
+
+					  
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-group">
+
+
+			<!--Begin::Departamento-->
+			<div class="col input-group me-4 mb-4">
+				<label
+					class="select-description text-white ps-2 pe-2 pt-2"
+					for="departamento"
+					><i class="bi bi-diagram-3 text-white"></i>    Departamento <i class="asterisco">*</i></label
+				>
+				<select name="departamento" class="form-select" id="departamento" >
+					<option value="" selected>Selecionar...</option>
+					{% for dep in departamentos  %}
+					<option value="{{dep.id}}" {% if dep.id == professor.departamento.id %} selected
+						
+					{% endif %}> {{ dep.nome }}</option>
+					{% endfor %}
+				</select>
+			</div>
+<!--End::Departamento-->					
+
+			
+        
+
+				</div>
+			</div>
+      
+        
+        
+
+			<div class="row button-groups ms-2 me-5 mt-4">
+				<div class="col text-center">
+					<button class="btn btn-success" type="submit" id="btnSalvar">
+						<span id="iconSalvar"><i class="bi bi-save me-2"></i>Atualizar</span>
+						<span id="loadingSalvar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+
+				</div>
+			</div>
+		</div>
+
+		
+
+			
+			</div>
+		</div>
+	</form>
+
+</div>
+	{% endblock %}
+

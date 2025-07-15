@@ -1,0 +1,129 @@
+{% extends "apps/instituicao/escola/perfil/dashboard_admin.html" %}
+{% load static %}
+{% block content %}
+<form method="POST">
+  {% csrf_token %}
+  <div class="row filtragem mb-5">
+		<div class="header mt-2 mb-4">
+
+      <h4 class="text-white">Alunos por ano lectivo</h4>
+    </div>
+    <!--Ano Lectivo-->
+    <!---->
+    <div class="col input-group mt-2 me-5">
+			<label
+				class="select-description text-white ps-2 pe-2 pt-2"
+				for="ano_letivo"
+				><i class="bi bi-people text-white"></i> Ano Lectivo</label
+			>
+			<select name="ano_letivo" class="form-select" id="ano_letivo" onchange="this.form.submit()" > 
+				<option value="" selected>Selecionar...</option>
+        {% for ano in anos %}
+        <option value="{{ ano.id }}" {% if ano == ano_selecionado %}selected{% endif %}>{{ ano.nome }}</option>
+      {% endfor %}
+			</select>
+		</div>
+    <!---->
+    <!---->
+    
+  </form>
+
+  {% if alunos %}
+
+
+  <div class="mb-5 mt-5"> <a href="{% url 'school:relatorio_alunos_pdf' ano_selecionado.id %}" class="btn btn-primary">Exportar PDF</a></div>
+ 
+
+    <table class="table">
+      <thead>
+        <tr class="head"><th>Nº</th><th></th><th>Nome</th><th>Turma</th></tr>
+      </thead>
+      <tbody>
+        {% for aluno in alunos %}
+          <tr class="table-primary">
+            <td>{{ forloop.counter }}</td>
+            <td>	<ul
+							class="list-unstyled m-0 avatar-group d-flex align-items-center"
+						>
+							<li class="avatar avatar-xs pull-up">
+								{% if aluno.image %}
+								<img
+									src="{{ aluno.image.url }}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% else %}
+								<img
+									src="{% static 'img/default-user.jpg' %}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% endif %}
+							</li>
+						</ul></td>
+            <td>{{ aluno.nome }}</td>
+            <td>{{ aluno.turma }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+	</div>
+    <hr class="">
+
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    {% if genero_labels %}
+<div class="mt-5">
+    <h5>Estatísticas por Gênero</h5>
+    <canvas id="graficoGenero" width="100" height="20"></canvas>
+</div>
+<!---->
+{% endif %}
+
+
+
+  {% endif %}
+
+
+  <!---->
+  <!---->
+  <!---->
+  <!--Chart.js-->
+  <script src="{% static 'js/chart/chart.js' %}"></script>
+<script>
+  {% if genero_labels %}
+    const ctx = document.getElementById('graficoGenero');
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: {{ genero_labels|safe }},
+          datasets: [{
+              label: 'Total de Alunos por Gênero',
+              data: {{ genero_data|safe }},
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)', 
+                    'rgba(255, 99, 132, 0.7)', 
+                    'rgba(255, 206, 86, 0.7)'  
+                ],
+                borderColor: [
+                 'rgba(255, 99, 13, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(54, 162, 35, 1)',
+                   
+                   
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+    {% endif %}
+</script>
+
+{% endblock %}

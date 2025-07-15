@@ -1,0 +1,65 @@
+{% load static %}
+
+<div class="form-container sign-in">
+  <form action="{% url "school:login_view" %}" method="POST">
+    {% csrf_token %}
+    <h2>Iniciar Sessão</h2>
+
+    <!--Begin::Social Mídea-->
+    <div class="social-icons">
+      <a href="#"><i class="bi bi-google"></i></a>
+      <a href="#"><i class="bi bi-facebook"></i></a>
+      <a href="#"><i class="bi bi-github"></i></a>
+      <a href="#"><i class="bi bi-linkedin"></i></a>
+    </div>
+    <!--End::Social Mídea-->
+  
+
+    <span>Ou use o seu email e senha</span>
+
+    <div class="form-group">
+
+
+      <!--Begin::Username-->
+      <div class="input-group mb-1">
+        <span class="input-group-text">
+          <span class="bi bi-person"></span>
+        </span>
+        <input
+          class="form-control"
+          name="username"
+          placeholder="Username"
+          type="text"
+          required
+        />
+      </div>
+       <!--End::Username-->
+
+
+       <!--Begin::Password-->
+      <div class="input-group mb-1">
+        <span class="input-group-text">
+          <span class="bi bi-lock"></span>
+        </span>
+        <input
+          class="form-control"
+          name="senha"
+          placeholder="Senha"
+          type="password"
+          required
+        />
+      </div>
+    </div>
+     <!--End::Password-->
+
+
+     <!--Begin::Forgotpassword-->
+    <a class="forgot-pass" href="#">Esqueceste a senha?</a>
+     <!--End::Forgotpassword-->
+
+  
+
+  
+    <button type="submit">Sign In</button>
+  </form>
+</div>

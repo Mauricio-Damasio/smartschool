@@ -1,0 +1,134 @@
+{% extends "base/_dashboard_.html" %} {% block title%}Cadastrar Classe
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h2 class="col mt-5">Cadastrar Classe</h2>
+	</div>
+
+
+
+  <form action="" method="post" id="formCadastro">
+		{% csrf_token %}
+
+		<!--Begin::Messages-->
+		{% include "layout/message.html" %}
+		<!--End::Messages-->
+
+		<div id="secao-dados-pessoais" class="fade-in">
+			<div class="header-2 mt-3 mb-4">
+				<h4>Dados das Classes</h4>
+				<hr />
+			</div>
+
+		
+			<div class="row">
+				<div class="input-group">
+				
+   
+					<!--Begin::Ensino Primário -->
+					<div class="col input-group mb-mb-3 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+              <i class="bi bi-pencil text-white ms-2"></i> 
+							Ensino Primário <i class="asterisco">*</i>
+						</span>
+						<select name="ensino_primario" id="genero" class="form-select">
+							<option value="">Selecionar...</option>
+							<option value="0">0ª</option>
+							<option value="1">1ª</option>
+							<option value="2">2ª</option>
+							<option value="3">3ª</option>
+							<option value="4">4ª</option>
+							<option value="5">5ª</option>
+							<option value="6">6ª</option>
+					
+						</select>
+					</div>
+					<!--End::Ensino Primário -->
+					<!--Begin::Primeiro Ciclo -->
+					<div class="col input-group mb-mb-3 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+              <i class="bi bi-collection text-white ms-2"></i> 
+							Primeiro Ciclo  <i class="asterisco">*</i>
+						</span>
+						<select name="primeiro_ciclo" id="genero" class="form-select">
+							<option value="">Selecionar...</option>
+							<option value="7">7ª</option>
+							<option value="8">8ª</option>
+							<option value="9">9ª</option>
+
+					
+						</select>
+					</div>
+					<!--End::Primeiro Ciclo  -->
+					<!--Begin::Segundo Ciclo  -->
+					<div class="col input-group mb-mb-3 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+              <i class="bi bi-easel text-white ms-2"></i> 
+							Segundo Ciclo <i class="asterisco">*</i>
+						</span>
+						<select name="segundo_ciclo" id="genero" class="form-select">
+							<option value="">Selecionar...</option>
+							<option value="10">10ª</option>
+							<option value="11">11ª</option>
+							<option value="12">12ª</option>
+							<option value="13">13ª</option>
+					
+						</select>
+					</div>
+					<!--End::Segundo Ciclo -->
+				
+					
+				</div>
+			</div>
+
+			
+
+      
+  
+
+			<div class="row button-groups ms-2 me-5 mt-1">
+				<div class="col">
+					<button
+						type="button"
+						class="btn-add"
+						onclick="mostrarDadosPessoais()"
+					>
+						Voltar
+					</button>
+				</div>
+
+				<div class="col text-end">
+					<button class="btn btn-success" type="submit" id="btnSalvar">
+						<span id="iconSalvar"><i class="bi bi-save me-2"></i>Salvar</span>
+						<span id="loadingSalvar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Salvando...</span
+						>
+					</button>
+
+					<button
+						class="btn btn-success ms-2"
+						type="submit"
+						id="btnSalvarCadastrar"
+					>
+						<span id="iconSalvarCadastrar"
+							><i class="bi bi-plus me-2"></i>Salvar e Cadastrar</span
+						>
+						<span id="loadingSalvarCadastrar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Salvando...</span
+						>
+					</button>
+				</div>
+		
+		</div>
+	</form>
+</div>
+	{% endblock %}

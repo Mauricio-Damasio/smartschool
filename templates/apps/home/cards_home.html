@@ -1,0 +1,162 @@
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+
+
+  <!-- Cards -->
+  <div class="row g-4">
+
+<!---->
+<!---->
+<div class="col-md-3">
+	<div class="card text-white bg-success shadow">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center">
+				<div>
+					<h5 class="card-title"> Escolas</h5>
+          <h2 class="fw-bold">{{ total_escolas }}</h2>
+				</div>
+				<i class="bi bi-building me-2 fs-4"></i>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!---->
+<!---->
+<!---->
+<!---->
+<div class="col-md-3">
+	<div class="card text-white bg-primary shadow">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center">
+				<div>
+					<h5 class="card-title"> Cursos</h5>
+          <h2 class="fw-bold">{{ total_cursos }}</h2>
+				</div>
+				<i class="bi bi-book fs-4 me-2"></i>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!---->
+<!---->
+<div class="col-md-3">
+	<div class="card text-white bg-danger shadow">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center">
+				<div>
+					<h5 class="card-title"> Classes</h5>
+          <h2 class="fw-bold">{{ total_classes }}</h2>
+				</div>
+				<i class="bi bi-easel me-2 fs-4"></i>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!---->
+<!---->
+<div class="col-md-3">
+	<div class="card text-white bg-warning shadow">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center">
+				<div>
+				  <h5 class="card-title"> Diretores</h5>
+          <h2 class="fw-bold">{{ total_diretores }}</h2>
+				</div>
+				<i class="bi bi-person me-2 fs-4"></i>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!---->
+<!---->
+<div class="col-md-3">
+	<div class="card text-white bg-dark shadow">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center">
+				<div>
+					<h5 class="card-title"> Subdir. Pedagógicos</h5>
+          <h2 class="fw-bold">{{ total_pedagogicos }}</h2>
+				</div>
+				<i class="bi bi-person-badge me-2 fs-4"></i>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!---->
+<!---->
+<div class="col-md-3">
+	<div class="card text-white bg-secondary shadow">
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center">
+				<div>
+					<h5 class="card-title">Subdir. Administrativos</h5>
+          <h2 class="fw-bold">{{ total_administrativos }}</h2>
+				</div>
+				<i class="bi bi-briefcase me-2 fs-4"></i> 
+			</div>
+		</div>
+	</div>
+</div>
+
+<!---->
+<!---->
+
+   
+
+
+  </div>
+
+  <!-- Gráficos -->
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <canvas id="graficoProfissionais"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="graficoLocalizacao"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="{% static 'js/chart/chart.js' %}"></script>
+<script>
+const graficoProfissionais = new Chart(document.getElementById("graficoProfissionais"), {
+  type: 'bar',
+  data: {
+    labels: ['Diretor Geral', 'Subdir. Pedagógico', 'Subdir. Administrativo'],
+    datasets: [{
+      label: 'Total',
+      data: [{{ total_diretores }}, {{ total_pedagogicos }}, {{ total_administrativos }}],
+      backgroundColor: ['#0d6efd', '#dc3545', '#198754']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, title: { display: true, text: 'Profissionais por Função' } }
+  }
+});
+
+const graficoLocalizacao = new Chart(document.getElementById("graficoLocalizacao"), {
+  type: 'pie',
+  data: {
+    labels: ['Províncias', 'Municípios', 'Bairros'],
+    datasets: [{
+      label: 'Total',
+      data: [{{ total_provincias }}, {{ total_municipios }}, {{ total_bairros }}],
+      backgroundColor: ['#ffc107', '#6f42c1', '#20c997']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'bottom' }, title: { display: true, text: 'Distribuição por Localização' } }
+  }
+});
+</script>
+{% endblock %}

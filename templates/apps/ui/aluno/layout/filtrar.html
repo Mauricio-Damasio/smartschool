@@ -1,0 +1,47 @@
+{% load static %}
+
+
+<form action="" method="get">
+	<div class="row filtragem mb-5">
+		<div class="header mt-2 mb-4">
+			<h4 class="col mt-5">Alunos</h4>
+ 
+			{% if request.user.diretor %}
+			<a href="{% url "school:cadastrar_alunos" %}" class="add-link mt-3">
+				<i class="bi bi-plus text-white"></i>Cadastrar
+			</a>
+			{% endif %}
+		</div>
+
+		<div class="header-2 mt-3 mb-4">
+			<h5>Listar alunos</h5>
+			<hr />
+		</div>
+
+
+
+		<!--Begin::Turma-->
+		<div class="col input-group mt-2 me-5">
+			<label
+				class="select-description text-white ps-2 pe-2 pt-2"
+				for="turma"
+				><i class="bi bi-people text-white"></i> Turma</label
+			>
+			<select name="turma" class="form-select" id="turma" onchange="this.form.submit()" > 
+				<option value="" selected>Selecionar...</option>
+        {% for t in turmas  %}
+        <option value="{{t.id}}" {% if t.id|stringformat:"s" == request.GET.turma %} selected
+          
+        {% endif %}> {{ t.nome }} - {{ t.classe }} - {{ t.curso.nome }}</option>
+        {% endfor %}
+			</select>
+		</div>
+		<!--End::Turma-->
+
+
+
+
+
+
+	</div>
+</form>

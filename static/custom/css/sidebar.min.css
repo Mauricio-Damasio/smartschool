@@ -1,0 +1,250 @@
+html,
+body {
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+.wrapper {
+	height: 100%;
+}
+
+/*************************/
+/*      Sidebar
+/*************************/
+
+.sidebar {
+	background: linear-gradient(
+		to bottom,
+		rgb(13, 51, 122),
+		rgb(8, 38, 94),
+		rgb(6, 24, 58)
+	);
+	box-shadow: 0 0 5px #f80f8f;
+	border: 1px solid cyan;
+	width: 300px;
+	height: 100vh;
+	float: left;
+	overflow: hidden;
+	flex-direction: column;
+	position: fixed;
+	left: 0;
+	min-height: 100vh;
+	border-right: 1px solid cyan;
+	transform: translateX(-300px);
+	transition: transform 0.3s ease;
+	z-index: 999;
+}
+
+/*Faixa cima*/
+.faixa-sidebar-up {
+	border-top: 1px solid #f80f8f;
+	border-right: 1px solid cyan;
+	border-left: 1px solid cyan;
+	border-radius: 15px;
+	margin-bottom: 45px;
+}
+
+/*Menu Sidebar*/
+#sidebar-menu {
+	border-top: 1px solid cyan;
+	border-bottom: 1px solid cyan;
+	box-shadow: 2px 4px 10px rgb(252, 20, 116);
+	border-radius: 15px;
+	margin: 10px;
+}
+
+/*********************************************/
+
+.bi.logo-icon {
+	color: #f80f8f;
+}
+
+.smart-div {
+	color: #f80f8f;
+}
+
+.logo-icon {
+	font-size: xx-large;
+}
+
+.opcao {
+	margin-top: 55px;
+	list-style: none;
+}
+
+.menu-opcao {
+	color: white;
+	text-decoration: none;
+	list-style: none;
+}
+
+.form-label {
+	color: rgb(6, 24, 58);
+}
+
+.col {
+	margin-bottom: 45px;
+}
+
+/*Sidebar content*/
+
+.sidebar-content {
+	overflow-y: auto;
+	max-height: calc(100vh - 80px);
+	padding: 10px;
+	position: relative;
+}
+
+.logo-icon {
+	font: 3em sans-serif;
+	color: #f80f8f;
+}
+
+#logo {
+	border-top: 1px solid #f80f8f;
+	border-right: 1px solid cyan;
+	border-left: 1px solid cyan;
+	border-radius: 15px;
+}
+.div-item-bottom {
+	border-bottom: 1px solid #f80f8f;
+	border-right: 1px solid cyan;
+	border-left: 1px solid cyan;
+	border-radius: 15px;
+	height: 55px;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-bottom: 35px;
+}
+
+.smart-div {
+	color: #f80f8f;
+}
+.school-div {
+	color: cyan;
+}
+
+/*Personalizando o sidebar scrollbar*/
+
+/* Scrollbar customizada */
+.sidebar-content::-webkit-scrollbar {
+	width: 8px;
+}
+
+/*Limites de scollbar*/
+.sidebar-content::-webkit-scrollbar-track {
+	/*	background: var(--scrollbar-track-color);*/
+
+	background: linear-gradient(to bottom, rgb(9, 39, 95), rgb(6, 29, 70));
+
+	margin-top: 25px;
+	margin-bottom: 55px;
+}
+
+/*A barra de rolagem*/
+.sidebar-content::-webkit-scrollbar-thumb {
+	background: linear-gradient(
+		to bottom,
+		rgb(10, 47, 116),
+		rgb(8, 38, 95),
+		rgb(2, 13, 34)
+	);
+	border-radius: 10px;
+
+	border: 1px solid white;
+	box-shadow: 0 0 10px #f80f8f;
+	height: 15px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+	border: 1px solid cyan;
+}
+
+/************************************************/
+
+/*SIDEBAR MENUS DE OPÇÕES*/
+
+.transition {
+	transition: transform 0.3s ease;
+}
+
+.rotate-icon.rotate {
+	transform: rotate(180deg);
+}
+
+/* Linhas-guia nos submenus */
+.submenu-list {
+	border-left: 2px solid rgb(252, 20, 116);
+	border-right: 2px solid rgb(252, 20, 116);
+	border-bottom: 2px solid white;
+	border-top: 2px solid cyan;
+	border-bottom-left-radius: 40px;
+	border-top-right-radius: 100px;
+	margin-left: 1rem;
+	padding-left: 0.75rem;
+	position: relative;
+	box-shadow: 2px 4px 10px cyan;
+	margin-right: 18px;
+	margin-bottom: 15px;
+
+	background: linear-gradient(
+		to bottom,
+		rgb(9, 39, 95),
+		rgb(7, 33, 80),
+		rgb(4, 19, 46)
+	);
+}
+
+/*Menu de opções*/
+#menu-opcao {
+	border-radius: 15px;
+	border: 2px solid cyan;
+	border-bottom: 1px solid white;
+	border-top-right-radius: 80px;
+	border-bottom-left-radius: 80px;
+	border-top-left-radius: 80px;
+	margin-bottom: 15px;
+	box-shadow: 2px 4px 10px rgb(252, 20, 116);
+	color: white;
+	background: linear-gradient(
+		to bottom,
+		rgb(13, 49, 116),
+		rgb(7, 33, 80),
+		rgb(4, 19, 46)
+	);
+}
+
+#menu-opcao:hover {
+	color: rgb(252, 20, 116);
+	box-shadow: 2px 4px 10px cyan;
+	border-top: 1px solid #f80f8f;
+}
+
+/*SubMenu*/
+.nav-link {
+	color: white;
+}
+
+.nav-link:hover {
+	color: rgb(252, 20, 116);
+}
+
+.bi {
+	color: cyan;
+}
+
+#action-a {
+	color: white;
+}
+
+.nav-options {
+	text-decoration: none;
+	list-style: none;
+	color: rgb(6, 24, 58);
+	cursor: pointer;
+}
+
+.nav-options:hover {
+	color: #f80f8f;
+}

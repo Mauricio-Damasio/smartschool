@@ -1,0 +1,45 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}
+<!---->
+Direitor Administrativo{% endblock %}
+
+<!---->
+
+{% block content %}
+
+<!---->
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Direitor Administrativo</h4>
+{% if request.user.is_superuser %}
+		<a href="{% url "school:cadastrar_administrativo" %}" class="add-link mt-3">
+			<i class="bi bi-plus text-white"></i>Cadastrar
+		</a>
+		{% elif request.user.escola %}
+		<a href="#" class="add-link mt-3">
+			<i class="bi bi-plus text-white"></i>Meu perfil
+		</a>
+		{% endif %}
+	</div>
+
+	<div class="header-2 mt-3 mb-4">
+		<h5>Listagem de Direitores Administrativos</h5>
+		<hr />
+	</div>
+	{% if request.user.is_superuser %}
+	<!--Begin::Filtro-->
+	{% include "apps/instituicao/administrativo/layout/filtrar.html" %}
+	<!--End::Filtro-->
+
+	<!--Begin::Messages-->
+	{% include "layout/message.html" %}
+	<!--End::Messages-->
+
+	<!--Begin::Listagem de administrativo-->
+	{% include "apps/instituicao/administrativo/layout/tabela.html" %}
+	<!--End::Listagem de  administrativo-->
+{% endif %}
+	{% endblock %}
+</div>

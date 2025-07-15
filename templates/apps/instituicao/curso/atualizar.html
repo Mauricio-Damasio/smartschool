@@ -1,0 +1,200 @@
+{% extends "base/_dashboard_.html" %} {% block title%}Atualizar Curso
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Atualizar Curso</h4>
+	</div>
+
+
+
+  <form action="" method="post" id="formCadastro">
+		{% csrf_token %}
+
+		<!--Begin::Messages-->
+		{% include "layout/message.html" %}
+		<!--End::Messages-->
+
+		<div id="secao-dados-pessoais" class="fade-in">
+			<div class="header-2 mt-3 mb-4">
+				<h5>Dados do curso</h5>
+				<hr />
+			</div>
+
+		
+			<div class="row">
+				<div class="input-group">
+					<!-- Nome -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-person text-white ps-2 pe-2 pt-3"></i>Nome
+							<i class="asterisco">*</i>
+						</span>
+						<input
+							class="form-control"
+							placeholder="Nome"
+							type="text"
+							name="nome"
+              value="{{curso.nome}}"
+							required
+						/>
+					</div>
+
+          	<!--Begin::Nivel-->
+					<div class="col input-group mb-mb-3 me-4">
+						<span class="select-description text-white pt-2 pe-2">
+							<i class="bi bi-layers text-white ps-2 pe-2 pt-3"></i>
+							Nível <i class="asterisco">*</i>
+						</span>
+						<select name="nivel" id="nivel" class="form-select">
+							<option value="">Selecionar...</option>
+							<option value="T" {% if curso.nivel == "T" %} selected {% endif %}>Técnico</option>
+							<option value="G" {% if curso.nivel == "G" %} selected {% endif %}>Graduação</option>
+							<option value="P" {% if curso.nivel == "P" %} selected {% endif %}>Pós-graduação</option>
+					
+						</select>
+					</div>
+					<!--End::Nivel-->
+
+
+          
+				
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-group">
+
+       	<!--Begin::escola-->
+					<div class="col input-group me-4 mb-mb-4">
+						<label
+							class="select-description text-white ps-2 pe-2 pt-2"
+							for="escola"
+							><i class="bi bi-building text-white"></i>   Escola <i class="asterisco">*</i></label
+						>
+						<select name="escola" class="form-select" id="escola" >
+							<option value="" selected>Selecionar...</option>
+							{% for escola in escolas  %}
+							<option value="{{escola.id}}" {% if escola.id == curso.escola.id %} selected
+								
+							{% endif %}> {{ escola.nome }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!--End::Classe-->
+					 	<!--Begin::Modalidade-->
+             <div class="col input-group mb-mb-3 me-4">
+              <span class="select-description text-white pt-2 pe-2">
+                <i class="bi bi-grid-3x3-gap text-white ps-2 pe-2 pt-3"></i>
+                Modalidade <i class="asterisco">*</i>
+              </span>
+              <select name="modalidade" id="nivel" class="form-select">
+                <option value="">Selecionar...</option>
+                <option value="P" {% if curso.modalidade == "P" %} selected{% endif %}>Presencial</option>
+                <option value="O" {% if curso.modalidade == "O" %} selected{% endif %}>Online</option>
+                <option value="S" {% if curso.modalidade == "S" %} selected{% endif %}>Semi-Presencial</option>
+          
+            
+              </select>
+            </div>
+            <!--End::Modalidade-->
+
+					  
+				</div>
+			</div>
+
+      
+
+      <div class="row">
+				<div class="input-group">
+      <!-- Nome -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-4 pe-2">
+							<i class="bi bi-card-text text-white ps-2 pe-2 pt-3"></i>Descrição
+						
+						</span>
+						<textarea
+							class="form-control"
+							placeholder="Descreva o curso"
+							name="descricao"
+              rows="4"
+              cols="50"
+						
+						>{{curso.descricao}}</textarea>
+					</div>
+
+      
+
+
+        </div>
+			</div>
+				
+	
+
+      <div class="row">
+				<div class="input-group">
+                	<!-- Ativo -->
+					<div class="col input-group mb-mb-4 me-4">
+						<span class="select-description text-white pt-2 pe-2 me-3 mb-2">
+							<i class="bi bi-check-circle text-white ps-2 pe-2 pt-3"></i>Ativo
+							<i class="asterisco">*</i>
+						</span>
+						<input
+						
+							placeholder="Ativo"
+							type="checkbox"
+							name="ativo"
+              {% if curso.ativo %} checked{% endif %}
+					
+						/>
+					</div>
+        </div>
+			</div>
+	
+
+			<div class="row button-groups ms-2 me-5 mt-1">
+				<div class="col">
+					<button
+						type="button"
+						class="btn-add"
+						onclick="mostrarDadosPessoais()"
+					>
+						Voltar
+					</button>
+				</div>
+
+				<div class="col text-end">
+					<button class="btn btn-success" type="submit" id="btnSalvar">
+						<span id="iconSalvar"><i class="bi bi-save me-2"></i>Atualizar</span>
+						<span id="loadingSalvar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+
+					<button
+						class="btn btn-success ms-2"
+						type="submit"
+						id="btnSalvarCadastrar"
+					>
+						<span id="iconSalvarCadastrar"
+							><i class="bi bi-plus me-2"></i>Atualizar e Cadastrar</span
+						>
+						<span id="loadingSalvarCadastrar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+				</div>
+		
+		</div>
+	</form>
+</div>
+	{% endblock %}
+

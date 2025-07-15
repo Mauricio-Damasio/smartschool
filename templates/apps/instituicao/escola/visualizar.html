@@ -1,0 +1,82 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}Visualizar Escola
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="container py-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="profile-card p-4">
+				<div class="text-center">
+					<div class="head-img text-white rounded-top py-4">
+						
+						<p class="p-3"></p>
+					</div>
+					{% if escola.logo %}
+					<img
+						src="{{ escola.logo.url }}"
+						alt="Foto da escola"
+						class="profile-image"
+					/>
+					{% else %}
+					<img
+						src="{% static 'img/default-user.png' %}"
+						alt="Sem imagem"
+						class="profile-image"
+					/>
+					{% endif %}
+				</div>
+				<div class="card-bodys mt-4">
+					<h5 class="view-nome"><strong></strong> {{ escola.nome }}</h5>
+					<h5 class="text-view">
+						<strong>NIF: </strong> {{ escola.nif }}
+					</h5>
+					<h5 class="text-view">
+						<strong>Tipo de escola: </strong> {{ escola.get_tipo_escola_display }}
+					</h5>
+					<h5 class="text-view">
+						<strong>Ano de fundação: </strong> {{ escola.ano_fundacao }}
+					</h5>
+          <h5 class="text-view">
+						<strong>Direitor geral: </strong> {{ escola.direitor.nome }}
+					</h5>
+					<h5 class="text-view">
+						<strong>Direitor pedagógico: </strong> {{ escola.direitor_pedagogico.nome }}
+					</h5>
+					<h5 class="text-view">
+						<strong>Direitor Administrativo: </strong> {{ escola.direitor_administrativo.nome }}
+					</h5>
+				
+					<h5 class="text-view">
+						<strong>Província: </strong> {{ escola.provincia.nome }}
+					</h5>
+				
+					<h5 class="text-view">
+						<strong>Município: </strong> {{ escola.municipio.nome }}
+					</h5>
+				
+					<h5 class="text-view">
+						<strong>Bairro: </strong> {{ escola.bairro.nome }}
+					</h5>
+				
+				
+				
+          {% if escola.alvara %}
+		
+				 <a href="{{escola.alvara.url}}" class="text-decoration-none list-style-none mt-5"><strong>Ver Alvará</strong></a>
+         {% else %}
+         <p class=" ">Sem Alvará</p>
+         {% endif %}
+				
+					<div class="mt-4 text-end">
+						<a href="{% url "school:atualizar_escola" escola.id %}" class="btn btn-success text-white"><i class="bi bi-pencil me-2 text-white"></i>Editar</a>
+						<a href="{% url "school:listar_escolas" %}" class="btn btn-warning"> <i class="bi bi-arrow-left me-2 text-white"></i>Voltar</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends "apps/ui/coordenador/perfil/_dashboard_coordenador.html" %}
+
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row g-4">
+
+    <!-- Card: Alunos -->
+  
+
+<!---->
+<!---->
+<div class="col-md-3">
+  <div class="card text-white bg-warning shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="card-title text-primary">Alunos</h5>
+          <h2>{{ total_alunos }}</h2>
+        </div>
+        <i class="bi bi-people-fill me-2 fs-4"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<!---->
+<!---->
+
+
+    <!-- Card: Professores -->
+ 
+
+    <div class="col-md-3">
+      <div class="card text-white bg-primary shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title text-success">Professores</h5>
+              <h2>{{ total_professores }}</h2>
+            </div>
+            <i class="bi bi-person-vcard-fill me-2 fs-4"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---->
+    <!---->
+
+    <!-- Card: Notas e Pautas -->
+  
+    <div class="col-md-3">
+      <div class="card text-white bg-danger shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title text-warning">Pautas</h5>
+              <h2>{{ total_pautas }}</h2>
+            </div>
+            <i class="bi bi-journal-check me-2 fs-4"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---->
+    <!---->
+
+    <!-- Card: Horários -->
+  
+    <div class="col-md-3">
+      <div class="card text-white bg-primary shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title text-danger">Horários</h5>
+              <h2>{{ total_horarios }}</h2>
+            </div>
+            <i class="bi bi-calendar-week me-2 fs-4"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---->
+    <!---->
+  </div>
+
+  <!-- Gráfico -->
+  <div class="row mt-5">
+    <div class="col-md-8 mx-auto">
+      <div class="card shadow-sm rounded-4">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-pie-chart-fill me-2"></i>Distribuição de Alunos por Curso</h5>
+          <canvas id="graficoAlunosCurso" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="{% static 'js/chart/chart.js' %}"></script>
+<script>
+  const ctx = document.getElementById('graficoAlunosCurso').getContext('2d');
+  const graficoAlunosCurso = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: [{% for item in alunos_por_curso %}'{{ item.curso__nome }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+      datasets: [{
+        label: 'Alunos',
+        data: [{% for item in alunos_por_curso %}{{ item.total }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+        backgroundColor: [
+          '#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#20c997'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: true, text: 'Alunos por Curso' }
+      }
+    }
+  });
+</script>
+
+
+{% endblock  %}

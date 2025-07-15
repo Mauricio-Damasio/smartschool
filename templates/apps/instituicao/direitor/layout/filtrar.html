@@ -1,0 +1,32 @@
+{% load static %}
+
+
+<form action="" method="get">
+
+  <div class="row mt-2">
+		<!--Begin::escola-->
+		<div class="col input-group mt-3">
+			<label
+				class="select-description text-white ps-2 pe-2 pt-2"
+				for="escola"
+				><i class="bi bi-building text-white"></i>  Escola</label
+			>
+			<select name="escola" class="form-select" id="escola" onchange="this.form.submit()">
+				<option  id="option-select"  value="" selected>Selecionar...</option>
+				
+        {% for escola in escolas  %}
+        
+        <option  id="option-select"  value="{{escola.id}}" {% if escola.id|stringformat:"s" == request.GET.escola %} selected{% endif %}>{{escola.nome}}</option>
+        
+        {% endfor %}
+			</select>
+		</div>
+
+
+    <!--End::escola-->
+
+
+
+
+	</div>
+</form>

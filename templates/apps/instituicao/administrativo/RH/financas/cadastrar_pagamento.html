@@ -1,0 +1,128 @@
+{% extends "apps/instituicao/administrativo/perfil/_dashboard_administrativo.html" %}
+{% load static %}
+
+{% block title %}Cadastrar Pagamento{% endblock %}
+
+{% block content %}
+
+<div class="row filtragem mb-5">
+  <div class="header mt-2 mb-4">
+    <h4 class="col mt-5">Cadastrar Pagamento</h4>
+  </div>
+
+  <form action="" method="post" id="formCadastro">
+    {% csrf_token %}
+    
+    <!--Begin::Messages-->
+    {% include "layout/message.html" %}
+    <!--End::Messages-->
+
+    <div id="secao-dados-pagamento" class="fade-in">
+      <div class="header-2 mt-3 mb-4">
+        <h5>Dados do Pagamento</h5>
+        <hr />
+      </div>
+
+      <!-- Linha 1: Aluno e Valor -->
+      <div class="row">
+        <div class="input-group">
+
+          <!-- Aluno -->
+          <div class="col input-group mb-4 me-4">
+            <label class="select-description text-white ps-2 pe-2 pt-2" for="aluno">
+              <i class="bi bi-person-circle text-white"></i> Aluno <i class="asterisco">*</i>
+            </label>
+            <select name="aluno" class="form-select" id="aluno" required>
+              <option value="">Selecionar...</option>
+              {% for aluno in alunos %}
+                <option value="{{ aluno.id }}">{{ aluno.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Valor -->
+          <div class="col input-group mb-4 me-4">
+            <label class="select-description text-white ps-2 pe-2 pt-2" for="valor">
+              <i class="bi bi-cash-coin text-white"></i> Valor (Kz) <i class="asterisco">*</i>
+            </label>
+            <input type="number" name="valor" id="valor" class="form-control" placeholder="Ex: 15000" required>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Linha 2: Mês e Data -->
+      <div class="row">
+        <div class="input-group">
+
+          <!-- Mês Referente -->
+          <div class="col input-group mb-4 me-4">
+            <label class="select-description text-white ps-2 pe-2 pt-2" for="mes_referente">
+              <i class="bi bi-calendar2-month text-white"></i> Mês Referente <i class="asterisco">*</i>
+            </label>
+            <input type="text" name="mes_referente" id="mes_referente" class="form-control" placeholder="Ex: Julho" required>
+          </div>
+
+          <!-- Data Pagamento -->
+          <div class="col input-group mb-4 me-4">
+            <label class="select-description text-white ps-2 pe-2 pt-2" for="data_pagamento">
+              <i class="bi bi-calendar-date text-white"></i> Data do Pagamento
+            </label>
+            <input type="date" name="data_pagamento" id="data_pagamento" class="form-control">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Linha 3: Status -->
+      <div class="row">
+        <div class="input-group">
+
+          <!-- Status -->
+          <div class="col input-group mb-4 me-4">
+            <label class="select-description text-white ps-2 pe-2 pt-2" for="status">
+              <i class="bi bi-flag text-white"></i> Status <i class="asterisco">*</i>
+            </label>
+            <select name="status" class="form-select" id="status" required>
+              <option value="">Selecionar...</option>
+              <option value="Pago">Pago</option>
+              <option value="Pendente">Pendente</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Botões -->
+      <div class="row button-groups ms-2 me-5 mt-1">
+        <div class="col">
+          <button type="button" class="btn-add" onclick="history.back()">
+            Voltar
+          </button>
+        </div>
+
+        <div class="col text-end">
+          <button class="btn btn-success" type="submit" id="btnSalvar">
+            <span id="iconSalvar">
+              <i class="bi bi-save me-2"></i>Salvar Pagamento
+            </span>
+            <span id="loadingSalvar" class="d-none">
+              <i class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"></i> Salvando...
+            </span>
+          </button>
+
+          <button class="btn btn-success ms-2" type="submit" id="btnSalvarCadastrar">
+            <span id="iconSalvarCadastrar">
+              <i class="bi bi-plus me-2"></i>Salvar e Novo
+            </span>
+            <span id="loadingSalvarCadastrar" class="d-none">
+              <i class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"></i> Salvando...
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

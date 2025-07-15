@@ -1,0 +1,114 @@
+/* Efeito Parallax com imagem */
+.hero {
+	background-image: url("../../img/4.jpg");
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	position: relative;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 0 20px;
+}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 1;
+}
+
+/* Conteúdo central */
+.main-content {
+	position: relative;
+	z-index: 2;
+	color: white;
+	max-width: 800px;
+	margin-right: 256px;
+	margin-bottom: 205px;
+}
+
+/* Animações */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(50px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.fade-in-title {
+	animation: fadeIn 1s ease forwards;
+}
+
+.slide-up {
+	animation: slideUp 1.2s ease forwards;
+}
+
+.fade-in-delay {
+	animation: fadeIn 1.5s ease forwards;
+}
+
+.fade-in-delay-2 {
+	animation: fadeIn 1.8s ease forwards;
+}
+
+.highlight {
+	color: #00ffff;
+	font-weight: bold;
+}
+
+/* Botão animado */
+.btn-entrar {
+	display: inline-block;
+	margin-top: 30px;
+	padding: 12px 28px;
+	font-size: 18px;
+	color: #fff;
+	background: linear-gradient(90deg, #00c6ff, #0072ff);
+	border: none;
+	border-radius: 25px;
+	text-decoration: none;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+.btn-entrar:hover {
+	transform: scale(1.05);
+	box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+}
+
+/*Smart*/
+.logo-icon {
+	color: #f80f8f;
+}
+
+/* Rolagem suave */
+html {
+	scroll-behavior: smooth;
+}
+
+.home-nav {
+	background: #fff;
+
+	padding: 567px;
+}

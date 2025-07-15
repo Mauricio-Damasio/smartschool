@@ -1,0 +1,51 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+
+<!---->
+{% block title %} Eliminar Direitor
+
+<!---->
+{% endblock %}{% block content %}
+
+<div class="container d-flex justify-content-center">
+	<div class="col-md-6 confirm-box text-center">
+		<div class="head-img text-white rounded-top py-4">
+			<p class="p-3">Tem certeza que deseja eliminar este direitor?</p>
+		</div>
+
+		{% if direitor.image %}
+		<img
+			src="{{ direitor.image.url }}"
+			class="profile-image mb-3 m-4"
+			alt="Imagem do direitor"
+		/>
+		{% else %}
+		<img
+			src="{% static 'img/default-user.png' %}"
+			class="profile-image shadow mb-3"
+			alt="Imagem padrão"
+		/>
+		{% endif %}
+
+		<h5 class="mb-1 text-view"><strong>{{ direitor.nome }}</strong></h5>
+		<p class="text-muted text-view">Nº Agente: {{ direitor.numAgente }}</p>
+		<p class="text-muted text-view">
+			Gênero: {{ direitor.get_genero_display }}
+		</p>
+
+		<form method="post" class="mt-4">
+			{% csrf_token %}
+			<div class="d-grid gap-2 d-md-block">
+				<button type="submit" class="btn btn-danger ps-3 pe-3">
+					<i class=""></i>Sim
+				</button>
+				<a
+					href="{% url 'school:listar_direitores' %}"
+					class="btn btn-secondary px-4"
+					>Cancelar</a
+				>
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% load static %}
+
+<li class="nav-item mt-2">
+	<a
+		id="menu-opcao"
+		class="nav-link d-flex justify-content-between align-items-center"
+		data-bs-toggle="collapse"
+		data-bs-target="#academicoSubmenu"
+		role="button"
+		aria-expanded="false"
+		aria-controls="academicoSubmenu"
+	>
+		<span> <i class="bi bi-mortarboard me-2"></i> Académico </span>
+		<i
+			class="bi bi-chevron-down transition rotate-icon"
+			id="arrowIcon"
+			data-arrow="academicoSubmenu"
+		></i>
+	</a>
+
+	<div class="collapse" id="academicoSubmenu">
+		<ul
+			class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3 submenu-list"
+		>
+			<!---->
+			<li>
+				<a href="{% url "school:listar_alunos" %}" class="nav-link">
+					<i class="bi bi-person me-2"></i> Alunos
+				</a>
+			</li>
+	
+					{% if request.user.diretor %}
+			<!---->
+			<li>
+				<a href="{% url "school:listar_professores" %}" class="nav-link">
+					<i class="bi bi-person-badge me-2"></i> Professores
+				</a>
+			</li>
+			<!---->
+			<li>
+				<a href="{% url "school:listar_coordenadores" %}" class="nav-link">
+					<i class="bi bi-person-gear me-2"></i> Coordenadores
+				</a>
+			</li>
+			<!---->
+			{% endif %}
+			<li>
+				<a href="{% url "school:listar_disciplinas" %}" class="nav-link">
+					<i class="bi bi-journal-bookmark me-2"></i> Disciplinas
+				</a>
+			</li>
+			<!---->
+			<li>
+				<a href="{% url "school:listar_turmas" %}" class="nav-link">
+					<i class="bi bi-people me-2"></i> Turmas
+				</a>
+			</li>
+			<!---->
+			<!---->
+		
+		</ul>
+	</div>
+</li>

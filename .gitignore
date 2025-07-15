@@ -1,0 +1,38 @@
+# Ambientes virtuais
+.venv/
+venv/
+.env
+
+
+# Arquivos de configurações do sistema
+__pycache__/
+*.py[cod]
+*.log
+*.pot
+*.pyc
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de build
+staticfiles/
+media/
+
+# Arquivos de pacotes
+*.egg-info/
+dist/
+build/
+
+# Arquivos gerados pelo sistema
+*.bak
+*.orig
+
+# Arquivos para deploy
+.env
+Procfile

@@ -1,0 +1,56 @@
+table.nota {
+	border-radius: 15px;
+	box-shadow: 0 0 5px cyan;
+}
+
+/* Feedback visual na linha */
+tr.salvo {
+	background-color: #d4edda;
+	transition: background-color 0.3s ease;
+}
+
+/* Loader giratório */
+.loader {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border: 3px solid #ccc;
+	border-top: 3px solid #007bff;
+	border-radius: 50%;
+	animation: spin 0.7s linear infinite;
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+@keyframes spin {
+	0% {
+		transform: translateY(-50%) rotate(0deg);
+	}
+	100% {
+		transform: translateY(-50%) rotate(360deg);
+	}
+}
+
+/* Alertas */
+.alert-success,
+.alert-error {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	padding: 10px 20px;
+	border-radius: 5px;
+	color: #fff;
+	z-index: 9999;
+	font-weight: bold;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.alert-success {
+	background-color: #28a745;
+}
+
+.alert-error {
+	background-color: #dc3545;
+}

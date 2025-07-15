@@ -1,0 +1,53 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}Visualizar Classe
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="container py-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="profile-card p-4">
+				<div class="text-center">
+					<div class="head-img text-white rounded-top py-1">
+			
+						{% if classe.ensino_primario %}
+            <h5 class="view-nome mt-4 text-white">	<i class="bi bi-pencil text-white ms-2"></i> Ensino Primário</h5>
+						{% elif classe.primeiro_ciclo %}
+            <h5 class="view-nome mt-4 text-white">	<i class="bi bi-collection text-white ms-2"></i> Primeiro Ciclo</h5>
+						{% elif classe.segundo_ciclo %}
+            <h5 class="view-nome mt-4 text-white">				<i class="bi bi-easel text-white ms-2"></i> Segundo Ciclo</h5>
+						{% endif %}
+					</div>
+					
+				</div>
+				<div class="card-bodys mt-4">
+		
+					{% if classe.ensino_primario %}
+					<h5 class="text-view">
+						<strong>Classe: </strong> {{ classe.get_ensino_primario_display }}
+					</h5>
+					{% elif classe.primeiro_ciclo %}
+					<h5 class="text-view">
+						<strong>Classe: </strong> {{ classe.get_primeiro_ciclo_display }}
+					</h5>
+					{% elif classe.segundo_ciclo %}
+					<h5 class="text-view">
+						<strong>Classe: </strong> {{ classe.get_segundo_ciclo_display }}
+					</h5>
+					
+          {% endif %}
+
+					<div class="mt-4 text-end">
+						{% if request.user.is_superuser %}
+						<a href="{% url "school:atualizar_classe" classe.id %}" class="btn btn-success text-white"><i class="bi bi-pencil me-2 text-white"></i>Editar</a>
+						{% endif %}
+						<a href="{% url "school:listar_classes" %}" class="btn btn-warning"> <i class="bi bi-arrow-left me-2 text-white"></i>Voltar</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

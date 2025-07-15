@@ -1,0 +1,106 @@
+{% load static %}
+
+<aside id="sidebar" class="sidebar">
+	<h6 id="logo" class="text-white ms-2 mt-2 me-2">
+		<i class="bi bi-mortarboard logo-icon w-75 ms-4 mt-5 me-2"></i
+		><i class="smart-div">Smart</i><i class="school-div">School</i>
+	</h6>
+
+	<div class="mb-5">
+		<div id="sidebar-menu" class="sidebar-content text-white mt-5">
+			<!--Verificando a autenticacao-->
+			{% if request.user.is_authenticated %}
+			<!---->
+
+			{% if request.user.professor or request.user.aluno%}
+			<h6 class="div-item-bottom text-center mt-4 ms-2 me-2"></h6>
+			{% endif %}
+
+			<ul class="nav flex-column custom-scrollbar mt-1">
+				<!--Admin Perfil-->
+				{% if request.user.is_superuser %}
+				{% include "layout/sidebar/menu_admin.html" %}
+				{% endif %}
+					<!---->
+					<!---->
+					<!---->
+					<!--ESCOLA-->
+					{% if request.user.diretor %}
+
+					<!--Begin::Academico-->
+					{% include "layout/sidebar/assets/academico.html" %}
+					<!--End::Academico-->
+		
+					<!---->
+					<!---->
+				
+					<!--Begin::Instituição-->
+					{% include "layout/sidebar/assets/instituicao.html" %}
+					<!--End::Instituição-->
+				
+					<!---->
+					<!--Begin::Relatório-->
+					{% include "layout/sidebar/assets/relatorio.html" %}
+					<!--End::Relatório-->
+					<!--Admin Perfil-->
+					
+					<!--Begin::Financeiro-->
+					{% include "layout/sidebar/assets/financeiro.html" %}
+					<!--End::Financeiro-->
+		
+					<!--Begin::Calendário-->
+					{% include "layout/sidebar/assets/calendario.html" %}
+					<!--End::Calendário-->
+
+		
+					<!--Begin::Gestão de usuário-->
+					{% include "layout/sidebar/assets/gestao_usuario.html" %}
+					<!---->
+			
+
+					<!--End::Gestão de usuário-->
+					<!--Begin::Configurações-->
+					{% include "layout/sidebar/assets/configuracao.html" %}
+
+					<!--End::Configurações-->
+
+					<!--Pedagógico-->
+					<!---->
+					<!---->
+					{% elif request.user.pedagogico %}
+					{% include "layout/sidebar/menu_pedagogico.html" %}
+					<!---->
+					<!---->
+					<!---->
+					<!---->
+					<!--Professor-->
+					{% elif request.user.professor%}
+					{% include "layout/sidebar/menu_professor.html" %}
+					
+					<!---->
+					<!---->
+					<!---->
+					<!--Pedagógico-->
+					{% elif request.user.aluno %}
+					
+					<!---->
+					{% include "layout/sidebar/menu_aluno.html" %}
+					<!---->
+					<!---->
+					<!--Administrativo-->
+					{% elif request.user.diretoradministrativo %}
+					{% include "layout/sidebar/administrativo_menu.html" %}
+					<!--Coordenador-->
+					{% elif request.user.coordenador %}
+					{% include "layout/sidebar/menu_coordenador.html" %}
+					{% endif %}
+				</li>
+			</ul>
+
+			{% endif %}
+		</div>
+	</div>
+
+	<!--Begin::Faixa bottom-->
+	<h6 class="div-item-bottom text-center mt-4 ms-2 me-2"></h6>
+</aside>

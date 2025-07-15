@@ -1,0 +1,82 @@
+/*Form cadastrar*/
+
+.button-groups {
+	background: linear-gradient(to right, rgb(36, 80, 161), rgb(6, 24, 58));
+	box-shadow: 1px 1px 1px 1px #f80f8f;
+	border-top: 1px solid cyan;
+	color: #fff;
+
+	height: 50px;
+	border-radius: 15px;
+	border-bottom-left-radius: 45px;
+	border-bottom-right-radius: 45px;
+}
+
+.btn-voltar {
+	background: linear-gradient(to right, rgb(36, 80, 161), rgb(6, 24, 58));
+	color: #fff;
+	font-size: 12px;
+	padding: 8px 85px;
+	border: 1px solid cyan;
+	border-radius: 8px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	min-width: 10vw;
+	cursor: pointer;
+	box-shadow: 1px 1px 1px 1px #f80f8f;
+	list-style: none;
+	text-decoration: none;
+}
+
+.btn-voltar:hover {
+	background: linear-gradient(to top, rgb(6, 24, 58), rgb(36, 80, 161));
+	color: cyan;
+	border: 1px solid #f80f8f;
+	box-shadow: 1px 1px 1px 1px cyan;
+	transform: scale(1.05);
+}
+.btn-add {
+	background: linear-gradient(to right, rgb(36, 80, 161), rgb(6, 24, 58));
+	color: #fff;
+	font-size: 12px;
+	padding: 8px 85px;
+	border: 1px solid cyan;
+	border-radius: 8px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	min-width: 10vw;
+	cursor: pointer;
+	box-shadow: 1px 1px 1px 1px #f80f8f;
+}
+
+.btn-add:hover {
+	background: linear-gradient(to top, rgb(6, 24, 58), rgb(36, 80, 161));
+	color: cyan;
+	border: 1px solid #f80f8f;
+	box-shadow: 1px 1px 1px 1px cyan;
+	transform: scale(1.05);
+}
+.btn-addMore {
+	background: linear-gradient(to right, rgb(36, 80, 161), rgb(6, 24, 58));
+	color: #fff;
+	font-size: 12px;
+	padding: 8px 45px;
+	border: 1px solid cyan;
+	border-radius: 8px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	min-width: 10vw;
+	cursor: pointer;
+	box-shadow: 1px 1px 1px 1px #f80f8f;
+}
+
+.btn-addMore:hover {
+	background: linear-gradient(to top, rgb(6, 24, 58), rgb(36, 80, 161));
+	color: cyan;
+	border: 1px solid #f80f8f;
+	box-shadow: 1px 1px 1px 1px cyan;
+	transform: scale(1.05);
+}

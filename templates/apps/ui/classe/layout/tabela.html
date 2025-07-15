@@ -1,0 +1,108 @@
+{% load static %}
+
+<div class="row mt-3">
+	<!-- TABELA: Ensino Primário -->
+	<div class="col-md-4 mb-5">
+		<div class="card">
+			<h5 class="card-header text-white bg-primary">
+				<i class="bi bi-pencil text-white ms-2"></i> Ensino Primário
+			</h5>
+			<div class="table-responsive text-nowrap">
+				<table class="table">
+					<thead>
+						<tr class="head">
+							<th class="head-item">Nº</th>
+							<th class="head-item">Classe</th>
+							<th class="head-item">Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for classe in classes_primario %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ classe.get_ensino_primario_display }}</td>
+							<td>
+								{% include "apps/ui/classe/acoes.html" with classe=classe %}
+							</td>
+						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="3">Nenhuma classe cadastrada</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- TABELA: Primeiro Ciclo -->
+	<div class="col-md-4">
+		<div class="card">
+			<h5 class="card-header text-white bg-success">
+				<i class="bi bi-collection text-white ms-2"></i> Primeiro Ciclo
+			</h5>
+			<div class="table-responsive text-nowrap">
+				<table class="table">
+					<thead>
+						<tr class="head">
+							<th class="head-item">Nº</th>
+							<th class="head-item">Classe</th>
+							<th class="head-item">Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for classe in classes_primeiro %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ classe.get_primeiro_ciclo_display }}</td>
+							<td>
+								{% include "apps/ui/classe/acoes.html" with classe=classe %}
+							</td>
+						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="3">Nenhuma classe cadastrada</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- TABELA: Segundo Ciclo -->
+	<div class="col-md-4">
+		<div class="card">
+			<h5 class="card-header text-white bg-warning">
+				<i class="bi bi-easel text-white ms-2"></i> Segundo Ciclo
+			</h5>
+			<div class="table-responsive text-nowrap">
+				<table class="table">
+					<thead>
+						<tr class="head">
+							<th class="head-item">Nº</th>
+							<th class="head-item">Classe</th>
+							<th class="head-item">Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for classe in classes_segundo %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ classe.get_segundo_ciclo_display }}</td>
+							<td>
+								{% include "apps/ui/classe/acoes.html" with classe=classe %}
+							</td>
+						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="3">Nenhuma classe cadastrada</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

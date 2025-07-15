@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<title>smartSchool- {% block title %}{% endblock %}</title>
+		<link rel="stylesheet" href="{% static 'custom/nota.css' %}" />
+
+		<!--::-HEAD-::-->
+		{% include "layout/header.html" %}
+			<!---->
+			{% include "layout/status.html" %}
+			<!---->
+	</head>
+	<body class="">
+		<div class="wrapper">
+			{% include "layout/sidebar/sidebar.html" %}
+
+			<!---->
+			<div id="content">
+				<!--::-NAVBAR-::-->
+
+				{% include "layout/navbar/navbar.html" %}
+				<!--::-MAIN CONTENT-::-->
+
+				<div class="container-fluid p-4">{% block content %}{% endblock %}</div>
+			</div>
+		</div>
+
+		<!--::-SCRIPTS JS-::-->
+		{% include "layout/_scripts_js.html" %}
+
+		<!---->
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				document.querySelectorAll(".nota").forEach((input) => {
+					input.addEventListener("input", calcularLinha);
+				});
+
+
+
+			// Seleciona todos os inputs com a classe 'nota'
+			const notas = document.querySelectorAll('.nota');
+							
+			notas.forEach(function(input) {
+				input.addEventListener('input', function () {
+					const valor = parseFloat(this.value);
+
+					// Remove as classes antigas
+					this.classList.remove('text-danger', 'text-dark');
+
+					// Adiciona a cor conforme o valor
+					if (!isNaN(valor)) {
+						if (valor < 10) {
+							this.classList.add('text-danger');
+						} else {
+							this.classList.add('text-dark');
+						}
+					}
+				});
+			});
+
+			});
+
+			function calcularLinha(e) {
+				const row = e.target.closest("tr");
+				const alunoId = e.target.dataset.id;
+				const inputs = row.querySelectorAll("input");
+
+				const av1 = parseFloat(inputs[0].value) || 0;
+				const av2 = parseFloat(inputs[1].value) || 0;
+				const av3 = parseFloat(inputs[2].value) || 0;
+				const av4 = parseFloat(inputs[3].value) || 0;
+
+				const mac = ((av1 + av2 + av3 + av4) / 4).toFixed(1);
+				inputs[4].value = mac;
+
+				const npp = parseFloat(inputs[5].value) || 0;
+				const npt = parseFloat(inputs[6].value) || 0;
+
+				const mt = (parseFloat(mac) * 0.4 + npp * 0.2 + npt * 0.4).toFixed(1);
+				inputs[7].value = mt;
+
+				const exame = parseFloat(inputs[8].value) || 0;
+				const mf = ((parseFloat(mt) + exame) / 2).toFixed(1);
+				inputs[9].value = mf;
+
+				const data = {
+					aluno_id: alunoId,
+					disciplina_id: getParam("disciplina"),
+					trimestre: getParam("trimestre"),
+					av1,
+					av2,
+					av3,
+					av4,
+					mac,
+					npp,
+					npt,
+					mt,
+					exame,
+					mf,
+				};
+
+				const turmaId = getParam("turma");
+				/*  const url = `/pauta/salvar_mini_pauta/?turma=${turmaId}`;*/
+				console.log("turmaId ===========", turmaId);
+
+				mostrarLoading(row);
+
+				fetch(`{% url 'school:mini_pauta_salvar' %}?turma=${turmaId}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": getCookie("csrftoken"),
+					},
+					body: JSON.stringify(data),
+				})
+					.then((response) => {
+						removerLoading(row);
+						if (response.ok) {
+							mostrarFeedbackSucesso(row);
+							showMessage("Notas!", "success");
+						} else {
+							showMessage("Erro.", "error");
+							console.error("Erro HTTP:", response.status);
+						}
+					})
+					.catch((error) => {
+						removerLoading(row);
+						showMessage("Erro de rede ao salvar notas.", "error");
+						console.error("Erro de rede:", error);
+					});
+			}
+
+			function mostrarLoading(row) {
+				let loader = row.querySelector(".loader");
+				if (!loader) {
+					loader = document.createElement("div");
+					loader.className = "loader";
+					row.appendChild(loader);
+				}
+				loader.style.display = "inline-block";
+			}
+
+			function removerLoading(row) {
+				const loader = row.querySelector(".loader");
+				if (loader) {
+					loader.style.display = "none";
+				}
+			}
+
+			function mostrarFeedbackSucesso(row) {
+				row.classList.add("salvo");
+				setTimeout(() => row.classList.remove("salvo"), 1500);
+			}
+
+			function getParam(name) {
+				const url = new URL(window.location.href);
+				return url.searchParams.get(name);
+			}
+
+			function getCookie(name) {
+				let cookie = document.cookie
+					.split(";")
+					.find((c) => c.trim().startsWith(name + "="));
+				return cookie ? decodeURIComponent(cookie.split("=")[1]) : null;
+			}
+
+			function showMessage(texto, tipo) {
+				const msgBox = document.createElement("div");
+				msgBox.className = tipo === "success" ? "alert-success" : "alert-error";
+				msgBox.innerText = texto;
+
+				document.body.appendChild(msgBox);
+
+				setTimeout(() => {
+					msgBox.remove();
+				}, 3000);
+			}
+		</script>
+		{% block script%}
+		
+		
+		<script> 
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					// Seleciona todos os inputs com a classe 'nota'
+					const notas = document.querySelectorAll('.nota');
+				
+					notas.forEach(function(input) {
+						input.addEventListener('input', function () {
+							const valor = parseFloat(this.value);
+				
+							// Remove as classes antigas
+							this.classList.remove('text-danger', 'text-dark');
+				
+							// Adiciona a cor conforme o valor
+							if (!isNaN(valor)) {
+								if (valor < 10) {
+									this.classList.add('text-danger');
+								} else {
+									this.classList.add('text-dark');
+								}
+							}
+						});
+					});
+				});
+				</script>
+				
+		</script>
+		{% endblock %}
+
+		<!---->
+	</body>
+</html>

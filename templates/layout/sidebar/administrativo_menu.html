@@ -1,0 +1,62 @@
+<!-- Assiduidade -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:assiduidade_relatorio' %}">
+		<span><i class="bi bi-calendar-check me-2"></i> Assiduidade</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Registrar Ponto -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:registrar_ponto' %}">
+		<span><i class="bi bi-fingerprint me-2"></i> Registrar Ponto</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Alunos por Curso -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:alunos_por_curso_pdf' %}">
+		<span><i class="bi bi-people-fill me-2"></i> Alunos por curso</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Pagamentos -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:cadastrar_pagamento' %}">
+		<span><i class="bi bi-credit-card-2-front-fill me-2"></i> Pagamentos</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Pagamentos Pagos -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:filtro_pagamento_pdf_view' %}">
+		<span><i class="bi bi-receipt-cutoff me-2"></i> Pagamentos Pagos</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Pagamentos em Atraso -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:filtro_pagamento_atraso_pdf' %}">
+		<span><i class="bi bi-exclamation-triangle-fill me-2"></i> Pagamentos em atraso</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Avaliar Desempenho -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:listar_desempenhos' %}">
+		<span><i class="bi bi-clipboard-check me-2"></i> Avaliar Desempenho</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>

@@ -1,0 +1,77 @@
+{% extends "apps/ui/professor/perfil/_dashboard_professor.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+  <div class="header mt-2 mb-4">
+    <h4 class="fw-bold text-white ms-2">
+      <i class="bi bi-journal-text me-2"></i> Elaborar Aula
+    </h4>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="row mb-3">
+      <div class="col input-group">
+        <span class="input-group-text bg-primary text-white">
+          <i class="bi bi-lightbulb"></i>
+        </span>
+        <input type="text" name="tema" class="form-control" placeholder="Tema da Aula" required>
+      </div>
+
+      <div class="col input-group">
+        <span class="input-group-text bg-primary text-white">
+          <i class="bi bi-tags"></i>
+        </span>
+        <input type="text" name="subtema" class="form-control" placeholder="Subtema" required>
+      </div>
+    </div>
+
+    <div class="input-group mb-4">
+      <span class="input-group-text bg-primary text-white">
+        <i class="bi bi-bullseye"></i>
+      </span>
+      <textarea name="objetivos" class="form-control" placeholder="Objetivos da Aula" required></textarea>
+    </div>
+
+    <div class="input-group mb-4">
+      <span class="input-group-text bg-primary text-white">
+        <i class="bi bi-book"></i>
+      </span>
+      <textarea name="conteudo" class="form-control" placeholder="Conteúdo Programático" required></textarea>
+    </div>
+
+    <div class="input-group mb-4">
+      <span class="input-group-text bg-primary text-white">
+        <i class="bi bi-gear"></i>
+      </span>
+      <textarea name="metodologia" class="form-control" placeholder="Metodologia de Ensino" required></textarea>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col input-group">
+        <span class="input-group-text bg-primary text-white">
+          <i class="bi bi-tools"></i>
+        </span>
+        <textarea name="recursos" class="form-control" placeholder="Recursos Didáticos" required></textarea>
+      </div>
+
+      <div class="col input-group">
+        <span class="input-group-text bg-primary text-white">
+          <i class="bi bi-clipboard-check"></i>
+        </span>
+        <textarea name="avaliacao" class="form-control" placeholder="Critérios de Avaliação" required></textarea>
+      </div>
+    </div>
+
+    <div class="row mt-4 justify-content-center mb-4">
+      <div class="col-auto">
+        <button name="export_pdf" class="btn btn-danger">
+          <i class="bi bi-file-earmark-pdf me-1"></i> Gerar PDF
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

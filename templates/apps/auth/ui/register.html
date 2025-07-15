@@ -1,0 +1,68 @@
+{% load static %}
+
+<div class="form-container sign-up">
+  <form action="{% url "school:registrar" %}" method="POST">
+    {% csrf_token %}
+    <h2>Criar conta</h2>
+
+    <!--Begin::Social Mídea-->
+    <div class="social-icons">
+      <a href="#"><i class="bi bi-google"></i></a>
+      <a href="#"><i class="bi bi-facebook"></i></a>
+      <a href="#"><i class="bi bi-github"></i></a>
+      <a href="#"><i class="bi bi-linkedin"></i></a>
+    </div>
+    <!--End::Social Mídea-->
+    
+    <span>Ou use o seu email para o registro</span>
+
+    <div class="form-group">
+      
+      
+      <!--Begin::Username-->
+      <div class="input-group mb-1">
+        <span class="input-group-text">
+          <span class="bi bi-person"></span>
+        </span>
+        <input
+          class="form-control"
+          placeholder="Username"
+          type="text"
+          name="username"
+          required
+        />
+      </div>
+      <!--End::Username-->
+
+      <!--Begin::Email-->
+      <div class="input-group mb-1">
+        <span class="input-group-text">
+          <span class="bi bi-envelope"></span>
+        </span>
+        <input class="form-control" placeholder="Email" type="email" name="email" requerid/>
+      </div>
+       <!--End::Email-->
+      
+
+      <!--Begin::Password-->
+      <div class="input-group mb-1">
+        <span class="input-group-text">
+          <span class="bi bi-lock"></span>
+        </span>
+        <input
+          class="form-control"
+          placeholder="Senha"
+          type="password"
+          name="senha"
+          required
+        />
+      </div>
+      <!--End::Password-->
+    </div>
+
+   
+
+    <!---->
+    <button type="submit">Sig Up</button>
+  </form>
+</div>

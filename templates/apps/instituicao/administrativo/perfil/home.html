@@ -1,0 +1,165 @@
+{% extends "apps/instituicao/administrativo/perfil/_dashboard_administrativo.html" %}
+{% load static %}
+
+{% block title %}Home-Administrativo{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-primary shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>Total de Alunos</h6>
+              <h3>{{ total_alunos }}</h3>
+            </div>
+            <i class="bi bi-people-fill fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="card text-white bg-success shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>Pagamentos Pagos</h6>
+              <h3>{{ total_pagamentos_pagos }}</h3>
+            </div>
+            <i class="bi bi-check-circle-fill fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="card text-white bg-danger shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>Pagamentos Pendentes</h6>
+              <h3>{{ total_pagamentos_pendentes }}</h3>
+            </div>
+            <i class="bi bi-exclamation-circle-fill fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="card text-white bg-warning shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>Assiduidade</h6>
+              <p>Professores: {{ assid_professores }}</p>
+            </div>
+            <i class="bi bi-person-badge-fill fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-3 mt-3">
+      <div class="card text-white bg-dark shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>Assiduidade</h6>
+              <p>Coordenadores: {{ assid_coordenadores }}</p>
+            </div>
+            <i class="bi bi-person-check-fill fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Gráficos -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-light">
+          <strong>Desempenho Académico</strong>
+        </div>
+        <div class="card-body">
+          <canvas id="desempenhoChart" height="250"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-light">
+          <strong>Assiduidade Mensal</strong>
+        </div>
+        <div class="card-body">
+          <canvas id="assiduidadeChart" height="250"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="{% static 'js/chart/chart.js' %}"></script>
+<script>
+  const desempenhoChart = new Chart(document.getElementById('desempenhoChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Excelente', 'Bom', 'Regular', 'Fraco'],
+      datasets: [{
+        data: [
+          {{ desempenho.excelente }},
+          {{ desempenho.bom }},
+          {{ desempenho.regular }},
+          {{ desempenho.fraco }}
+        ],
+        backgroundColor: ['#198754', '#0d6efd', '#ffc107', '#dc3545']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  const assiduidadeChart = new Chart(document.getElementById('assiduidadeChart'), {
+    type: 'bar',
+    data: {
+      labels: {{ meses_labels|safe }},
+      datasets: [
+        {
+          label: 'Professores',
+          data: {{ professores_assid|safe }},
+          backgroundColor: '#0d6efd'
+        },
+        {
+          label: 'Coordenadores',
+          data: {{ coordenadores_assid|safe }},
+          backgroundColor: '#20c997'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+
+
+{% endblock %}

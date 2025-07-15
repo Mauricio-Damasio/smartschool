@@ -1,0 +1,49 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}Visualizar Direitor
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="container py-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="profile-card p-4">
+				<div class="text-center">
+					<div class="head-img text-white rounded-top py-4">
+						
+						<p class="p-3"></p>
+					</div>
+					{% if pedagogico.image %}
+					<img
+						src="{{ pedagogico.image.url }}"
+						alt="Foto do Professor"
+						class="profile-image"
+					/>
+					{% else %}
+					<img
+						src="{% static 'img/default-user.png' %}"
+						alt="Sem imagem"
+						class="profile-image"
+					/>
+					{% endif %}
+				</div>
+				<div class="card-bodys mt-4">
+					<h5 class="view-nome"><strong></strong> {{ pedagogico.nome }}</h5>
+					<h5 class="text-view">
+						<strong>Número de Agente: </strong> {{ pedagogico.numAgente }}
+					</h5>
+					<h5 class="text-view">
+						<strong>Gênero: </strong> {{ pedagogico.get_genero_display }}
+					</h5>
+			
+					<div class="mt-4 text-end">
+						<a href="{% url "school:atualizar_pedagogico" pedagogico.id %}" class="btn btn-success text-white"><i class="bi bi-pencil me-2 text-white"></i>Editar</a>
+						<a href="{% url "school:listar_pedagogicos" %}" class="btn btn-warning"> <i class="bi bi-arrow-left me-2 text-white"></i>Voltar</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

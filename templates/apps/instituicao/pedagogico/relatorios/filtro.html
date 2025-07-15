@@ -1,0 +1,67 @@
+{% load static %}
+
+
+<form method="get" class="row g-3 mb-4">
+  
+  <!---->
+  <!---->
+  		<!--Begin::Turma-->
+      <div class="col input-group mt-2 me-5">
+        <label
+          class="select-description text-white ps-2 pe-2 pt-2"
+          for="turma"
+          ><i class="bi bi-people text-white"></i> Turma</label
+        >
+        <select name="turma" class="form-select" id="turma" onchange="this.form.submit()" > 
+          <option value="" selected>Selecionar...</option>
+          {% for t in turmas  %}
+          <option value="{{t.id}}" {% if t.id|stringformat:"s" == request.GET.turma %} selected
+            
+          {% endif %}> {{ t.nome }} - {{ t.classe }} - {{ t.curso.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!--End::Turma-->
+  
+  <!---->
+  <!---->
+    		<!--Begin::disciplina-->
+        <div class="col input-group mt-2 me-5">
+          <label
+            class="select-description text-white ps-2 pe-2 pt-2"
+            for="disciplina"
+            ><i class="bi bi-people text-white"></i> Disciplina</label
+          >
+          <select name="disciplina" class="form-select" id="disciplina" onchange="this.form.submit()" > 
+            <option value="" selected>Selecionar...</option>
+            {% for disciplina in disciplinas %}
+        <option value="{{ disciplina.id }}" {% if disciplina.id|stringformat:"s" == disciplina_id %}selected{% endif %}>
+          {{ disciplina.nome }}</option>
+      {% endfor %}
+          </select>
+        </div>
+        <!--End::disciplina-->
+  <!---->
+  <!---->
+  <!---->
+  	<!--Begin::trimestre-->
+    <div class="col input-group mt-2 me-5">
+      <label
+        class="select-description text-white ps-2 pe-2 pt-2"
+        for="trimestre"
+        ><i class="bi bi-people text-white"></i> Trimestre</label
+      >
+      <select name="trimestre" class="form-select" id="trimestre" onchange="this.form.submit()" > 
+        <option value="" selected>Selecionar...</option>
+        <option value="1" {% if trimestre == "1" %}selected{% endif %}>1º Trimestre</option>
+        <option value="2" {% if trimestre == "2" %}selected{% endif %}>2º Trimestre</option>
+        <option value="3" {% if trimestre == "3" %}selected{% endif %}>3º Trimestre</option>
+      </select>
+    </div>
+    <!--End::trimestre-->
+  <!---->
+  <!---->
+ 
+  
+
+</form>

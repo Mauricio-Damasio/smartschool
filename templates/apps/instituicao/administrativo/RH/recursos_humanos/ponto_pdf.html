@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 40px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .info {
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 80px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .assinatura {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .data-footer {
+            text-align: right;
+            margin-top: 60px;
+            font-size: 13px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 30px 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        img{
+            width:65px;
+            hight:65px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img
+            src="{{logo_url}}"
+            alt="Insígnia da República de Angola"
+            class="insignia"
+        />
+        <p>
+            REPÚBLICA DE ANGOLA<br />
+            GOVERNO PROVINCIAL DO MOXICO<br />
+            GABINETE DA EDUCAÇÃO<br />
+            {{escola.nome|upper}} - {{escola.municipio.cidade|upper}}
+        </p>
+       
+    </div>
+    <h3>Registro de Ponto</h3>
+    <div class="section">
+        <p><span class="label">Usuário:</span> {{ nome_usuario }}</p>
+        <p><span class="label">Tipo:</span> {{ ponto.get_tipo_display }}</p>
+        <p><span class="label">Data:</span> {{ ponto.data }}</p>
+        <p><span class="label">Entrada:</span> {{ ponto.hora_entrada }}</p>
+        <p><span class="label">Saída:</span> {{ ponto.hora_saida }}</p>
+    
+        <p><span class="label">Observações:</span></p>
+        <div style="padding: 4px; white-space: pre-wrap; word-wrap: break-word; min-height: 100px;">
+            {{ ponto.observacao }}
+        </div>
+    </div>
+    
+    <hr>
+
+    <div class="data-footer">
+        {{escola.municipio.nome}}, {{ data_hoje }}
+    </div>
+
+    <div class="footer">
+        <div class="assinatura">
+           O Diretor Administrativo
+            ___________________________<br>
+            {{administrativo.nome}}
+         
+        </div>
+        <div class="assinatura">
+            O Diretor Geral
+            ___________________________<br>
+            {{escola.direitor.nome}}
+           
+        </div>
+    </div>
+</body>
+</html>

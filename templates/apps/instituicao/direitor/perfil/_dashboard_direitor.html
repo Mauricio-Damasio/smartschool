@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<title>smartSchool- {% block title %}{% endblock %}</title>
+
+		<!--::-HEAD-::-->
+		{% include "layout/header.html" %}
+	</head>
+	<body class="">
+		<div class="wrapper">
+			<!--::-SIDEBAR-::-->
+
+			<!--::-PAGE CONTENT-::-->
+
+			<div id="content">
+				<!--::-NAVBAR-::-->
+				{% include "layout/navbar/navbar.html" %}
+				<!--::-MAIN CONTENT-::-->
+
+				<div class="container-fluid p-4">
+					{% block content %}Direitor {% endblock %}
+				</div>
+			</div>
+		</div>
+
+		<!--::-SCRIPTS JS-::-->
+		{% include "layout/_scripts_js.html" %}
+	</body>
+</html>

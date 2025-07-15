@@ -1,0 +1,42 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+
+<!---->
+{% block title %} Eliminar Turma
+<!---->
+{% endblock %} {% block content %}
+
+<div class="container d-flex justify-content-center">
+	<div class="col-md-6 confirm-box text-center">
+		<div class="head-img text-white rounded-top py-2">
+			<p class="">Tem certeza que deseja eliminar esta Turma?</p>
+			<h5 class="mb-2 text-view text-white">
+				<strong>{{ turma.nome }}</strong>
+			</h5>
+		</div>
+
+		<p class="text-muted text-view mt-3">
+			<strong>Turno:</strong> {{ turma.get_turno_display }}
+		</p>
+		<p class="text-muted text-view mt-3">
+			<strong>Ano lectivo:</strong> {{ turma.ano_lectivo }}
+		</p>
+		<p class="text-muted"><strong>Classe:</strong> {{ turma.classe }}</p>
+		<p class="text-muted"><strong>Curso:</strong> {{ curso.nome }}</p>
+
+		<form method="post" class="mt-4">
+			{% csrf_token %}
+			<div class="d-grid gap-2 d-md-block">
+				<button type="submit" class="btn btn-danger ps-3 pe-3">
+					<i class=""></i>Sim
+				</button>
+				<a
+					href="{% url 'school:listar_turmas' %}"
+					class="btn btn-secondary px-4"
+					>Cancelar</a
+				>
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,173 @@
+{% load static %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg text-white">
+	{% if request.user.is_authenticated %}
+	<div id="faixa-navbar-up" class="container-fluid ms-2 me-2 mt-1 mb-1">
+		<button
+			id="sidebarCollapse"
+			class="menu-button btn btn-outline roudend me-4 ms-2 mt-2"
+		>
+			<i id="icon-nav" class="bi bi-list"></i>
+		</button>
+
+		<div class="navbar-itens ms-4">
+
+			{% if request.user.is_superuser %}
+		
+			<span class="home-nav mt-2"
+				><a href="{% url "school:dashboard_superAdmin" %}" class="home mt-2"
+					><i id="icon-nav" class="bi bi-house me-1"></i>Home</a
+				></span
+			>
+			{% elif request.user.diretor %}
+		
+			<span class="home-nav mt-2"
+				><a href="{% url "school:dashboard_admin" %}" class="home mt-2"
+					><i id="icon-nav" class="bi bi-house me-1"></i>Home</a
+				></span
+			>
+			{% elif request.user.pedagogico %}
+		
+			<span class="home-nav mt-2"
+				><a href="{% url "school:dashboard_pedagogico" %}" class="home mt-2"
+					><i id="icon-nav" class="bi bi-house me-1"></i>Home</a
+				></span
+			>
+			{% elif request.user.diretoradministrativo %}
+		
+			<span class="home-nav mt-2"
+				><a href="{% url "school:dashboard_administrativo" %}" class="home mt-2"
+					><i id="icon-nav" class="bi bi-house me-1"></i>Home</a
+				></span
+			>
+			{% elif request.user.coordenador %}
+		
+			<span class="home-nav mt-2"
+				><a href="{% url "school:dashboard_coordenador" %}" class="home mt-2"
+					><i id="icon-nav" class="bi bi-house me-1"></i>Home</a
+				></span
+			>
+			{% elif request.user.professor %}
+			<span class="home-nav mt-2"
+			><a href="{% url "school:dashboard_professor" %}" class="home mt-2"
+				><i id="icon-nav" class="bi bi-house me-1"></i>Home</a
+			></span
+		>
+		{% elif request.user.aluno %}
+		<span class="home-nav mt-2"
+		><a href="{% url "school:dashboard_aluno" %}" class="home mt-2"
+			><i id="icon-nav" class="bi bi-house me-1"></i>Home</a
+		></span
+	>
+			{% endif %}
+
+			<!--itens-->
+			<ul class="navbar-nav ms-auto">
+				<!--begin::Navbar Search-->
+				{% include "layout/navbar/assets/search.html" %}
+				<!--end::Navbar Search-->
+				<!--begin::Messages Dropdown Menu-->
+
+				<!--end::Messages Dropdown Menu-->
+				<!--begin::Notifications Dropdown Menu-->
+
+				<!--end::Notifications Dropdown Menu-->
+				<!--begin::User Menu Dropdown-->
+				{% include "layout/navbar/assets/user.html" %}
+				<!--end::User Menu Dropdown-->
+			</ul>
+			<!--end::End Navbar Links-->
+		</div>
+
+		<!--begin::Fullscreen Toggle-->
+		<!-- Fullscreen Toggle -->
+<div class="nav-item me-2 ms-4">
+  <a class="nav-link" href="#" id="fullscreenToggle" role="button">
+    <i id="icon-maximize" class="bi bi-arrows-fullscreen"></i>
+    <i id="icon-minimize" class="bi bi-fullscreen-exit d-none"></i>
+  </a>
+</div>
+		<!--end::Fullscreen Toggle-->
+	</div>
+	{% endif %}
+</nav>
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById("fullscreenToggle");
+    const iconMaximize = document.getElementById("icon-maximize");
+    const iconMinimize = document.getElementById("icon-minimize");
+
+    // Restaura fullscreen se estiver salvo no localStorage
+    if (localStorage.getItem("fullscreen") === "true") {
+      document.documentElement.requestFullscreen().then(() => {
+        iconMaximize.classList.add("d-none");
+        iconMinimize.classList.remove("d-none");
+      }).catch((err) => {
+        console.warn("Erro ao restaurar fullscreen:", err);
+      });
+    }
+
+    // Alternar fullscreen ao clicar
+    toggleBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then(() => {
+          iconMaximize.classList.add("d-none");
+          iconMinimize.classList.remove("d-none");
+          localStorage.setItem("fullscreen", "true");
+        });
+      } else {
+        document.exitFullscreen().then(() => {
+          iconMaximize.classList.remove("d-none");
+          iconMinimize.classList.add("d-none");
+          localStorage.setItem("fullscreen", "false");
+        });
+      }
+    });
+
+    // Detectar quando o usuário sai manualmente do fullscreen
+    document.addEventListener("fullscreenchange", () => {
+      if (!document.fullscreenElement) {
+        iconMaximize.classList.remove("d-none");
+        iconMinimize.classList.add("d-none");
+        localStorage.setItem("fullscreen", "false");
+      }
+    });
+
+    // Navegação AJAX
+    const links = document.querySelectorAll(".ajax-link");
+    links.forEach(link => {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        const url = this.getAttribute("href");
+
+        fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            document.getElementById("conteudo-principal").innerHTML = html;
+            window.history.pushState(null, "", url);  // Atualiza URL
+          })
+          .catch(err => {
+            document.getElementById("conteudo-principal").innerHTML =
+              "<div class='alert alert-danger'>Erro ao carregar página.</div>";
+          });
+      });
+    });
+
+    // Lida com voltar/avançar do navegador
+    window.addEventListener("popstate", () => {
+      fetch(location.href)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("conteudo-principal").innerHTML = html;
+        });
+    });
+  });
+</script>
+
+

@@ -1,0 +1,126 @@
+/************************************/
+
+/*Selects custom*/
+
+.form-select {
+	background-color: #fff;
+	border: 1px solid rgb(3, 47, 128);
+	border-radius: 8px;
+	box-shadow: 1px 2px 1px cyan;
+	margin: 8px 0;
+	padding: 5px 45px;
+	font-size: 13px;
+	outline: none;
+	color: rgb(14, 40, 90);
+}
+
+.form-control {
+	background-color: #fff;
+	border: 1px solid rgb(3, 47, 128);
+	border-radius: 8px;
+	box-shadow: 1px 2px 1px cyan;
+	margin: 8px 0;
+	padding: 5px 45px;
+	font-size: 13px;
+	outline: none;
+	color: rgb(14, 40, 90);
+}
+
+.select-description {
+	border: 1px solid #f80f8f;
+	background: linear-gradient(to right, rgb(14, 40, 90), rgb(25, 85, 196));
+	box-shadow: 1px 2px 1px cyan;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+option .option-select:hover {
+	background: linear-gradient(to right, rgb(14, 40, 90), rgb(25, 85, 196));
+}
+
+.filtragem {
+	border: 1px solid rgb(14, 40, 90);
+	border-top: 1px solid #f80f8f;
+	border-radius: 15px;
+	box-shadow: 1px 2px 1px 1px cyan;
+	margin-bottom: 25px;
+	margin-left: 2px;
+	margin-right: 2px;
+	border-bottom-left-radius: 45px;
+	border-bottom-right-radius: 45px;
+}
+
+/*Botão cadastrar*/
+.add-link {
+	background: linear-gradient(to right, rgb(36, 80, 161), rgb(6, 24, 58));
+	color: #fff;
+	font-size: 12px;
+	padding: 8px 45px;
+	border: 1px solid #fff;
+	border-radius: 8px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	min-width: 2vw;
+	cursor: pointer;
+	box-shadow: 1px 1px 1px 1px cyan;
+	list-style: none;
+	text-decoration: none;
+}
+
+.add-link:hover {
+	transform: scale(1.05);
+	box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+	color: #f80f8f;
+}
+
+.add-link .bi {
+	font-size: 14px;
+}
+
+.header {
+	background: linear-gradient(to right, rgb(36, 80, 161), rgb(6, 24, 58));
+	box-shadow: 1px 1px 1px 1px cyan;
+	border-top: 1px solid cyan;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 75px;
+	border-radius: 15px;
+	border-top-left-radius: 45px;
+	border-top-right-radius: 45px;
+}
+.header-2 {
+	color: rgb(88, 28, 145);
+}
+hr {
+	color: #f80f8f;
+	margin-left: 5px;
+	min-width: 43vw;
+	box-shadow: 1px 1px 1px 2px cyan;
+}
+
+/*Botão filtrar*/
+.btn-filtrar {
+	background: linear-gradient(to right, rgb(36, 80, 161), rgb(6, 24, 58));
+	color: #f80f8f;
+	font-size: 12px;
+	padding: 8px 45px;
+	border: 1px solid cyan;
+	border-radius: 8px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	min-width: 10vw;
+	cursor: pointer;
+	box-shadow: 1px 1px 1px 1px #f80f8f;
+}
+
+.btn-filtrar:hover {
+	background: linear-gradient(to top, rgb(6, 24, 58), rgb(36, 80, 161));
+	color: cyan;
+	border: 1px solid #f80f8f;
+	box-shadow: 1px 1px 1px 1px cyan;
+	transform: scale(1.05);
+}

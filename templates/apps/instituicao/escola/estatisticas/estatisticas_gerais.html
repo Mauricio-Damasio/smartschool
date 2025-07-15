@@ -1,0 +1,183 @@
+{% extends "apps/instituicao/escola/perfil/dashboard_admin.html" %}
+<!---->
+{% load static %}
+<!---->
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row filtragem mb-5">
+    <div class="header mt-2 mb-4">
+    <h5 class="mb-4"> <i class="bi bi-bar-chart me-2"></i>Estatísticas Gerais da Escola</h5>
+  </div>
+  </div>
+    <!-- Filtros -->
+    <form method="get" class="mb-4">
+
+      <div class="row">
+ 
+
+         <!---->
+    <div class="col input-group mt-2 me-5">
+			<label
+				class="select-description text-white ps-2 pe-2 pt-2"
+				for="curso"
+				><i class="bi bi-book text-white"></i> Curso</label
+			>
+			<select name="curso" class="form-select" id="curso" onchange="this.form.submit()" > 
+				<option value="" selected>Selecionar...</option>
+        {% for curso in cursos %}
+        <option value="{{ curso.id }}" {% if curso.id|stringformat:"s" == request.GET.curso %}selected{% endif %}>{{ curso.nome }}</option>
+      {% endfor %}
+			</select>
+		</div>
+    <!---->
+    
+        
+        <!--Begin::Classe-->
+				 <div class="col input-group mb-mb-mb-4">
+					<label class="select-description text-white ps-2 pe-2 pt-2" for="classe">
+							<i class="bi bi-journal-bookmark text-white"></i> Classe 
+					</label>
+					<select name="classe" class="form-select" id="classe" onchange="this.form.submit()">
+							<option value="" selected>Selecionar...</option>
+							{% for classe in classes %}
+							{% if classe.ensino_primario or classe.primeiro_ciclo or classe.segundo_ciclo %}
+							<option value="{{ classe.id }}" {% if classe.id|stringformat:"s" == request.GET.classe %} selected {% endif %}>
+									{{ classe }}
+							</option>
+					{% endif %}
+							{% endfor %}
+					</select>
+			</div>
+			
+					<!--End::Classe-->
+    
+       
+    
+           <!---->
+    <div class="col input-group mt-2 me-5">
+			<label
+				class="select-description text-white ps-2 pe-2 pt-2"
+				for="trimestre"
+				><i class="bi bi-people text-white"></i> Trimestre</label
+			>
+			<select name="trimestre" class="form-select" id="trimestre" onchange="this.form.submit()" > 
+				<option value="" selected>Selecionar...</option>
+        {% for key, value in trimestres.items %}
+        <option value="{{ key }}" {% if key == request.GET.trimestre %}selected{% endif %}>{{ value }}</option>
+      {% endfor %}
+			</select>
+		</div>
+	
+    <!---->
+    </form>
+    
+
+
+
+    <!-- Gráficos -->
+    <div class="row">
+        <!-- Gênero -->
+        <div class="col-md-6">
+            <canvas id="graficoGenero"></canvas>
+        </div>
+
+        <!-- Alunos por Curso -->
+        <div class="col-md-6">
+            <canvas id="graficoCurso"></canvas>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Professores por Disciplina -->
+        <div class="col-md-6">
+            <canvas id="graficoProfDisciplina"></canvas>
+        </div>
+
+        <!-- Aprovação por Trimestre -->
+        <div class="col-md-6">
+            <canvas id="graficoAprovacao"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Gênero
+    new Chart(document.getElementById('graficoGenero'), {
+        type: 'pie',
+        data: {
+            labels: {{ genero_labels|safe }},
+            datasets: [{
+                data: {{ genero_data|safe }},
+                backgroundColor: ['#4e73df', '#f6c23e', '#e74a3b']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    // Alunos por Curso
+    new Chart(document.getElementById('graficoCurso'), {
+        type: 'bar',
+        data: {
+            labels: {{ total_curso_labels|safe }},
+            datasets: [{
+                label: 'Total de Alunos',
+                data: {{ total_curso_data|safe }},
+                backgroundColor: '#36b9cc'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Professores por Disciplina
+    new Chart(document.getElementById('graficoProfDisciplina'), {
+        type: 'bar',
+        data: {
+            labels: {{ profs_disc_labels|safe }},
+            datasets: [{
+                label: 'Total de Professores',
+                data: {{ profs_disc_data|safe }},
+                backgroundColor: '#1cc88a'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Aprovação por Trimestre
+    new Chart(document.getElementById('graficoAprovacao'), {
+        type: 'line',
+        data: {
+            labels: {{ aprovacao_labels|safe }},
+            datasets: [{
+                label: 'Aprovação (%)',
+                data: {{ aprovacao_data|safe }},
+                fill: false,
+                borderColor: '#f6c23e',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true, max: 100 }
+            }
+        }
+    });
+</script>
+{% endblock %}

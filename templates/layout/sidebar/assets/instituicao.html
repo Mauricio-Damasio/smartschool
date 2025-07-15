@@ -1,0 +1,98 @@
+{% load static %}
+
+
+<a
+id="menu-opcao"
+class="nav-link d-flex justify-content-between align-items-center"
+data-bs-toggle="collapse"
+data-bs-target="#instituicaoSubmenu"
+role="button"
+aria-expanded="false"
+aria-controls="instituicaoSubmenu"
+>
+<span> <i class="bi bi-building me-2"></i> Instituição </span>
+<i 	class="bi bi-chevron-down transition rotate-icon"
+id="arrowIcon"
+data-arrow="instituicaoSubmenu"></i>
+</a>
+
+<div class="collapse" id="instituicaoSubmenu">
+<ul
+  class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3 submenu-list"
+>
+			<!--Admin Perfil-->
+      {% if request.user.is_superuser %}
+  <!---->
+  <li>
+    <a href="{% url "school:listar_escolas" %}" class="nav-link">
+      <i class="bi bi-building me-2"></i>Escola
+    </a>
+  </li>
+  <!---->
+  {% elif request.user.diretor %}
+  <li>
+    <a href="{% url "school:listar_cursos_escola" %}" class="nav-link">
+      <i class="bi bi-book me-2"></i> Cursos oferecidos
+    </a>
+  </li>
+  <!---->
+    <!---->
+    <li>
+      <a href="{% url "school:diretor_detalhe" %}" class="nav-link">
+        <i class="bi bi-mortarboard me-2"></i>Diretor Geral
+      </a>
+    </li>
+    <!---->
+
+    <!---->
+    <li>
+      <a href="{% url "school:pedagogico_detalhe" %}" class="nav-link">
+        <i class="bi bi-person-badge me-2"></i> Subdiretor Pedagógico
+      </a>
+    </li>
+    <!---->
+
+  <!---->
+  <li>
+    <a href="{% url "school:administrativo_detalhe" %}" class="nav-link">
+      <i class="bi bi-briefcase me-2"></i> Subdiretor Administrativo
+    </a>
+  </li>
+  <!---->
+    <!---->
+    <li>
+      <a href="{% url "school:listar_departamentos" %}" class="nav-link">
+        <i class="bi bi-tags me-2"></i> Departamento
+      </a>
+    </li>
+    <!---->
+  
+    {% elif  request.user.aluno %}
+      <!---->
+      <li>
+        <a href="#" class="nav-link">
+          <i class="bi bi-award me-2"></i> Certificados
+        </a>
+      </li>
+      <!---->
+        <!---->
+        <li>
+          <a href="#" class="nav-link">
+            <i class="bi bi-file-earmark-text me-2"></i> Declarações
+          </a>
+        </li>
+        <!---->
+  <li>
+    <a href="#" class="nav-link">
+      <i class="bi bi-clock-history me-2"></i> Turnos
+    </a>
+  </li>
+  <!---->
+  {% endif %}
+
+  <!---->
+  
+  <!---->
+</ul>
+</div>
+</li>

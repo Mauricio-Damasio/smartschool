@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: "Arial"; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #000; padding: 5px; text-align: center; }
+    h2 { text-align: center; }
+    .header{
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    img{
+      width:65px;
+      hight:65px;
+    }
+    .insignia {
+      width: 65px;
+      hight: 65px;
+    }
+    thead {
+      background: yellow;
+    }
+    .negativa{
+      color: red;
+    }
+    .positiva {
+      color: blue;
+      
+    }
+
+    .aprovado {
+      color: blue;
+    }
+    .reprovado {
+      color: red;
+    }
+    .dia {margin-top: 55px;}
+
+    .assinatura{
+      margin-top: 25px;
+    }
+    .nome{
+      margin-left: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+  <img
+  src="{{logo_url}}"
+  alt="Insígnia da República de Angola"
+  class="insignia"
+/>
+<p>
+  REPÚBLICA DE ANGOLA<br />
+  GOVERNO PROVINCIAL DO MOXICO<br />
+  GABINETE DA EDUCAÇÃO<br />
+  {{escola.nome|upper}} - {{escola.municipio.cidade|upper}}
+</p>
+<h3>Relatório de Desempenho do {{ trimestre }}º Trimestre</h3>
+
+  </div>
+ 
+  <p> <strong>Professor:</strong> {{ professor }}
+  </p>
+  <p><strong>Turma:</strong> {{ turma.nome }} </p><p> <strong>Disciplina:</strong> {{ disciplina.nome }} </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Nº</th>
+        <th>Nome do Aluno</th>
+        <th>MAC</th>
+        <th>NPP</th>
+        <th>NPT</th>
+        <th>MT</th>
+        <th>Resultado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in pauta %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ p.aluno.nome }}</td>
+        <td class=" {% if p.mac >= 10 %} positiva {% elif p.mac < 10 %} negativa {% endif %}">{{ p.mac }}</td>
+        <td class=" {% if p.npp >= 10 %} positiva {% elif p.npp < 10 %} negativa {% endif %}">{{ p.npp }}</td>
+        <td class=" {% if p.npt >= 10 %} positiva {% elif p.npt < 10 %} negativa {% endif %}">{{ p.npt }}</td>
+        <td class=" {% if p.mt >= 10 %} positiva {% elif p.mt < 10 %} negativa {% endif %}">{{ p.mt }}</td>
+        <td>
+          {% if p.mt >= 10 %}
+            <span class="aprovado">Aprovado</span>
+          {% else %}
+        <span class="reprovado">Reprovado</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="dia">
+    Aos, {{dia}}
+  </div>
+ 
+  <div class="signature">
+    <p>
+      O Subdirector Pedagógico<br /><br /><br />
+      __________________________<br />
+      
+      <p class="nome">{{pedagogico.nome}}</p>
+    </p>
+  </div>	
+</body>
+</html>

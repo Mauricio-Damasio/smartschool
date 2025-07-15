@@ -1,0 +1,6 @@
+/*! AOS v2.3.4 */
+[data-aos] {opacity:0;transition-property:transform,opacity;transition-duration:.4s;}
+[data-aos].aos-animate {opacity:1;}
+[data-aos^="fade"] {transition-property:opacity,transform;}
+[data-aos="fade-up"] {transform:translate3d(0,40px,0);}
+[data-aos="fade-up"].aos-animate {transform:translate3d(0,0,0);}

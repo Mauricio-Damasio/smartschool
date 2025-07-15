@@ -1,0 +1,115 @@
+{% extends "apps/ui/coordenador/perfil/_dashboard_coordenador.html" %}
+{% load static %}
+{% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+<h5>Rendimento dos Alunos por Disciplina e Professor</h5>
+</div>
+  
+
+<!---->
+<!---->
+<form method="get" class="mb-4">
+    <div class="row g-2">
+        <div class="col-md-6 input-group">
+            <label for="turma_id" class="select-description text-white ps-2 pe-2 pt-2">Turma</label>
+            <select name="turma_id" id="turma" class="form-select" onchange="this.form.submit()" required >
+                <option value="">--- Escolha uma turma ---</option>
+                {% for turma in turmas %}
+                    <option value="{{ turma.id }}" {% if turma == turma_selecionada %}selected{% endif %}>
+                        {{ turma.nome }} - {{ turma.classe }} - {{ turma.curso.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+</form>
+<!---->
+<!---->
+
+
+
+    {% if turma_selecionada %}
+
+
+    {% if turma_selecionada %}
+    <div class="col-auto mb-5">
+    <a href="{% url 'school:gerar_pdf_rendimento_professores' %}?turma_id={{ turma_selecionada.id }}" class="btn btn-danger mb-3">
+        <i class="bi bi-file-pdf"></i> Gerar PDF
+    </a>
+</div>
+{% endif %}
+
+
+
+        {% if rendimentos %}
+            {% for r in rendimentos %}
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        Professor: {{ r.professor.nome }} | Disciplina: {{ r.disciplina.nome }}
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm table-bordered m-0">
+                            <thead >
+                                <tr class="head">
+                                    <th class="head-item">Aluno</th>
+                                    <th class="head-item">AV1</th>
+                                    <th class="head-item">AV2</th>
+                                    <th class="head-item">AV3</th>
+                                    <th class="head-item">AV4</th>
+                                    <th class="head-item">MAC</th>
+                                    <th class="head-item">NPP</th>
+                                    <th class="head-item">MT</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                {% for nota in r.notas %}
+                                    <tr class="table-primary">
+                                        <td class="body-itens ms-2">
+                                            <!---->
+                                            <ul
+							class="list-unstyled m-0 avatar-group d-flex align-items-center ms-5"
+						>
+							<li class="avatar avatar-xs pull-up">
+								{% if nota.aluno.image %}
+								<img
+									src="{{ nota.aluno.image.url }}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% else %}
+								<img
+									src="{% static 'img/default-user.jpg' %}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% endif %}
+							</li>
+						</ul>
+                                            <!---->
+                                            {{ nota.aluno.nome }}</td>
+                                        <td class="body-itens">{{ nota.av1 }}</td>
+                                        <td class="body-itens">{{ nota.av2 }}</td>
+                                        <td class="body-itens">{{ nota.av3 }}</td>
+                                        <td class="body-itens">{{ nota.av4 }}</td>
+                                        <td class="body-itens">{{ nota.mac }}</td>
+                                        <td class="body-itens">{{ nota.npp }}</td>
+                                        <td class="body-itens">{{ nota.mt }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr><td colspan="8">Sem notas lançadas.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-danger">Nenhuma disciplina lecionada encontrada nesta turma.</p>
+        {% endif %}
+    {% else %}
+        <p>Selecione uma turma para visualizar os rendimentos.</p>
+    {% endif %}
+</div>
+{% endblock %}

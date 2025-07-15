@@ -1,0 +1,72 @@
+{% extends "apps/ui/professor/perfil/_dashboard_professor.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		
+
+
+  <h4 class="fw-bold text-white mb-4"><i class="bi bi-people me-1"></i>Frequência dos Alunos</h4>
+</div>
+ 
+
+
+  <!-- Filtro de turma -->
+  <form method="get" class="mb-4 row">
+    <div class="col-md-6">
+      <label class="text-primary mb-1">Selecione uma turma:</label>
+      <div class="input-group">
+        <select name="turma" class="form-select">
+          <option value="">-- Escolha uma Turma --</option>
+          {% for turma in turmas %}
+            <option value="{{ turma.id }}" {% if turma.id|stringformat:"s" == turma_selecionada %}selected{% endif %}>
+              {{ turma.nome }} - {{turma.classe}} - {{turma.curso.nome}}
+            </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary"> <i class="bi bi-filter me-1"></i>Filtrar</button>
+      </div>
+    </div>
+  </form>
+</div>
+  <!-- Lista de alunos da turma -->
+  {% if alunos %}
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="turma" value="{{ turma_selecionada }}">
+
+      <div class="row g-3">
+        {% for aluno in alunos %}
+          <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+              <div class="card-body d-flex align-items-center">
+                <div class="me-3">
+                  {% if aluno.image %}
+                    <img src="{{ aluno.image.url }}" alt="Avatar" class="rounded-circle" width="60" height="60">
+                  {% else %}
+                    <img src="{% static 'img/default-user.jpg' %}" alt="Avatar" class="rounded-circle" width="60" height="60">
+                  {% endif %}
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-1">{{ aluno.nome }}</h6>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="presente_{{ aluno.id }}" id="presente_{{ aluno.id }}">
+                    <label class="form-check-label" for="presente_{{ aluno.id }}">Presente</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <button type="submit" class="btn btn-success mt-4">
+        <i class="bi bi-check-circle me-1"></i> Registrar Frequência
+      </button>
+    </form>
+  {% elif turma_selecionada %}
+    <div class="alert alert-warning mt-3">Nenhum aluno encontrado para a turma selecionada.</div>
+  {% endif %}
+</div>
+{% endblock %}

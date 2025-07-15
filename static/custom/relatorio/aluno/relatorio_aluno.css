@@ -1,0 +1,33 @@
+body {
+	font-family: Arial;
+}
+@page {
+	size: A4 landscape;
+	margin: 1cm;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.header {
+	top: 0;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.title {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+}
+img {
+	width: 65px;
+	higth: 65pxpx;
+}
+th,
+td {
+	border: 1px solid black;
+	padding: 5px;
+}
+th {
+	background-color: #eee;
+}

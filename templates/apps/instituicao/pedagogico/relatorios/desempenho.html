@@ -1,0 +1,91 @@
+
+{% extends "apps/instituicao/pedagogico/perfil/_dashboard_pedagogico.html" %}
+{% load static %}
+{% block content %}
+
+
+<div class="row filtragem mb-5">
+  <div class="header mt-2 mb-4">
+    <h3 class="mb-4">Relatório de Desempenho</h3>
+  </div> 
+  <!--Filtro-->
+  {% include "apps/instituicao/pedagogico/relatorios/filtro.html" %}
+</div>
+<div class="container mt-4">
+  
+
+
+  {% if pauta %}
+  <!---->
+  <!---->
+  {% if pauta %}
+  <a href="{% url 'school:desempenho_pdf' %}?turma={{ turma_id }}&disciplina={{ disciplina_id }}&trimestre={{ trimestre }}"  class="btn btn-outline-danger mb-4">
+    <i class="bi bi-file-earmark-pdf-fill text-danger"></i> Imprimir PDF
+  </a>
+{% endif %}
+
+  <!---->
+  <!---->
+  <div class="table-responsive text-nowrap">
+    <table class="table table:hover table-striped align-middle shadow-sm rounded-3 overflaw-hidden">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="head-item">Aluno</th>
+          <th class="head-item">AV1</th><th class="head-item">AV2</th><th class="head-item">AV3</th><th class="head-item">AV4</th>
+          <th class="head-item">MAC</th><th class="head-item">NPP</th><th class="head-item">NPT</th><th class="head-item">MT</th>
+         <th class="head-item">Resultado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for registro in pauta %}
+        <tr class="table-primary">
+          <!---->
+          <!---->
+          	<!--Image-->
+					<td>
+						<ul
+							class="list-unstyled m-0 avatar-group d-flex align-items-center"
+						>
+							<li class="avatar avatar-xs pull-up">
+								{% if registro.aluno.image %}
+								<img
+									src="{{ registro.aluno.image.url }}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% else %}
+								<img
+									src="{% static 'img/default-user.jpg' %}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% endif %}
+							</li>
+						</ul>
+					</td>
+          <!---->
+          <!---->         
+          <td class="text-               start">{{ registro.aluno.nome }}</td>
+          <td class=" {% if registro.av1  >= 10 %} text-dark {% elif registro.av1 < 10 %} text-danger {% endif %}">
+            {{ registro.av1 }}</td><td cla ss=" {% if registro.av2 >= 10 %} text-dark {% elif registro.av2 < 10 %} text-danger 
+              {% endif %}">{{ registro.av2  }}</td><td class=" {% if registro.av3 >= 10 %} text-dark {% elif registro.av3 < 10 %} text-danger {% endif %}">{{ registro.av3 }}</td><td class=" {% if registro.av4 >= 10 %} text-dark 
+                {% elif registro.av4 < 10 %}  text-danger {% endif %}">{{ registro.av4 }}</td>
+          <td class=" {% if registro.mac >= 10 %} text-dark {% elif registro.mac < 10 %} text-danger {% endif %}">
+            {{ registro.mac }}</td><td class=" {% if registro.npp >= 10 %} text-dark {% elif registro.npp < 10 %} text-danger 
+              {% endif %}">{{ registro.npp }}</td><td class=" {% if registro.npt >= 10 %} text-dark {% elif registro.npt < 10 %} text-danger {% endif %}">{{ registro.npt }}</td><td class=" {% if registro.mt >= 10 %} text-dark 
+                {% elif registro.mt < 10 %} text-danger {% endif %}">{{ registro.mt }}</td>
+       
+          <td>
+            {% if registro.mt >= 10 %}<i class="bi bi-check-circle-fill text-success"></i>
+            Aprovado {% else %} <i class="bi bi-x-circle-fill text-danger"></i>
+            Reprovado {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

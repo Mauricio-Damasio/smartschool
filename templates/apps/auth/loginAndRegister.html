@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>SmartSchool-Autenticação</title>
+		<link
+			rel="stylesheet"
+			href="{% static 'icon/font/bootstrap-icons.min.css' %}"
+		/>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'auth/css/auth.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'custom/css/messages.css' %}" />
+	</head>
+	<body>
+		<div class="overlay">
+			<div class="panel"></div>
+			<div class="wrapper">
+				<!--Begin::Header-->
+				{% include "apps/auth/ui/header.html" %}
+				<!--End::Header-->
+
+				<!--Begin::Messages-->
+				{% include "layout/message.html" %}
+				<!--End::Messages-->
+
+				<!--Begin::Container Login and Register-->
+				<div class="container" id="container">
+					<!--Begin::Register-->
+					{% include "apps/auth/ui/register.html" %}
+					<!--End::Register-->
+
+					<!--Begin::Login-->
+					{% include "apps/auth/ui/login.html" %}
+					<!--End::Login-->
+
+					<!--Begin::Panel Cover-->
+					{% include "apps/auth/ui/panelCover.html" %}
+					<!--End::Panel Cover-->
+				</div>
+				<!--End::Container Login and Register-->
+			</div>
+
+			<!--Begin::Scripts-->
+			<script src="{% static 'js/auth/auth.min.js' %}"></script>
+			<script src="{% static 'js/auth/messages.js' %}"></script>
+			<!--End::Scripts-->
+		</div>
+	</body>
+</html>

@@ -1,0 +1,109 @@
+{% extends 'apps/instituicao/administrativo/perfil/_dashboard_administrativo.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+
+
+  
+      <div class="header mt-2 mb-4">
+       
+   
+        <h5 class="mb-4 text-white">
+            <i class="bi bi-calendar-check me-2 ms-2"></i> Registrar Assiduidade
+        </h5>
+      </div>
+      <!---->
+      <!---->
+        <!--Begin::Messages-->
+{% include "layout/message.html" %}
+<!--End::Messages-->
+    
+      
+      <!---->
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="row mb-3 mt-4">
+                <div class="col input-group">
+                    <label for="data" class="select-description text-white ps-2 pe-2 pt-2"><i class="bi bi-calendar"></i> Data <i class="text-danger">*</i></label>
+                    <input type="date" name="data" class="form-control" required>
+                </div>
+                <div class="col input-group">
+                    <label for="hora_entrada" class="select-description text-white ps-2 pe-2 pt-2"><i class="bi bi-clock"></i> Hora de Entrada <i class="text-danger">*</i></label>
+                    <input type="time" name="hora_entrada" class="form-control" required>
+                </div>
+                
+            </div>
+
+            <div class="row mb-3">
+              <div class="col input-group">
+                <label for="hora_saida" class="select-description text-white ps-2 pe-2 pt-2"><i class="bi bi-clock-history"></i> Hora de Saída <i class="text-danger">*</i></label>
+                <input type="time" name="hora_saida" class="form-control" required>
+            </div>
+
+                <div class="col input-group">
+                    <label for="cargo" class="select-description text-white ps-2 pe-2 pt-2"><i class="bi bi-person-badge"></i> Cargo <i class="text-danger">*</i></label>
+                    <select name="cargo" id="cargo" class="form-select" required onchange="mostrarSelect()">
+                        <option value="">-- Selecione --</option>
+                        <option value="Professor">Professor</option>
+                        <option value="Coordenador">Coordenador</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4" id="select-professor" style="display:none;">
+                    <label class="form-label"><i class="bi-mortarboard fs-4 text-primary"></i> Professor</label>
+                    <select name="pessoa_id" class="form-select">
+                        {% for p in professores %}
+                        <option value="{{ p.id }}">{{ p.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4" id="select-coordenador" style="display:none;">
+                    <label class="form-label"><i class="bi-person-badge fs-4 text-primary"></i>Coordenador</label>
+              
+                 <select name="pessoa_id" class="form-select">
+                        {% for c in coordenadores %}
+                        <option value="{{ c.id }}">{{ c.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 input-group">
+                <label class="select-description text-white ps-2 pe-2 pt-4"><i class="bi bi-journal-text"></i> Observações</label>
+                <textarea name="observacoes" rows="3" class="form-control"></textarea>
+            </div>
+
+            <div class="d-flex justify-content-end mb-3 me-2">
+              <!---->
+             
+
+              
+               
+            
+              <!---->
+              <!---->
+              <button class="btn btn-success" type="submit" id="btnSalvar">
+                <span id="iconSalvar"><i class="bi bi-save me-2"></i>Salvar</span>
+                <span id="loadingSalvar" class="d-none"
+                  ><i
+                    class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+                  ></i
+                  >Salvando...</span
+                >
+              </button>
+            </div>
+        </form>
+    </div>
+
+<script>
+function mostrarSelect() {
+    var cargo = document.getElementById("cargo").value;
+    document.getElementById("select-professor").style.display = (cargo === "Professor") ? "block" : "none";
+    document.getElementById("select-coordenador").style.display = (cargo === "Coordenador") ? "block" : "none";
+}
+</script>
+{% endblock %}

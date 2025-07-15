@@ -1,0 +1,38 @@
+<script>
+	const ctx = document.getElementById("dashboardChart");
+	new Chart(ctx, {
+	  type: "bar",
+	  data: {
+	    labels: ["Alunos", "Professores", "Turmas", "Disciplinas"],
+	    datasets: [
+	      {
+	        label: "Total",
+	        data: [
+	          {{ total_alunos }},
+	          {{ total_professores }},
+	          {{ total_turmas }},
+	          {{ total_disciplinas }}
+	        ],
+	        backgroundColor: [
+	          "rgba(13, 110, 253, 0.7)",
+	          "rgba(25, 135, 84, 0.7)",
+	          "rgba(255, 193, 7, 0.7)",
+	          "rgba(220, 53, 69, 0.7)",
+	        ],
+	        borderRadius: 10,
+	      },
+	    ],
+	  },
+	  options: {
+	    responsive: true,
+	    scales: {
+	      y: {
+	        beginAtZero: true,
+	        ticks: {
+	          stepSize: 1,
+	        },
+	      },
+	    },
+	  },
+	});
+</script>

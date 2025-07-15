@@ -1,0 +1,52 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+
+<!---->
+{% block title %} Eliminar Professor
+
+<!---->
+{% endblock %}{% block content %}
+
+<div class="container d-flex justify-content-center">
+	<div class="col-md-6 confirm-box text-center">
+		<div class="head-img text-white rounded-top py-4">
+			<p class="p-3">Tem certeza que deseja eliminar este professor?</p>
+		</div>
+
+		{% if professor.image %}
+		<img
+			src="{{ professor.image.url }}"
+			class="profile-image mb-3 m-4"
+			alt="Imagem do professor"
+		/>
+		{% else %}
+		<img
+			src="{% static 'img/default-user.png' %}"
+			class="profile-image shadow mb-3"
+			alt="Imagem padrão"
+		/>
+		{% endif %}
+
+		<h5 class="mb-1 text-view"><strong>{{ professor.nome }}</strong></h5>
+		<p class="text-muted text-view">Nº Agente: {{ professor.numAgente }}</p>
+		<p class="text-muted">Departamento: {{ departamento.nome }}</p>
+
+		<form method="post" class="mt-4">
+			{% csrf_token %}
+			<div class="d-grid gap-2 d-md-block">
+				<button type="submit" class="btn btn-danger ps-3 pe-3">
+					<i class=""></i>Sim
+				</button>
+
+
+				<a
+					href="{% url 'school:listar_professores' %}"
+					class="btn btn-secondary px-4"
+					>Cancelar</a
+				>
+			
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

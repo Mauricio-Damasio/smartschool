@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Horário da Turma {{ turma.nome }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 13px; }
+        h2, h3 { text-align: center; margin: 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h2>Horário da Turma {{ turma.nome }}</h2>
+    <h3>Curso: {{ curso.nome }}</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Dia</th>
+                <th>Início</th>
+                <th>Fim</th>
+                <th>Tipo</th>
+                <th>Disciplina</th>
+                <th>Professor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for horario in horarios %}
+                <tr>
+                    <td>{{ horario.get_dia_semana_display }}</td>
+                    <td>{{ horario.hora_inicio|time:"H:i" }}</td>
+                    <td>{{ horario.hora_fim|time:"H:i" }}</td>
+                    <td>{{ horario.tipo|title }}</td>
+                    <td>{{ horario.disciplina.nome }}</td>
+                    <td>{{ horario.professor.nome }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center;">Nenhum horário cadastrado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

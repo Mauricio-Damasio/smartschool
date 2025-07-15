@@ -1,0 +1,38 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}
+<!---->
+Curso{% endblock %}
+
+<!---->
+
+{% block content %}
+
+<!---->
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Curso</h4>
+
+		<a href="{% url "school:cadastrar_curso" %}" class="add-link mt-3">
+			<i class="bi bi-plus text-white"></i>Cadastrar
+		</a>
+	</div>
+
+	<div class="header-2 mt-3 mb-4">
+		<h5>Listagem de cursos</h5>
+		<hr />
+	</div>
+  <!--Begin::Filtragem-->
+{% include "apps/instituicao/curso/layout/filtrar.html" %}
+<!--End::Filtragem-->
+
+	<!--Begin::Messages-->
+	{% include "layout/message.html" %}
+	<!--End::Messages-->
+
+	<!--Begin::Listagem de disciplina-->
+	{% include "apps/instituicao/curso/layout/tabela.html" %}
+	<!--End::Listagem de  disciplina-->
+</div>
+{% endblock %}

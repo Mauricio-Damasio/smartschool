@@ -1,0 +1,343 @@
+{% load static %}
+<!--User::Itens -->
+
+<!--Verificando o tipo de perfil-->
+{% if request.user.is_authenticated %}
+
+<!--Admin Perfil-->
+{% if request.user.is_superuser %}
+<li class="nav-item dropdown user-menu">
+	<a href="#" class="nav-link" data-bs-toggle="dropdown">
+		<div class="avatar-wrapper">
+			<img
+				src="{% static 'assets/image/avatar3.png' %}"
+				class="user-image rounded-circle shadow"
+				alt="User Image"
+
+			/>
+			<i class="status-online"></i>
+		</div>
+	</a>
+	
+
+	<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+		<!--begin::User Image-->
+		<li class="user-header mt-2">
+			<img
+				src="{% static 'assets/image/avatar3.png' %}"
+				class="rounded-circle"
+				alt="User Image"
+			/>
+			<p class="user-name">
+				<strong>Admin</strong>
+			</p>
+		</li>
+		<!--end::User Image-->
+
+		<!--begin::Menu Footer-->
+		<li class="user-footer ms-2 me-2">
+			<a href="#" class="btn btn-default btn-flat"
+				><i id="logout" class="bi bi-person-circle"></i
+			></a>
+			<a
+				href="{% url 'school:login_view' %}"
+				class="btn btn-default btn-flat float-end"
+				><i id="logout" class="bi bi-box-arrow-right"></i
+			></a>
+		</li>
+	</ul>
+</li>
+<!--Escola Perfil-->
+{% elif request.user.diretor %}
+<li class="nav-item dropdown user-menu">
+	<a href="#" class="nav-link" data-bs-toggle="dropdown">
+		<img
+			src="{{request.user.diretor.image.url}}"
+			class="user-image rounded-circle shadow"
+			alt="User Image"
+		/>
+		<i class="status-online mb-2 me-2"></i>
+	</a>
+
+	<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+		<!--begin::User Image-->
+		<li class="user-header mt-2">
+			<img
+			  src="{{request.user.diretor.image.url}}"
+				class="rounded-circle"
+				alt="User Image"
+			/>
+			<p class="user-name">
+				<strong>{{request.user.diretor.nome}}</strong>
+			</p>
+		</li>
+		<!--end::User Image-->
+
+		<!--begin::Menu Footer-->
+		<li class="user-footer ms-2 me-2">
+			<a href="{% url "school:diretor_detalhe"%}" class="btn btn-default btn-flat"
+				><i id="logout" class="bi bi-person-circle"></i
+			></a>
+			<a
+				href="{% url 'school:login_view' %}"
+				class="btn btn-default btn-flat float-end"
+				><i id="logout" class="bi bi-box-arrow-right"></i
+			></a>
+		</li>
+	</ul>
+</li>
+
+<!---->
+<!--PEDAGÓGICO Perfil-->
+{% elif request.user.pedagogico %}
+<li class="nav-item dropdown user-menu">
+
+<!---->
+<!---->
+<a href="#" class="nav-link" data-bs-toggle="dropdown">
+	<div class="avatar-wrapper">
+		<img
+			src="{{ request.user.pedagogico.image.url }}"
+			class="user-image rounded-circle shadow"
+			alt="User Image"
+		/><i class="status-online"></i>
+	</div>
+</a>
+<!---->
+<!---->
+
+	<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+	
+		<!--begin::User Image-->
+		<li class="user-header mt-2">
+			<img
+				src="{{ request.user.pedagogico.image.url  }}"
+				class="rounded-circle"
+				alt="User Image"
+			/>
+			<p class="user-name">
+	
+				<strong>{{ request.user.pedagogico.nome }} </strong>
+			</p>
+		</li>
+		<!--end::User Image-->
+
+		<!--begin::Menu Footer-->
+		<li class="user-footer ms-2 me-2">
+			<a href="#" class="btn btn-default btn-flat"
+				><i id="logout" class="bi bi-person-circle"></i
+			></a>
+			<a
+				href="{% url 'school:autenticacao' %}"
+				class="btn btn-default btn-flat float-end"
+				><i id="logout" class="bi bi-box-arrow-right"></i
+			></a>
+		</li>
+	</ul>
+</li>
+
+<!---->
+<!---->
+<!---->
+<!--Administrativo Perfil-->
+{% elif request.user.diretoradministrativo %}
+<li class="nav-item dropdown user-menu">
+
+<!---->
+<!---->
+<a href="#" class="nav-link" data-bs-toggle="dropdown">
+	<div class="avatar-wrapper">
+		<img
+			src="{{ request.user.diretoradministrativo.image.url }}"
+			class="user-image rounded-circle shadow"
+			alt="User Image"
+		/><i class="status-online"></i>
+	</div>
+</a>
+<!---->
+<!---->
+
+	<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+	
+		<!--begin::User Image-->
+		<li class="user-header mt-2">
+			<img
+				src="{{ request.user.diretoradministrativo.image.url  }}"
+				class="rounded-circle"
+				alt="User Image"
+			/>
+			<p class="user-name">
+	
+				<strong>{{ request.user.diretoradministrativo.nome }} </strong>
+			</p>
+		</li>
+		<!--end::User Image-->
+
+		<!--begin::Menu Footer-->
+		<li class="user-footer ms-2 me-2">
+			<a href="#" class="btn btn-default btn-flat"
+				><i id="logout" class="bi bi-person-circle"></i
+			></a>
+			<a
+				href="{% url 'school:autenticacao' %}"
+				class="btn btn-default btn-flat float-end"
+				><i id="logout" class="bi bi-box-arrow-right"></i
+			></a>
+		</li>
+	</ul>
+</li>
+
+<!---->
+<!---->
+<!---->
+<!---->
+<!--Coordenador Perfil-->
+{% elif request.user.coordenador %}
+<li class="nav-item dropdown user-menu">
+
+<!---->
+<!---->
+<a href="#" class="nav-link" data-bs-toggle="dropdown">
+	<div class="avatar-wrapper">
+		<img
+			src="{{ request.user.coordenador.image.url }}"
+			class="user-image rounded-circle shadow"
+			alt="User Image"
+		/><i class="status-online"></i>
+	</div>
+</a>
+<!---->
+<!---->
+
+	<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+	
+		<!--begin::User Image-->
+		<li class="user-header mt-2">
+			<img
+				src="{{ request.user.coordenador.image.url  }}"
+				class="rounded-circle"
+				alt="User Image"
+			/>
+			<p class="user-name">
+	
+				<strong>{{ request.user.coordenador.nome }} </strong>
+			</p>
+		</li>
+		<!--end::User Image-->
+
+		<!--begin::Menu Footer-->
+		<li class="user-footer ms-2 me-2">
+			<a href="#" class="btn btn-default btn-flat"
+				><i id="logout" class="bi bi-person-circle"></i
+			></a>
+			<a
+				href="{% url 'school:autenticacao' %}"
+				class="btn btn-default btn-flat float-end"
+				><i id="logout" class="bi bi-box-arrow-right"></i
+			></a>
+		</li>
+	</ul>
+</li>
+
+<!---->
+<!---->
+<!---->
+<!---->
+<!--Professor Perfil-->
+{% elif request.user.professor %}
+<li class="nav-item dropdown user-menu">
+
+<!---->
+<!---->
+<a href="#" class="nav-link" data-bs-toggle="dropdown">
+	<div class="avatar-wrapper">
+		<img
+			src="{{ request.user.professor.image.url }}"
+			class="user-image rounded-circle shadow"
+			alt="User Image"
+		/><i class="status-online"></i>
+	</div>
+</a>
+<!---->
+<!---->
+
+	<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+	
+		<!--begin::User Image-->
+		<li class="user-header mt-2">
+			<img
+				src="{{ request.user.professor.image.url  }}"
+				class="rounded-circle"
+				alt="User Image"
+			/>
+			<p class="user-name">
+	
+				<strong>{{ request.user.professor.nome }} </strong>
+			</p>
+		</li>
+		<!--end::User Image-->
+
+		<!--begin::Menu Footer-->
+		<li class="user-footer ms-2 me-2">
+			<a href="{% url "school:perfil_professor" request.user.professor.id  %}" class="btn btn-default btn-flat"
+				><i id="logout" class="bi bi-person-circle"></i
+			></a>
+			<a
+				href="{% url 'school:autenticacao' %}"
+				class="btn btn-default btn-flat float-end"
+				><i id="logout" class="bi bi-box-arrow-right"></i
+			></a>
+		</li>
+	</ul>
+</li>
+
+<!---->
+<!---->
+<!---->
+<!---->
+
+<!--Aluno Perfil-->
+{% elif request.user.aluno %}
+<li class="nav-item dropdown user-menu">
+
+	<a href="#" class="nav-link" data-bs-toggle="dropdown">
+		<div class="avatar-wrapper">
+			<img
+			src="{{ request.user.aluno.image.url }}"
+				class="user-image rounded-circle shadow"
+				alt="User Image"
+			/><i class="status-online"></i>
+		</div>
+	</a>
+
+	<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+		<!--begin::User Image-->
+		<li class="user-header mt-2">
+			<img
+				src="{{ request.user.aluno.image.url }}"
+				class="rounded-circle"
+				alt="User Image"
+			/>
+			<p class="user-name">
+				<strong>{{ request.user.aluno.nome }} </strong>
+			</p>
+		</li>
+		<!--end::User Image-->
+
+		<!--begin::Menu Footer-->
+		<li class="user-footer ms-2 me-2">
+			<a href="{% url "school:perfil_aluno" request.user.aluno.id %}" class="btn btn-default btn-flat"
+				><i id="logout" class="bi bi-person-circle"></i
+			></a>
+			<a
+				href="{% url 'school:autenticacao' %}"
+				class="btn btn-default btn-flat float-end"
+				><i id="logout" class="bi bi-box-arrow-right"></i
+			></a>
+		</li>
+	</ul>
+</li>
+
+<!---->
+
+{% endif %}{% endif %}

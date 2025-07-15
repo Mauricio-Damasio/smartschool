@@ -1,0 +1,46 @@
+{% extends 'base/_dashboard_.html' %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Validação de Pedidos de Documentos</h4>
+  
+    </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <table class="table table-bordered text-center align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Aluno</th>
+          <th>Tipo</th>
+          <th>Data do Pedido</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pedido in pedidos %}
+        <tr>
+          <td>{{ pedido.aluno.nome }}</td>
+          <td>{{ pedido.get_tipo_display }}</td>
+          <td>{{ pedido.data_pedido|date:"d/m/Y H:i" }}</td>
+          <td>
+            <select name="pedido_{{ pedido.id }}" class="form-select">
+              <option value="ignorar">Ignorar</option>
+              <option value="aprovar">Aprovar</option>
+              <option value="rejeitar">Rejeitar</option>
+            </select>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">Nenhum pedido pendente.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="text-end">
+      <button type="submit" class="btn btn-success">Salvar Decisões</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% load static %}
+
+<li class="nav-item dropdown me-4">
+	<a class="nav-link" data-bs-toggle="dropdown" href="#">
+		<i class="bi bi-chat-text fs-5"></i>
+		<span
+			id="badge"
+			class="position-absolute start-100 translate-middle badge rounded-pill text-bg-danger px-2 py-1"
+			>8</span
+		>
+	</a>
+	<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+		<a href="#" class="dropdown-item">
+			<!--begin::Message-->
+			<div class="d-flex">
+				<div class="flex-shrink-0">
+					<img
+						id="image-message"
+						src="{% static 'assets/image/avatar4.png' %}"
+						alt="User Avatar"
+						class="img-size-50 rounded-circle me-3"
+					/>
+				</div>
+				<div class="flex-grow-1">
+					<h3 class="dropdown-item-title">
+						Brad Diesel
+						<span class="float-end fs-7 text-danger"
+							><i class="bi bi-star-fill"></i
+						></span>
+					</h3>
+					<p class="fs-7">Liga-me quando puderes...</p>
+					<p class="fs-7 text-secondary">
+						<i class="bi bi-clock-fill me-1"></i> 4 Horas atrás
+					</p>
+				</div>
+			</div>
+			<!--end::Message-->
+		</a>
+		<div class="dropdown-divider"></div>
+		<a href="#" class="dropdown-item">
+			<!--begin::Message-->
+			<div class="d-flex">
+				<div class="flex-shrink-0">
+					<img
+						id="image-message"
+						src="{% static 'assets/image/avatar.png' %}"
+						alt="User Avatar"
+						class="img-size-50 rounded-circle me-3"
+					/>
+				</div>
+				<div class="flex-grow-1">
+					<h3 class="dropdown-item-title">
+						John Pierce
+						<span class="float-end fs-7 text-secondary">
+							<i class="bi bi-star-fill"></i>
+						</span>
+					</h3>
+					<p class="fs-7">Eu tenho suas mensagens</p>
+					<p class="fs-7 text-secondary">
+						<i class="bi bi-clock-fill me-1"></i> 12 Horas Atrás
+					</p>
+				</div>
+			</div>
+			<!--end::Message-->
+		</a>
+		<div class="dropdown-divider"></div>
+		<a href="#" class="dropdown-item">
+			<!--begin::Message-->
+			<div class="d-flex">
+				<div class="flex-shrink-0">
+					<img
+						id="image-message"
+						src="{% static 'assets/image/avatar2.png' %}"
+						alt="User Avatar"
+						class="img-size-50 rounded-circle me-3"
+					/>
+				</div>
+				<div class="flex-grow-1">
+					<h3 class="dropdown-item-title">
+						Nora Silvester
+						<span class="float-end fs-7 text-warning">
+							<i class="bi bi-star-fill"></i>
+						</span>
+					</h3>
+					<p class="fs-7">O sumário vai aqui</p>
+					<p class="fs-7 text-secondary">
+						<i class="bi bi-clock-fill me-1"></i> 7 Horas Atrás
+					</p>
+				</div>
+			</div>
+			<!--end::Message-->
+		</a>
+		<div class="dropdown-divider"></div>
+		<a href="#" class="dropdown-item dropdown-footer">Ver todas mensagens</a>
+	</div>
+</li>

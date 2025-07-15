@@ -1,0 +1,36 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}
+<!---->
+Classe{% endblock %}
+
+<!---->
+
+{% block content %}
+
+<!---->
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h2 class="col mt-5">Classe</h2>
+		{% if request.user.is_superuser %}
+		<a href="{% url "school:cadastrar_classe" %}" class="add-link mt-3">
+			<i class="bi bi-plus text-white"></i>Cadastrar
+		</a>
+		{% endif %}
+	</div>
+
+	<div class="header-2 mt-3 mb-4">
+		<h4>Listagem de Classes</h4>
+		<hr />
+	</div>
+
+	<!--Begin::Messages-->
+	{% include "layout/message.html" %}
+	<!--End::Messages-->
+
+	<!--Begin::Listagem de classes-->
+	{% include "apps/ui/classe/layout/tabela.html" %}
+	<!--End::Listagem de  classes-->
+</div>
+{% endblock %}

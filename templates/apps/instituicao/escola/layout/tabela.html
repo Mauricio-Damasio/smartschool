@@ -1,0 +1,134 @@
+{% load static %} {% if escolas.exists %}
+
+<div class="card">
+	<h5 class="card-header text-white"></h5>
+	<div class="table-responsive text-nowrap">
+		<table class="table">
+			<thead>
+				<tr class="head">
+					<th class="head-item">Nº</th>
+					<th class="head-item"></th>
+					<th class="head-item">Nome</th>
+					<th class="head-item">Tipo</th>
+					<th class="head-item">Classes</th>
+					<th class="head-item">Direitor</th>
+					<th class="head-item">Ações</th>
+				</tr>
+			</thead>
+			<tbody class="table-border-bottom-0">
+				{% for escola in escolas %}
+				<tr class="table-primary">
+					<td class="body-counter">{{forloop.counter}}</td>
+
+					<!--Image-->
+					<td>
+						<ul
+							class="list-unstyled m-0 avatar-group d-flex align-items-center"
+						>
+							<li class="avatar avatar-xs pull-up">
+								{% if escola.logo %}
+								<img
+									src="{{ escola.logo.url }}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% else %}
+								<img
+									src="{% static 'img/default-user.jpg' %}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% endif %}
+							</li>
+						</ul>
+					</td>
+
+					<td>
+						<span class="body-itens">{{escola.nome}}</span>
+					</td>
+
+					<!---->
+
+					<td class="body-itens">{{escola.get_tipo_escola_display}}</td>
+			<!---->
+			<!--Exibindo classes-->
+			<td class="body-itens">
+
+				<!--Ensino Primário-->
+				{% with escola.classes.all|dictsort:"ensino_primario" as classes_primario %}
+					{% if classes_primario %}
+						{% for classe in classes_primario %}
+							{% if classe.ensino_primario != "" %}
+								<span class="badge bg-primary me-1">{{ classe }}</span>
+							{% endif %}
+						{% endfor %}
+			
+					{% endif %}
+				{% endwith %}
+				<!---->
+
+				<!--Ensino Primário-->
+				{% with escola.classes.all|dictsort:"primeiro_ciclo" as primeiro %}
+					{% if primeiro %}
+						{% for classe in primeiro %}
+							{% if classe.primeiro_ciclo != "" %}
+								<span class="badge bg-primary me-1">{{ classe }}</span>
+							{% endif %}
+						{% endfor %}
+					
+					{% endif %}
+				{% endwith %}
+				<!---->
+
+				<!--Ensino Primário-->
+				{% with escola.classes.all|dictsort:"segundo_ciclo" as segundo %}
+					{% if segundo %}
+						{% for classe in segundo %}
+							{% if classe.segundo_ciclo != "" %}
+								<span class="badge bg-primary me-1">{{ classe }}</span>
+							{% endif %}
+						{% endfor %}
+				
+					{% endif %}
+				{% endwith %}
+				<!---->
+			</td>
+			
+			
+		
+					<td class="body-itens">{{escola.direitor.nome}}</td>
+
+					<td>
+						<div class="dropdown">
+							<button
+								type="button"
+								class="btn p-0 bi bi-three-dots-vertical"
+								data-bs-toggle="dropdown"
+							>
+								<i class=""></i>
+							</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="{% url "school:visualizar_escola" escola.id %}"
+									><i class="bi bi-eye me-1"></i>Visualizar</a
+								>
+								<a class="dropdown-item" href="{% url "school:atualizar_escola" escola.id %}"
+									><i class="bi bi-pencil me-1"></i>Editar</a
+								>
+								<a class="dropdown-item" href="{% url "school:eliminar_escola" escola.id %}"
+									><i class="bi bi-trash me-1"></i>Eliminar</a
+								>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				{% endfor %}
+				<!---->
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{% else %}
+<div class="alert alert-danger">Não existe nenhuma escola cadastrada!</div>
+{% endif %}

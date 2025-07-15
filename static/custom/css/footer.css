@@ -1,0 +1,11 @@
+footer {
+	background: linear-gradient(to bottom, rgb(22, 68, 153), rgb(6, 24, 58));
+	border-top: 1px solid #f80f8f;
+	font-size: 0.6rem;
+}
+footer .bi {
+	color: cyan;
+}
+footer h5 {
+	font-size: 1rem;
+}

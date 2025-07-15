@@ -1,0 +1,177 @@
+/* NAVBAR */
+.navbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 56px;
+	width: 100%;
+	background: linear-gradient(to bottom, rgb(20, 65, 150), rgb(6, 24, 58));
+	border-bottom: 1px solid cyan;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+
+	border: 1px solid cyan;
+}
+
+/*********************************************/
+
+#icon-nav {
+	color: cyan;
+}
+
+/*Button List*/
+.menu-button {
+	border-color: cyan;
+
+	border-left: 1px solid #f80f8f;
+	border-bottom: 1px solid #f80f8f;
+}
+
+.menu-button:hover {
+	transform: scale(1.05);
+	box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+	color: #f80f8f;
+}
+
+/*Faica cima*/
+.navbar #faixa-navbar-up {
+	border-top: 1px solid #f80f8f;
+	border-right: 1px solid cyan;
+	border-left: 1px solid cyan;
+	border-radius: 15px;
+	display: flex;
+}
+
+/*Faixa baixo*/
+.navbar-itens {
+	display: flex;
+	border-bottom: 1px solid #f80f8f;
+	transition: all 0.3s ease;
+	width: 100%;
+	border-radius: 15px;
+}
+
+/**********************************/
+/*Home*/
+.home-nav a {
+	color: white;
+	list-style: none;
+	text-decoration: none;
+}
+
+.bi.logo-icon {
+	color: #f80f8f;
+}
+
+.smart-div {
+	color: #f80f8f;
+}
+
+.logo-icon {
+	font-size: xx-large;
+}
+
+.opcao {
+	margin-top: 55px;
+	list-style: none;
+}
+
+.menu-opcao {
+	color: white;
+	text-decoration: none;
+	list-style: none;
+}
+
+.bi {
+	color: cyan;
+}
+
+/************************************************************************/
+/*                             NAVBAR ITENS
+/************************************************************************/
+
+/************************************/
+/*         User option              */
+/************************************/
+.user-image {
+	height: 28px;
+	width: 28px;
+
+	border: 1px solid cyan;
+}
+
+/**/
+/*
+.dropdown-menu {
+	background-color: white;
+	border: 1px solid cyan;
+	min-width: 20vw;
+	box-shadow: 0 0 5px rgb(240, 7, 116);
+}
+*/
+.user-header img {
+	height: 75px;
+	width: 75px;
+	margin-left: 45px;
+	border: 1px solid cyan;
+	box-shadow: 0 0 10px rgb(156, 155, 156);
+	margin-bottom: 5px;
+}
+
+.user-name {
+	margin-left: 60px;
+	display: flex;
+	align-content: space-between;
+	font-size: 12px;
+}
+
+.user-description {
+	margin-left: 60px;
+	display: flex;
+	align-content: space-between;
+}
+
+.user-date {
+	margin-left: 50px;
+	display: flex;
+	align-content: space-between;
+}
+
+/****************Menu Body****************/
+
+.menu-link {
+	color: #041366;
+	list-style: none;
+	text-decoration: none;
+}
+
+.menu-link:hover {
+	color: #f80f8f;
+}
+
+#logout {
+	font-size: x-large;
+	color: #f80f8f;
+}
+
+#logout:hover {
+	color: cyan;
+}
+
+/**********************************/
+/**        Notification
+/**********************************/
+
+#badge {
+	font-size: 0.5rem;
+	top: 13px;
+}
+
+#image-message {
+	height: 45px;
+	width: 45px;
+
+	border: 1px solid cyan;
+	box-shadow: 0 0 10px rgb(156, 155, 156);
+}

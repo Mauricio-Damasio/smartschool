@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagamentos em Atraso</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 30px;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+      
+        .label {
+          font-weight: bold;
+      }
+
+      .footer {
+          margin-top: 80px;
+          display: flex;
+          justify-content: space-between;
+          font-size: 13px;
+      }
+
+      .assinatura {
+          text-align: center;
+          margin-top: 40px;
+      }
+
+      .data-footer {
+          text-align: right;
+          margin-top: 60px;
+          font-size: 13px;
+      }
+
+      .header {
+          text-align: center;
+          margin-bottom: 10px;
+      }
+      img{
+          width:65px;
+          hight:65px;
+      }
+    </style>
+</head>
+<body>
+  <div class="header">
+    <img
+        src="{{logo_url}}"
+        alt="Insígnia da República de Angola"
+        class="insignia"
+    />
+    <p>
+        REPÚBLICA DE ANGOLA<br />
+        GOVERNO PROVINCIAL DO MOXICO<br />
+        GABINETE DA EDUCAÇÃO<br />
+        {{escola.nome|upper}} - {{escola.municipio.cidade|upper}}
+    </p>
+   
+</div>
+    <h4>Relatório de Pagamentos</h4>
+    <p><strong>Data:</strong> {{ data_hoje|date:"d/m/Y" }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Aluno</th>
+                <th>Mês Referente</th>
+                <th>Valor (KZ)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pagamento in pagamentos %}
+            <tr>
+                <td>{{ pagamento.aluno.nome }}</td>
+                <td>{{ pagamento.mes_referente }}</td>
+                <td>{{ pagamento.valor|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Nenhum pagamento encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="data-footer">
+      {{escola.municipio.nome}}, {{ data_hoje }}
+  </div>
+
+  <div class="footer">
+      <div class="assinatura">
+         O Diretor Administrativo
+          ___________________________<br>
+          {{administrativo.nome}}
+       
+      </div>
+      <div class="assinatura">
+          O Diretor Geral
+          ___________________________<br>
+          {{escola.direitor.nome}}
+         
+      </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!---->
+<!---->
+<li class="nav-item mt-2">
+	<a
+		id="menu-opcao"
+		class="nav-link d-flex justify-content-between align-items-center"
+	
+    href="{% url "school:listar_escolas" %}"
+	>
+		<span> <i class="bi bi-building me-2"></i> Escola </span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+<!---->
+<!---->
+<!---->
+<!---->
+<li class="nav-item mt-2">
+	<a
+		id="menu-opcao"
+		class="nav-link d-flex justify-content-between align-items-center"
+    href="{% url "school:listar_cursos" %}"
+	>
+		<span>  <i class="bi bi-book me-2"></i> Cursos </span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+<!---->
+<!---->
+<!---->
+<!---->
+<li class="nav-item mt-2">
+	<a
+		id="menu-opcao"
+		class="nav-link d-flex justify-content-between align-items-center"
+    href="{% url "school:listar_classes" %}"
+	>
+		<span> <i class="bi bi-easel me-2"></i> Classes </span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+<!---->
+<!---->
+<!---->
+<li class="nav-item mt-2">
+	<a
+		id="menu-opcao"
+		class="nav-link d-flex justify-content-between align-items-center"
+	  href="{% url "school:listar_direitores" %}"
+	>
+		<span> <i class="bi bi-person"></i> Diretor Geral </span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+<!---->
+<!---->
+<!---->
+<!---->
+<li class="nav-item mt-2">
+	<a
+		id="menu-opcao"
+		class="nav-link d-flex justify-content-between align-items-center"
+    href="{% url "school:listar_pedagogicos" %}"
+	>
+		<span> <i class="bi bi-person-badge me-2"></i> Subdiretor Pedagógico </span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+<!---->
+<!---->
+<!---->
+<!---->
+<li class="nav-item mt-2">
+	<a
+		id="menu-opcao"
+		class="nav-link d-flex justify-content-between align-items-center"
+    href="{% url "school:listar_administrativos" %}"
+	>
+		<span> <i class="bi bi-briefcase me-2"></i> Subdiretor Administrativo </span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+<!---->
+<!---->
+<!---->
+<!---->
+<li class="nav-item mt-2">
+	<a
+		id="menu-opcao"
+		class="nav-link d-flex justify-content-between align-items-center"
+		data-bs-toggle="collapse"
+		data-bs-target="#localizacaoSubmenu"
+		role="button"
+		aria-expanded="false"
+		aria-controls="localizacaoSubmenu"
+	>
+		<span><i class="bi bi-geo-alt"></i> Localização </span>
+		<i
+			class="bi bi-chevron-down transition rotate-icon"
+			id="arrowIcon"
+			data-arrow="localizacaoSubmenu"
+		></i>
+	</a>
+
+	<div class="collapse" id="localizacaoSubmenu">
+		<ul
+			class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3 submenu-list"
+		>
+			<!---->
+			<li>
+				<a href="#" class="nav-link">
+					<i class="bi bi-geo-alt"></i> Província
+				</a>
+			</li>
+
+			<!---->
+			<li>
+				<a href="#" class="nav-link">
+					<i class="bi bi-geo-alt-fill"></i> Município
+				</a>
+			</li>
+			<!---->
+			<li>
+				<a href="#" class="nav-link">
+					<i class="bi bi-geo-fill"></i> Bairro
+				</a>
+			</li>
+			<!---->
+		</ul>
+	</div>
+</li>

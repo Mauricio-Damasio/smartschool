@@ -1,0 +1,93 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}Visualizar Professor
+
+<!---->
+{% endblock %} {% block content %}
+
+	<!--Begin::Messages-->
+  {% include "layout/message.html" %}
+  <!--End::Messages-->
+<!---->
+<!---->
+<div class="container py-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="profile-card p-4">
+				<div class="text-center">
+					<div class="head-img text-white rounded-top py-4">
+						
+						
+						
+						<p class="p-3"></p>
+					</div>
+					{% if professor.image %}
+					<img
+						src="{{ professor.image.url }}"
+						alt="Foto do Professor"
+						class="profile-image"
+					/>
+					{% else %}
+					<img
+						src="{% static 'img/default-user.png' %}"
+						alt="Sem imagem"
+						class="profile-image"
+					/>
+					{% endif %}
+				</div>
+			
+<!---->
+<!---->
+
+
+<div class="card-bodys mt-4">
+  <h5 class="view-nome"><strong></strong> {{ professor.nome }}</h5>
+
+  {% if atribuicoes %}
+  <div class="row g-4 ">
+      {% for atribuicao in atribuicoes %}
+          <div class="col-md-6 col-lg-4">
+              <div class="profile-card border-0 h-100 animate__animated animate__fadeInUp" style="transition: transform 0.2s ease;">
+                  <div class="card-body p-2">
+                      <h6 class="view-nome text-primary mt-4">{{ atribuicao.disciplina.nome }}</h5>
+                      <h6 class="text-view mb-1 ">
+                          <strong>Turma:</strong> {{ atribuicao.turma.nome }}
+                      </h6>
+                      <h6 class="text-view mb-1">
+                          <strong>Classe:</strong> {{ atribuicao.turma.classe }}
+                      </h6>
+                      <h6 class="text-view mb-3">
+                          <strong>Curso:</strong> {{ atribuicao.turma.curso.nome|lower }}
+                      </h6>
+
+                      <div class="row mt-2"> 
+                        <div class="col mt-3"> <a href="{% url 'school:atualizar_atribuicao' atribuicao.id %}" class="btn btn-sm btn-outline-primary w-100">
+                          <i class="bi bi-pencil-square me-1"></i> Editar
+                      </a></div>
+                        <div class="col mt-3">   <a href="{% url "school:eliminar_atribuicao" atribuicao.id %}" class="btn btn-sm btn-outline-danger w-100">
+                          <i class="bi bi-trash me-1"></i>Eliminar
+                      </a></div>
+                     
+                   
+                    </div>
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">Este professor não possui atribuições.</p>
+{% endif %}
+
+    <a href="{% url 'school:listar_atribuicao' %}" class="btn btn-secondary mt-3">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+	{% endblock %}

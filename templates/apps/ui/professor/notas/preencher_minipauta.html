@@ -1,0 +1,19 @@
+{% extends "apps/ui/professor/perfil/_dashboard_professor.html" %}
+
+<!---->
+{% load static %}
+<!---->
+{% load custom_filters %} {% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Preencher Mini Pauta</h4>
+	</div>
+
+<!---->
+{% include "apps/ui/professor/notas/filtrar.html" %}
+<!---->
+</div>
+{% include "apps/ui/professor/notas/nota.html" %}
+<!---->
+
+{% endblock %}

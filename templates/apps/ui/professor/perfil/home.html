@@ -1,0 +1,175 @@
+{% extends "apps/ui/professor/perfil/_dashboard_professor.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+ 
+
+
+
+
+  <div class="row g-4">
+
+
+
+
+
+
+
+    <!---->
+    <!---->
+    <div class="col-md-3 mt-3">
+      <div class="card text-white bg-primary shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>Total de Alunos</h6>
+              <p>{{ total_alunos }}</p>
+            </div>
+            <i class="bi bi-people fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---->
+    <!---->
+
+    <!---->
+    <!---->
+    <div class="col-md-3 mt-3">
+      <div class="card text-white bg-success shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>Disciplinas Lecionadas</h6>
+              <p>{{ total_disciplinas }}</p>
+            </div>
+            <i class="bi bi-journal-text fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <div class="col-md-3 mt-3">
+      <div class="card text-white bg-danger shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>Aulas no Mês</h6>
+              <p>{{ total_aulas_mes }}</p>
+            </div>
+          
+            <i class="bi bi-calendar-check fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---->
+    <!---->
+ 
+    <!---->
+    <!---->
+    <div class="col-md-3 mt-3">
+      <div class="card text-white bg-dark shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>% Presença Geral</h6>
+              <p>{{ frequencia_geral }}%</p>
+            </div>
+          
+            <i class="bi bi-clipboard-check fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---->
+    <!---->
+
+
+  <div class="row mt-5">
+    <!-- Gráfico de presença por turma -->
+    <div class="col-md-6">
+      <div class="card shadow rounded-4 border-0">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Presença por Turma</h5>
+          <canvas id="graficoPresenca"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico de desempenho por disciplina -->
+    <div class="col-md-6">
+      <div class="card shadow rounded-4 border-0">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Médias por Disciplina</h5>
+          <canvas id="graficoMedia"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="{% static 'js/chart/chart.js' %}"></script>
+
+<!---->
+<!---->
+<script>
+  const ctx1 = document.getElementById('graficoPresenca');
+  const graficoPresenca = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: {{ nomes_turmas|safe }},
+      datasets: [{
+        label: '% Presença',
+        data: {{ presencas_turmas|safe }},
+        backgroundColor: 'rgba(734, 10, 253, 327.7)',
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          title: { display: true, text: '% Presença' }
+        }
+      }
+    }
+  });
+
+  const ctx2 = document.getElementById('graficoMedia');
+  const graficoMedia = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: {{ nomes_disciplinas|safe }},
+      datasets: [{
+        label: 'Média Final',
+        data: {{ medias_disciplinas|safe }},
+        borderColor: 'rgba(213, 9110, 253, 7.9)',
+        backgroundColor: 'rgba(13, 110, 253, 0.3)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 5,
+        pointBackgroundColor: '#0d6efd'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 20,
+          title: { display: true, text: 'Média Final' }
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}

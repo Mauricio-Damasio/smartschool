@@ -1,0 +1,48 @@
+{% extends "apps/ui/aluno/perfil/_dashboard_aluno.html" %} {% load static %}
+{% block content %}
+<div class="row filtragem mb-5">
+    <div class="header mt-2 mb-4">
+        <h4 class="col mt-5">Horário da Turma</h4>
+    </div>
+   
+    <p class="body-itens"><strong>Aluno:</strong> {{ aluno.nome }}</p>
+    <p class="body-itens"><strong>Turma:</strong> {{ turma.nome }} | <strong>Curso:</strong> {{ curso.nome }} | <strong>Escola:</strong> {{ escola.nome }}</p>
+
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr class="head">
+                <th class="head-item">Dia</th>
+                <th class="head-item">Início</th>
+                <th class="head-item">Fim</th>
+                <th class="head-item">Disciplina</th>
+                <th class="head-item">Professor</th>
+                <th class="head-item">Tipo</th>
+            </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+            {% for h in horarios %}
+            <tr class="table-primary">
+                <td class="body-itens">{{ h.get_dia_semana_display }}</td>
+                <td class="body-itens">{{ h.hora_inicio }}</td>
+                <td class="body-itens">{{ h.hora_fim }}</td>
+                <td class="body-itens">{{ h.disciplina.nome }}</td>
+                <td class="body-itens">{{ h.professor.nome }}</td>
+                <td class="body-itens">{{ h.get_tipo_display }}</td>
+            </tr>
+            {% empty %}
+            <tr class="table-primary">
+                <td colspan="6" class="text-center">Nenhum horário disponível.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+   
+
+    <div class="col-auto">
+        <a  href="{% url 'school:horario_pdf_aluno' %}" class="btn btn-danger btn-custom">
+            <i class="bi bi-file-earmark-pdf me-1"></i> Exportar PDF
+        </a>
+    </div>
+</div>
+{% endblock %}

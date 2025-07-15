@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Assiduidade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h2, h4 {
+            text-align: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #222;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #eee;
+        }
+        img{
+            width:65px;
+            hight:65px;
+        }
+        .info {
+            margin-top: 20px;
+        }
+
+        .info p {
+            margin: 5px 0;
+        }
+        .signature {
+            margin-top: 40px;
+            font-size: 10px;
+            text-align: right;
+        }
+    
+        .data{
+            margin-top: 35px;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img
+            src="{{logo_url}}"
+            alt="Insígnia da República de Angola"
+            class="insignia"
+        />
+        <p>
+            REPÚBLICA DE ANGOLA<br />
+            GOVERNO PROVINCIAL DO MOXICO<br />
+            GABINETE DA EDUCAÇÃO<br />
+            {{escola.nome|upper}} - {{escola.municipio.cidade|upper}}
+        </p>
+       
+    </div>
+    <h4>Relatório de Assiduidade</h4>
+    <h5>{{ tipo|title }}: {{ pessoa.nome }}</h5>
+
+    <div class="info">
+        <p><strong>Período:</strong> {{ data_inicio }} a {{ data_fim }}</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Entrada</th>
+                <th>Saída</th>
+                <th>Cargo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in registros %}
+            <tr>
+                <td>{{ r.data }}</td>
+                <td>{{ r.hora_entrada }}</td>
+                <td>{{ r.hora_saida }}</td>
+                <td>{{ r.cargo }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="data">Aos, {{dia}}</div>
+ 
+
+    <div class="signature">
+        <p>
+            O Subdiretor Administrativo<br /><br /><br />
+            __________________________<br />
+            
+            <p class="nome"><strong>{{escola.direitor_administrativo.nome}}</strong></p>
+        </p>
+    </div>
+</body>
+</html>

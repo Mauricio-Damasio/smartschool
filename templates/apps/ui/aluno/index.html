@@ -1,0 +1,25 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+<!---->
+{% block title%}
+<!---->
+Alunos{% endblock %}
+
+<!---->
+
+{% block content %}
+
+<!---->
+
+<!--Begin::Filtragem-->
+{% include "apps/ui/aluno/layout/filtrar.html" %}
+<!--End::Filtragem-->
+
+<!--Begin::Messages-->
+{% include "layout/message.html" %}
+<!--End::Messages-->
+
+<!--Begin::Listagem de alunos-->
+{% include "apps/ui/aluno/layout/tabela.html" %}
+<!--End::Listagem de alunos-->
+
+{% endblock %}

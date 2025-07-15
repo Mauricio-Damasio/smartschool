@@ -1,0 +1,150 @@
+{% extends "apps/ui/professor/perfil/_dashboard_professor.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h4 class="col mt-5">Relatório de Frequência</h4>
+	</div>
+ 
+
+  <!-- Filtro -->
+  <form method="get" class="row g-3 mb-4">
+    <div class="row"> 
+    <div class="input-group col">
+      <label class="select-description text-white ps-2 pe-2 pt-2">Turma:</label>
+      <select name="turma" class="form-select">
+        <option value="">-- Selecione --</option>
+        {% for turma in turmas %}
+          <option value="{{ turma.id }}" {% if turma.id|stringformat:"s" == turma_id %}selected{% endif %}>{{ turma.nome }}-{{turma.classe}}-{{turma.curso.nome}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class=" input-group col">
+      <label class="select-description text-white ps-2 pe-2 pt-2">Data Início:</label>
+      <input type="date" name="inicio" class="form-control" value="{{ data_inicio }}">
+    </div>
+    <div class=" input-group col">
+      <label class="select-description text-white ps-2 pe-2 pt-2">Data Fim:</label>
+      <input type="date" name="fim" class="form-control" value="{{ data_fim }}">
+    </div>
+  </div>
+
+  <!---->
+  <!---->
+  <!---->
+
+  <div class="row mt-4 justify-content-center mb-4">
+    <div class="col-auto">
+      <button class="btn btn-primary w-100" type="submit">
+        <i class="bi bi-search me-1"></i> Gerar
+      </button>
+    </div>
+    </div>
+  </form>
+</div>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+
+  {% if relatorio %}
+
+<!---->
+<div class="row mt-4 justify-content-center mb-4">
+  <div class="col-auto">
+  <a href="?turma={{ turma.id }}&inicio={{ data_inicio }}&fim={{ data_fim }}&pdf=1" class="btn btn-success text-white">
+    <i class="bi bi-file-earmark-pdf"></i> PDF
+  </a>
+</div>
+</div>
+<!---->
+
+  <div class="mb-4">
+    <h6 class="fw-bold text-bg-primary">Turma: {{ turma.nome }} - Classe: {{ turma.classe }} - Curso: {{ turma.curso.nome }}</h6>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for item in relatorio %}
+        <div class="col">
+          <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+              <h5 class="card-title d-flex justify-content-between align-items-center">
+                <!---->
+                <!---->
+                <!---->
+                {% if item.aluno.image %}
+                <img src="{{ item.aluno.image.url }}" alt="Avatar" class="rounded-circle" width="60" height="60">
+              {% else %}
+                <img src="{% static 'img/default-user.jpg' %}" alt="Avatar" class="rounded-circle" width="60" height="60">
+              {% endif %}
+                <!---->
+                <!---->
+                <span class="text-primary">{{ item.aluno.nome }}</span>
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+                <span class="badge bg-danger">{{ forloop.counter }}</span>
+              </h5>
+             
+              <!---->
+              <!---->
+              <ul class="list-group list-group-flush my-3">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span class="text-primary-emphasis">
+                    <i class="bi bi-journal-text me-2"></i> Total de Aulas
+                  </span>
+                  <span class="fw-bold">{{ item.total }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span class="text-primary-emphasis">
+                    <i class="bi bi-check2-circle me-2"></i> Presenças
+                  </span>
+                  <span class="text-success fw-bold">{{ item.presentes }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span class="text-primary-emphasis">
+                    <i class="bi bi-x-circle me-2"></i> Faltas
+                  </span>
+                  <span class="text-danger fw-bold">
+                    {{ item.total|add:"-1"|add:"-"|add:item.presentes }}
+                  </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span class="text-primary-emphasis">
+                    <i class="bi bi-graph-up-arrow me-2"></i> % de Presença
+                  </span>
+                  <span class="fw-bold 
+                    {% if item.porcentagem >= 75 %}
+                      text-success
+                    {% elif item.porcentagem >= 50 %}
+                      text-warning
+                    {% else %}
+                      text-danger
+                    {% endif %}
+                  ">
+                    {{ item.porcentagem }}%
+                  </span>
+                </li>
+              </ul>
+              
+              <!---->
+              <!---->
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+   
+  </div>
+{% elif turma_id %}
+  <div class="alert alert-warning">Nenhum dado encontrado no intervalo informado.</div>
+{% endif %}
+
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+</div>
+{% endblock %}

@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<title>smartSchool- {% block title %}{% endblock %}</title>
+		<!--Begin::-->
+		<script src="{% static 'js/chart/border-radius-stacked-number-mixed-chart.js' %}"></script>
+		<script src="{% static 'js/chart/chart-area-clip.js' %}"></script>
+		<script src="{% static 'js/chart/chart-options-colors.js' %}"></script>
+		<script src="{% static 'js/chart/chart.js' %}"></script>
+		<link rel="stylesheet" href="{% static 'css/aos.css' %}" />
+
+		<!--::-HEAD-::-->
+		{% include "layout/header.html" %} {% include "layout/status.html" %}
+	</head>
+	<body class="">
+		<div class="wrapper">
+			<!--::-SIDEBAR-::-->
+			{% include "layout/sidebar/sidebar.html" %}
+
+			<!--::-PAGE CONTENT-::-->
+
+			<div id="content">
+				<!--::-NAVBAR-::-->
+				{% include "layout/navbar/navbar.html" %}
+				<!--::-MAIN CONTENT-::-->
+
+				<div class="container-fluid p-4">
+					{% block content %} {% endblock %}
+				</div>
+			</div>
+		</div>
+
+		<!--::-SCRIPTS JS-::-->
+		{% include "layout/_scripts_js.html" %}
+
+		<!--atua-->
+
+		<script>
+			document.querySelectorAll(".nota-input").forEach((input) => {
+				input.addEventListener("input", function () {
+					const alunoId = this.dataset.id;
+					calcularNotas(alunoId);
+				});
+			});
+
+			function calcularNotas(id) {
+				const get = (name) =>
+					parseFloat(
+						document.querySelector(`input[name="${name}"][data-id="${id}"]`)
+							?.value || 0
+					);
+
+				let av1 = get("av1");
+				let av2 = get("av2");
+				let av3 = get("av3");
+				let av4 = get("av4");
+				let mac = ((av1 + av2 + av3 + av4) / 4).toFixed(1);
+
+				document.querySelector(`input[name="mac"][data-id="${id}"]`).value =
+					mac;
+
+				let npp = get("npp");
+				let npt = get("npt");
+				let mt = ((parseFloat(mac) + npp + npt) / 3).toFixed(1);
+				document.querySelector(`input[name="mt"][data-id="${id}"]`).value = mt;
+
+				let exame = get("exame");
+				let mf = exame > 0 ? ((parseFloat(mt) + exame) / 2).toFixed(1) : mt;
+				document.querySelector(`input[name="mf"][data-id="${id}"]`).value = mf;
+
+				enviarNotas(id, { av1, av2, av3, av4, mac, npp, npt, mt, exame, mf });
+			}
+
+			function enviarNotas(id, dados) {
+				const csrfToken = "{{ csrf_token }}"; // se usar template com {% csrf_token %}
+				fetch("#", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": csrfToken,
+					},
+					body: JSON.stringify({
+						aluno_id: id,
+						disciplina_id: document.getElementById("disciplina_id").value,
+						trimestre: document.getElementById("trimestre").value,
+						...dados,
+					}),
+				})
+					.then((res) => res.json())
+					.then((data) => {
+						const status = document.getElementById("status_" + id);
+						if (data.status === "success") {
+							status.innerHTML = "✅";
+						} else {
+							status.innerHTML = "❌";
+						}
+					});
+			}
+		</script>
+
+		<!--End::Atua-->
+		<script>
+			function calcularLinha(alunoId) {
+				const av1 =
+					parseFloat(document.querySelector(`[name="av1_${alunoId}"]`).value) ||
+					0;
+				const av2 =
+					parseFloat(document.querySelector(`[name="av2_${alunoId}"]`).value) ||
+					0;
+				const av3 =
+					parseFloat(document.querySelector(`[name="av3_${alunoId}"]`).value) ||
+					0;
+				const av4 =
+					parseFloat(document.querySelector(`[name="av4_${alunoId}"]`).value) ||
+					0;
+				const npp =
+					parseFloat(document.querySelector(`[name="npp_${alunoId}"]`).value) ||
+					0;
+				const npt =
+					parseFloat(document.querySelector(`[name="npt_${alunoId}"]`).value) ||
+					0;
+				const exame =
+					parseFloat(document.querySelector(`#exame_${alunoId}`)?.value) || 0;
+
+				// Cálculo da MAC e MT
+				const mac = ((av1 + av2 + av3 + av4) / 4).toFixed(1);
+				const mt = ((parseFloat(mac) + npp + npt) / 3).toFixed(1);
+				let mf = mt;
+
+				// Se exame > 0, considerar no cálculo da média final
+				if (exame > 0) {
+					mf = ((parseFloat(mt) + exame) / 2).toFixed(1);
+				}
+
+				// Preencher os campos
+				document.querySelector(`[name="mac_${alunoId}"]`).value = mac;
+				document.querySelector(`[name="mt_${alunoId}"]`).value = mt;
+				document.querySelector(`#media_final_${alunoId}`).value = mf;
+
+				// Mostrar spinner
+				document
+					.querySelector(`#spinner_${alunoId}`)
+					.classList.remove("d-none");
+
+				// Enviar os dados via AJAX para a view Django
+				fetch("#", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": getCookie("csrftoken"),
+					},
+					body: JSON.stringify({
+						aluno_id: alunoId,
+						disciplina_id: document.querySelector("#disciplina_id").value,
+						trimestre: document.querySelector("#trimestre").value,
+						av1: av1,
+						av2: av2,
+						av3: av3,
+						av4: av4,
+						mac: mac,
+						npp: npp,
+						npt: npt,
+						mt: mt,
+						exame: exame,
+						mf: mf,
+					}),
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						const icon = document.querySelector(`#icon_resultado_${alunoId}`);
+						const spinner = document.querySelector(`#spinner_${alunoId}`);
+						spinner.classList.add("d-none");
+
+						if (data.status === "success") {
+							icon.innerHTML = `<i class="bi bi-check-circle-fill text-success"></i>`;
+						} else {
+							icon.innerHTML = `<i class="bi bi-x-circle-fill text-danger"></i>`;
+						}
+					})
+					.catch((error) => {
+						console.error("Erro ao salvar:", error);
+						document.querySelector(
+							`#icon_resultado_${alunoId}`
+						).innerHTML = `<i class="bi bi-x-circle-fill text-danger"></i>`;
+						document
+							.querySelector(`#spinner_${alunoId}`)
+							.classList.add("d-none");
+					});
+			}
+
+			// Função para obter o CSRF Token dos cookies
+			function getCookie(name) {
+				let cookieValue = null;
+				if (document.cookie && document.cookie !== "") {
+					const cookies = document.cookie.split(";");
+					for (let i = 0; i < cookies.length; i++) {
+						const cookie = cookies[i].trim();
+						if (cookie.substring(0, name.length + 1) === name + "=") {
+							cookieValue = decodeURIComponent(
+								cookie.substring(name.length + 1)
+							);
+							break;
+						}
+					}
+				}
+				return cookieValue;
+			}
+		</script>
+	</body>
+</html>

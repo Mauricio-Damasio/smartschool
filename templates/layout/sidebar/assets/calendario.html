@@ -1,0 +1,48 @@
+{% load static %}
+
+<a
+			id="menu-opcao"
+			class="nav-link d-flex justify-content-between align-items-center"
+			data-bs-toggle="collapse"
+			data-bs-target="#calendarioSubmenu"
+			role="button"
+			aria-expanded="false"
+			aria-controls="calendarioSubmenu"
+		>
+			<span> <i class="bi bi-calendar-event me-2"></i>Calendário </span>
+			<i class="bi bi-chevron-down transition rotate-icon"
+			id="arrowIcon"
+			data-arrow="calendarioSubmenu"></i>
+		</a>
+
+		<div class="collapse" id="calendarioSubmenu">
+			<ul
+				class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3 submenu-list"
+			>
+				<!---->
+				<li>
+					<a href="#" class="nav-link">
+						<i class="bi bi-calendar-event me-2"></i>Eventos escolares
+					</a>
+					</a>
+				</li>
+				<!---->
+				<li>
+					<a href="#" class="nav-link">
+						<i class="bi bi-calendar-check me-2"></i>Aulas marcadas
+					</a>
+					</a>
+				</li>
+				<!---->
+				<li>
+					<a href="#" class="nav-link">
+						<i class="bi bi-calendar-x me-2"></i>Feriados escolares
+					</a>
+				</li>
+				<!---->
+		
+			</ul>
+		</div>
+	</li>
+	<!---->
+

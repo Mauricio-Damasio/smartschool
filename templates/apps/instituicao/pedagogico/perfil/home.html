@@ -1,0 +1,149 @@
+{% extends "apps/instituicao/pedagogico/perfil/_dashboard_pedagogico.html" %}
+
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+   
+
+    <!-- Estatísticas -->
+    <div class="row g-4 mb-4">
+<!---->
+<!---->
+<!-- Atribuições -->
+<div class="col-md-3">
+  <div class="card text-white bg-primary bg-gradient shadow-lg card-elevated rounded-4" data-aos="fade-in">
+    <div class="card-body d-flex align-items-center justify-content-between">
+      <div>
+        <h5 class="card-title">Atribuições</h5>
+        <p class="fs-3">{{ total_atribuicoes }}</p>
+      </div>
+      <i class="bi bi-journal-check fs-1 opacity-75"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Desbloqueados -->
+<div class="col-md-3">
+  <div class="card text-white bg-warning bg-gradient shadow-lg card-elevated rounded-4" data-aos="fade-in">
+    <div class="card-body d-flex align-items-center justify-content-between">
+      <div>
+        <h5 class="card-title">Desbloqueados</h5>
+        <p class="fs-3">{{ trimestres_desbloqueados }}</p>     
+      </div>
+      <i class="bi bi-unlock fs-1 opacity-75"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Alunos Aprovados -->
+<div class="col-md-3">
+  <div class="card text-white bg-success bg-gradient shadow-lg card-elevated rounded-4" data-aos="fade-in">
+    <div class="card-body d-flex align-items-center justify-content-between">
+      <div>
+        <h5 class="card-title">Alunos Aprovados</h5>
+        <p class="fs-3">{{ alunos_aprovados }}</p>
+      </div>
+      <i class="bi bi-award fs-1 opacity-75"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Alunos Reprovados -->
+<div class="col-md-3">
+  <div class="card text-white bg-danger bg-gradient shadow-lg card-elevated rounded-4" data-aos="fade-in">
+    <div class="card-body d-flex align-items-center justify-content-between">
+      <div>
+        <h5 class="card-title">Alunos Reprovados</h5>
+        <p class="fs-3">{{ alunos_reprovados }}</p>
+      </div>
+      <i class="bi bi-x-circle fs-1 opacity-75"></i>
+    </div>
+  </div>
+</div>
+
+
+<!---->
+<!---->
+
+   
+    
+       
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Estatísticas</h5>
+                    <canvas id="graficoAprovadosReprovados"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Atribuições por Disciplina</h5>
+                    <canvas id="graficoDisciplinas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="{% static 'js/chart/chart.js' %}"></script>
+<script>
+    // Gráfico de Aprovados/Reprovados por Classe
+    const ctx1 = document.getElementById('graficoAprovadosReprovados');
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: {{ classes | safe }},
+            datasets: [
+                {
+                    label: 'Aprovados',
+                    data: {{ dados_aprovados | safe }},
+                    backgroundColor: 'rgba(25, 135, 84, 0.7)',
+                },
+                {
+                    label: 'Reprovados',
+                    data: {{ dados_reprovados | safe }},
+                    backgroundColor: 'rgba(220, 53, 69, 0.7)',
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Gráfico de Atribuições por Disciplina
+    const ctx2 = document.getElementById('graficoDisciplinas');
+    new Chart(ctx2, {
+        type: 'pie',
+        data: {
+            labels: {{ disciplinas | safe }},
+            datasets: [{
+                label: 'Total',
+                data: {{ atribuicoes_por_disciplina | safe }},
+                backgroundColor: [
+                    '#0d6efd', '#6f42c1','#20c997' , '#fd7e14',
+                    '#ffc107', '#6610f2', '#dc3545'
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+{% endblock %}

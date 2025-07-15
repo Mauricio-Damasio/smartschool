@@ -1,0 +1,83 @@
+{% extends "apps/ui/professor/perfil/_dashboard_professor.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		
+
+  <h4 class="fw-bold text-white mb-4"><i class="bi bi-people me-1"></i>Meus Alunos por Turma</h4>
+</div>
+ 
+  <form method="get" class="mb-4 row">
+    <div class="col-md-6">
+      <label class="text-primary mb-1">Filtrar por turma:</label>
+      <div class="input-group">
+        <select name="turma" class="form-select">
+          <option value="">-- Selecione uma Turma --</option>
+          {% for turma in turmas %}
+            <option value="{{ turma.id }}" {% if turma.id == turma_selecionada %}selected{% endif %}>
+              {{ turma.nome }} -{{turma.classe}}- {{turma.curso.nome}}
+            </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-filter me-1"></i> Filtrar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+  {% if turma_selecionada and alunos_por_turma %}
+    {% for grupo in alunos_por_turma %}
+
+
+ 
+    <div class="row mt-4 justify-content-center mb-4">
+      <div class="col-auto">
+        <a href="{% url "school:exportar_alunos_pdf" grupo.turma.id %}" class="btn btn-success">
+          <i class="bi bi-file-earmark-pdf me-1 text-white"></i> Gerar PDF
+        </a>
+      </div>
+    </div>
+
+      <div class="mb-4 shadow-lg border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <strong>Turma: {{ grupo.turma.nome }}</strong>
+          <span class="badge bg-light text-dark">{{ grupo.alunos|length }} aluno(s)</span>
+        </div>
+        <div class="card-body m-3">
+          {% if grupo.alunos %}
+            <div class="row g-3">
+              {% for aluno in grupo.alunos %}
+                <div class="col-md-4">
+                  <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                      <div class="me-3">
+                        {% if aluno.image %}
+                          <img src="{{ aluno.image.url }}" alt="Avatar" class="rounded-circle" width="60" height="60">
+                        {% else %}
+                          <img src="{% static 'img/default-user.jpg' %}" alt="Avatar" class="rounded-circle" width="60" height="60">
+                        {% endif %}
+                      </div>
+                      <div>
+                        <h6 class="fw-bold mb-1">{{ aluno.nome }}</h6>
+                        <p class="text-muted mb-0 small">Curso: {{ aluno.turma.curso.nome }}</p>
+                        <p class="text-muted mb-0 small">Nº: {{ forloop.counter }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted m-0">Nenhum aluno encontrado para esta turma.</p>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  {% elif turma_selecionada %}
+    <div class="alert alert-warning">Nenhum aluno encontrado para a turma selecionada.</div>
+  {% endif %}
+
+{% endblock %}

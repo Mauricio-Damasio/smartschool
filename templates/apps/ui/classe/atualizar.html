@@ -1,0 +1,129 @@
+{% extends "base/_dashboard_.html" %}{% load custom_filters %} {% block title%}Atualizar Classe
+
+<!---->
+{% endblock %} {% block content %}
+
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+		<h2 class="col mt-5">Atualizar Classe</h2>
+	</div>
+
+
+
+  <form action="" method="post" id="formCadastro">
+		{% csrf_token %}
+
+		<!--Begin::Messages-->
+		{% include "layout/message.html" %}
+		<!--End::Messages-->
+
+		<div id="secao-dados-pessoais" class="fade-in">
+			<div class="header-2 mt-3 mb-4">
+				<h4>Dados das Classes</h4>
+				<hr />
+			</div>
+
+		
+			<div class="row">
+				<div class="input-group">
+				
+<!-- Ensino Primário -->
+<div class="col input-group mb-3 me-4">
+  <span class="select-description text-white pt-2 pe-2">
+    <i class="bi bi-pencil text-white ms-2"></i>
+    Ensino Primário <i class="asterisco">*</i>
+  </span>
+  <select name="ensino_primario" class="form-select">
+    <option value="">Selecionar...</option>
+    {% for ensino in ensino_primario %}
+      <option value="{{ ensino }}" {% if classe.ensino_primario == ensino %}selected{% endif %}>
+        {{ ensino }}ª
+      </option>
+    {% endfor %}
+  </select>
+</div>
+
+<!-- Primeiro Ciclo -->
+<div class="col input-group mb-3 me-4">
+  <span class="select-description text-white pt-2 pe-2">
+    <i class="bi bi-collection text-white ms-2"></i>
+    Primeiro Ciclo <i class="asterisco">*</i>
+  </span>
+  <select name="primeiro_ciclo" class="form-select">
+    <option value="">Selecionar...</option>
+    
+		{% for primeiro in primeiro_ciclo %}
+		<option value="{{ primeiro }}" {% if classe.primeiro_ciclo == primeiro %}selected{% endif %}>
+			{{ primeiro}}ª
+		</option>
+	{% endfor %}
+  </select>
+</div>
+
+<!-- Segundo Ciclo -->
+<div class="col input-group mb-3 me-4">
+  <span class="select-description text-white pt-2 pe-2">
+    <i class="bi bi-easel text-white ms-2"></i>
+    Segundo Ciclo <i class="asterisco">*</i>
+  </span>
+  <select name="segundo_ciclo" class="form-select">
+    <option value="">Selecionar...</option>
+		{% for segundo in segundo_ciclo %}
+		<option value="{{ segundo }}" {% if classe.segundo_ciclo == segundo %}selected{% endif %}>
+			{{ segundo}}ª
+		</option>
+	{% endfor %}
+  </select>
+</div>
+
+	
+				
+					
+				</div>
+			</div>
+
+  
+
+			<div class="row button-groups ms-2 me-5 mt-1">
+				<div class="col">
+					<button
+						type="button"
+						class="btn-add"
+						onclick="mostrarDadosPessoais()"
+					>
+						Voltar
+					</button>
+				</div>
+
+				<div class="col text-end">
+					<button class="btn btn-success" type="submit" id="btnSalvar">
+						<span id="iconSalvar"><i class="bi bi-save me-2"></i>Atualizar</span>
+						<span id="loadingSalvar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+
+					<button
+						class="btn btn-success ms-2"
+						type="submit"
+						id="btnSalvarCadastrar"
+					>
+						<span id="iconSalvarCadastrar"
+							><i class="bi bi-plus me-2"></i>Atualizar e Cadastrar</span
+						>
+						<span id="loadingSalvarCadastrar" class="d-none"
+							><i
+								class="bi bi-arrow-repeat me-2 spinner-border spinner-border-sm"
+							></i
+							>Atualizando...</span
+						>
+					</button>
+				</div>
+		
+		</div>
+	</form>
+</div>
+	{% endblock %}

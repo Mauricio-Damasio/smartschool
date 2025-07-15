@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Aula - {{ aula.disciplina.nome }} | {{ aula.turma.nome }}</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 40px;
+            font-size: 14px;
+            color: #222;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        header h2 {
+            font-size: 16px;
+            margin: 5px 0 0 0;
+        }
+
+        .info {
+            margin-bottom: 20px;
+        }
+
+        .info p {
+            margin: 4px 0;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-left: 4px solid #007BFF;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .section p {
+            text-align: justify;
+            line-height: 1.6;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<header>{{escola.nome}}
+    <h1>Plano de Aula</h1>
+    <h2>{{ aula.disciplina.nome }} - {{ aula.turma.nome }}</h2>
+</header>
+
+<div class="info">
+    <p><strong>Professor:</strong> {{ aula.professor.nome }}</p>
+    <p><strong>Data:</strong> {{ aula.data|date:"d/m/Y" }}</p>
+</div>
+
+<div class="section">
+    <h3>Tema da Aula</h3>
+    <p>{{ aula.tema }}</p>
+</div>
+
+<div class="section">
+    <h3>Objetivos</h3>
+    <p>{{ aula.objetivos|linebreaksbr }}</p>
+</div>
+
+<div class="section">
+    <h3>Conteúdo Programático</h3>
+    <p>{{ aula.conteudo|linebreaksbr }}</p>
+</div>
+
+<div class="section">
+    <h3>Metodologia</h3>
+    <p>{{ aula.metodologia|linebreaksbr }}</p>
+</div>
+
+<div class="section">
+    <h3>Recursos Didáticos</h3>
+    <p>{{ aula.recursos|linebreaksbr }}</p>
+</div>
+
+<div class="section">
+    <h3>Instrumentos de Avaliação</h3>
+    <p>{{ aula.avaliacao|linebreaksbr }}</p>
+</div>
+
+
+</body>
+</html>

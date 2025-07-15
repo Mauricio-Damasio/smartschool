@@ -1,0 +1,94 @@
+.is-valid {
+	border-color: green;
+}
+.is-invalid {
+	border-color: red;
+}
+
+input[type="number"] {
+	width: 60px;
+	border-radius: 8px;
+	box-shadow: 1px 1px 5px cyan;
+}
+
+.exame-input.aprovado {
+	background-color: #d4edda;
+	color: #155724;
+	font-weight: bold;
+}
+
+.exame-input.reprovado {
+	background-color: #f8d7da;
+	color: #721c24;
+	font-weight: bold;
+}
+
+.mac-output.aprovado {
+	background-color: #d4edda;
+	color: #155724;
+	font-weight: bold;
+}
+
+.mac-output.reprovado {
+	background-color: #f8d7da;
+	color: #721c24;
+	font-weight: bold;
+}
+
+.img-perfil {
+	width: 55px;
+	height: 40px;
+	border: 1px solid cyan;
+	box-shadow: 0 0 5px #f80f8f;
+}
+
+.dados-aluno {
+	display: flex;
+}
+
+.preencher-nota {
+	display: flex;
+}
+
+.list-item {
+	background-color: #fff;
+	border-radius: 15px;
+	border: 1px solid #100381;
+	box-shadow: 1px 1px 5px cyan;
+}
+.titulo {
+	color: #100381;
+}
+
+select.comportamento {
+	width: 90px;
+	height: 30px;
+	border-radius: 8px;
+	box-shadow: 1px 1px 5px cyan;
+	color: red;
+}
+
+select.assiduidade {
+	width: 90px;
+	height: 30px;
+	border-radius: 8px;
+	box-shadow: 1px 1px 5px cyan;
+	color: red;
+}
+
+.resultado {
+	display: flex;
+}
+
+div.item {
+	border-radius: 8px;
+	background-color: #fff;
+
+	border: 1px solid #100381;
+	box-shadow: 1px 1px 5px cyan;
+}
+
+.pontuacao {
+	display: flex;
+	align-items: end;
+}

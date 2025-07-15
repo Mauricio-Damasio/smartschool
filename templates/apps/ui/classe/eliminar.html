@@ -1,0 +1,45 @@
+{% extends "base/_dashboard_.html" %} {% load static %}
+
+<!---->
+{% block title %} Eliminar Classe
+<!---->
+{% endblock %} {% block content %}
+
+<div class="container d-flex justify-content-center">
+	<div class="col-md-6 confirm-box text-center">
+		<div class="head-img text-white rounded-top py-2">
+			<p class="">Tem certeza que deseja eliminar esta Classe?</p>
+		</div>
+
+		{% if classe.ensino_primario %}
+		<h5 class="text-view">
+			<strong>Classe: </strong> {{ classe.get_ensino_primario_display }}
+		</h5>
+		{% elif classe.primeiro_ciclo %}
+		<h5 class="text-view">
+			<strong>Classe: </strong> {{ classe.get_primeiro_ciclo_display }}
+		</h5>
+		{% elif classe.segundo_ciclo %}
+		<h5 class="text-view">
+			<strong>Classe: </strong> {{ classe.get_segundo_ciclo_display }}
+		</h5>
+
+		{% endif %}
+
+		<form method="post" class="mt-4">
+			{% csrf_token %}
+			<div class="d-grid gap-2 d-md-block">
+				<button type="submit" class="btn btn-danger ps-3 pe-3">
+					<i class=""></i>Sim
+				</button>
+				<a
+					href="{% url 'school:listar_classes' %}"
+					class="btn btn-secondary px-4"
+					>Cancelar</a
+				>
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

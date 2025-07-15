@@ -1,0 +1,186 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+
+	
+
+		<meta charset="UTF-8" />
+		<style>
+			.insignia {
+				width: 65px;
+				hight: 65px;
+			}
+			@page {
+				size: A4 landscape;
+				margin: 1cm;
+			}
+			body {
+				font-family: "DejaVu Sans", sans-serif;
+				font-size: 10px;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 10px;
+			}
+			th,
+			td {
+				border: 1px solid #000;
+				padding: 2px;
+				text-align: center;
+			}
+			th {
+				background-color: #ffd700;
+			}
+			.header {
+				text-align: center;
+				margin-bottom: 10px;
+			}
+			.title {
+				font-size: 14px;
+				font-weight: bold;
+				text-align: center;
+			}
+			.info {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				font-size: 11px;
+			}
+			.box {
+				float: right;
+				border: 1px solid #000;
+				width: 150px;
+				font-size: 10px;
+				margin-bottom: 10px;
+			}
+			.box td {
+				border: 1px solid #000;
+				padding: 3px;
+				text-align: center;
+			}
+			.signature {
+				margin-top: 40px;
+				font-size: 10px;
+				text-align: right;
+			}
+
+
+			.nome{ 
+				margin-right: 30px;
+			}
+			.dia{
+
+				margin-top: 75px;
+			}
+			.negativa{
+				color: red;
+			}
+			.positiva {
+				color: blue;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<img
+				src="{{logo_url}}"
+				alt="Insígnia da República de Angola"
+				class="insignia"
+			/>
+			<p>
+				REPÚBLICA DE ANGOLA<br />
+				GOVERNO PROVINCIAL DO MOXICO<br />
+				GABINETE DA EDUCAÇÃO<br />
+				{{escola.nome|upper}} - {{escola.municipio.cidade|upper}}
+			</p>
+			<h3>MINI-PAUTA DE {{ disciplina.nome|upper }} - {{ ano_letivo }}</h3>
+		</div>
+
+		<div class="info">
+			<strong>PROFESSOR(A):</strong> {{ professor|upper }}<br />
+			<strong>CURSO:</strong> {{ turma.curso.nome }}<br />
+			<strong>CLASSE:</strong> {{ turma.classe }}<br />
+			<strong>TURMA:</strong> {{ turma.nome }}
+		</div>
+
+		<table class="box">
+			<tr>
+				<th colspan="2">MF</th>
+			</tr>
+			<tr>
+				<td>Aprovados</td>
+				<td>{{ aprovados|stringformat:"02d" }}</td>
+			</tr>
+			<tr>
+				<td>Reprovados</td>
+				<td>{{ reprovados|stringformat:"02d" }}</td>
+			</tr>
+			<tr>
+				<td>Não avaliados</td>
+				<td>{{ nao_avaliados|stringformat:"02d" }}</td>
+			</tr>
+		</table>
+
+		<table>
+			<thead>
+				<tr>
+					<th rowspan="2">Nº</th>
+					<th rowspan="2">Nome Completo</th>
+
+					{% for t in trimestres %}
+					<th colspan="8">{{ t }}º Trimestre</th>
+
+					{% endfor %}
+
+					<th rowspan="2">MF</th>
+				</tr>
+				<tr>
+					{% for t in trimestres %}
+					<th>AV1</th>
+					<th>AV2</th>
+					<th>AV3</th>
+					<th>AV4</th>
+					<th>MAC</th>
+					<th>NPP</th>
+					<th>NPT</th>
+					<th>MT</th>
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in alunos_dados %}
+				<tr>
+					<td>{{ item.numero }}</td>
+					<td>{{ item.aluno.nome }}</td>
+
+					{% for t in trimestres %} {% with pauta=item.trimestres|get_item:t %}
+
+					<td class="{% if pauta.av1 < 10 %} negativa {% elif pauta.av1 >= 10 %} positiva  {% endif %}"> {{ pauta.av1 }}</td>
+					<td class="{% if pauta.av2 < 10 %} negativa {% elif pauta.av2 >= 10 %} positiva  {% endif %}">{{ pauta.av2 }}</td>
+					<td class="{% if pauta.av3 < 10 %} negativa {% elif pauta.av3 >= 10 %} positiva  {% endif %}">{{ pauta.av3 }}</td>
+					<td class="{% if pauta.av4 < 10 %} negativa {% elif pauta.av4 >= 10 %} positiva  {% endif %}">{{ pauta.av4 }}</td>
+					<td class="{% if pauta.mac < 10 %} negativa {% elif pauta.mac >= 10 %} positiva  {% endif %}">{{ pauta.mac }}</td>
+					<td class="{% if pauta.npp < 10 %} negativa {% elif pauta.npp >= 10 %} positiva  {% endif %}">{{ pauta.npp }}</td>
+					<td class="{% if pauta.npt < 10 %} negativa {% elif pauta.npt >= 10 %} positiva  {% endif %}">{{ pauta.npt }}</td>
+					<td class="{% if pauta.mt < 10 %} negativa {% elif pauta.mt >= 10 %} positiva  {% endif %}">{{ pauta.mt }}</td>
+					{% endwith %} {% endfor %}
+
+					<td class="{% if item.mf < 10 %} negativa {% elif item.mf >= 10 %} positiva  {% endif %}">{{ item.mf }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="data"><p class="dia">Aos, {{dia}}</p></div>
+		<div class="signature">
+			<p>
+				O Subdirector Pedagógico<br /><br /><br />
+				__________________________<br />
+				
+				<p class="nome">{{escola.direitor_pedagogico.nome}}</p>
+			</p>
+		</div>
+	</body>
+</html>

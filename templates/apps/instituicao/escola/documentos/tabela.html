@@ -1,0 +1,115 @@
+{% load static %} {% if alunos.exists %}
+
+<div class="card">
+	<h5 class="card-header text-white"></h5>
+	<div class="table-responsive text-nowrap">
+		<table class="table  
+		table:hover table-striped align-middle shadow-sm rounded-3 overflaw-hidden">
+			<thead>
+				<tr class="head">
+					<th class="head-item">Nº</th>
+					<th class="head-item"></th>
+					<th class="head-item">Nome</th>
+					<th class="head-item">Idade</th>
+					<th class="head-item">Classe</th>
+					<th class="head-item">Turma</th>
+					<th class="head-item">Curso</th>
+					<th class="head-item">Ações</th>
+				</tr>
+			</thead>
+			<tbody class="table-border-bottom-0">
+				{% for aluno in alunos %}
+				<tr class="table-primary">
+					<td class="body-counter">{{forloop.counter}}</td>
+
+					<!--Image-->
+					<td>
+						<ul
+							class="list-unstyled m-0 avatar-group d-flex align-items-center"
+						>
+							<li class="avatar avatar-xs pull-up">
+								{% if aluno.image %}
+								<img
+									src="{{ aluno.image.url }}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% else %}
+								<img
+									src="{% static 'img/default-user.jpg' %}"
+									alt="Avatar"
+									class="img-perfil rounded-circle"
+								/>
+								{% endif %}
+							</li>
+						</ul>
+					</td>
+					<td>
+						<span class="body-itens">{{aluno.nome}}</span>
+					</td>
+					<td>
+						<span class="body-itens">{{aluno.idade}}</span>
+					</td>
+					<!---->
+
+					<td class="body-itens">{{aluno.turma.classe.get_nome_display}}</td>
+					<td class="body-itens">{{aluno.turma.nome}}</td>
+					<td class="body-itens">{{aluno.turma.curso.nome}}</td>
+					<td>
+						<div class="dropdown">
+							<button
+								type="button"
+								class="btn p-0 bi bi-three-dots-vertical"
+								data-bs-toggle="dropdown"
+							>
+								<i class=""></i>
+							</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="{% url "school:visualizar_aluno" aluno.id %}"
+								><i class="bi bi-eye me-1"></i>Visualizar</a
+							>
+							{% if request.user.escola %}
+								
+					
+								<a class="dropdown-item" href="{% url "school:atualizar_aluno" aluno.id %}"
+									><i class="bi bi-pencil me-1"></i>Editar</a
+								>
+								<a class="dropdown-item" href="{% url "school:eliminar_aluno" aluno.id %}"
+									><i class="bi bi-trash me-1"></i>Eliminar</a
+								>
+								<a class="dropdown-item" href="{% url "school:gerar_certificados" aluno.id %}"
+									><i class="bi bi-trash me-1"></i>Certificados</a
+								>
+								{% endif %}
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				{% endfor %}
+				<!---->
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{% else %}
+<div class="alert alert-danger">Não existe nenhum aluno cadastrado!</div>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

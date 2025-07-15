@@ -1,0 +1,35 @@
+<!-- Alunos -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:alunos_do_curso_coordenador' %}">
+		<span> <i class="bi bi-people-fill me-2"></i> Alunos</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Professores -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:professores_do_curso' %}">
+		<span> <i class="bi bi-person-vcard-fill me-2"></i> Professores</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Notas e Pautas -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:rendimento_professores' %}">
+		<span> <i class="bi bi-journal-check me-2"></i> Notas e Pautas</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>
+
+<!-- Horários -->
+<li class="nav-item mt-2">
+	<a id="menu-opcao" class="nav-link d-flex justify-content-between align-items-center"
+	   href="{% url 'school:gerenciar_horarios' %}">
+		<span> <i class="bi bi-calendar-week me-2"></i> Horários</span>
+		<i class="transition rotate-icon"></i>
+	</a>
+</li>

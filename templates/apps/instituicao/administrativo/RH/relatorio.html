@@ -1,0 +1,167 @@
+{% extends 'apps/instituicao/administrativo/perfil/_dashboard_administrativo.html' %}
+{% load static %}
+{% load l10n %}
+{% load tz %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+
+    <h4>Relatório de Assiduidade</h3>
+
+      
+        <a href="{% url "school:cadastrar_assiduidade" %}" class="add-link mt-3">
+            <i class="bi bi-plus text-white"></i>Registrar
+        </a>
+</div>
+    <form method="post" class="row g-3">
+        {% csrf_token %}
+      
+        <div class="row">
+        <!---->
+        <!---->
+        <div class="col input-group">
+            <label for="tipo" class="select-description text-white ps-2 pe-2 pt-2"> <i class="bi-person-badge"></i> Tipo</label>
+            <select name="tipo" id="tipo" class="form-select" required onchange="toggleSelects()">
+                <option value="">--- Selecionar ---</option>
+                <option value="professor" {% if tipo == 'professor' %}selected{% endif %}>Professor</option>
+                <option value="coordenador" {% if tipo == 'coordenador' %}selected{% endif %}>Coordenador</option>
+            </select>
+        </div>
+
+
+         <!---->
+         <div class="col input-group">
+            <label for="data_inicio" class="select-description text-white ps-2 pe-2 pt-2"><i class="bi-calendar-date me-2"></i>De</label>
+            <input type="date" name="data_inicio" id="data_inicio" class="form-control" required>
+        </div>
+  <!---->
+        <!---->
+        <div class="col input-group">
+            <label for="data_fim" class="select-description text-white ps-2 pe-2 pt-2"><i class="bi-calendar-check me-2"></i>Até</label>
+            <input type="date" name="data_fim" id="data_fim" class="form-control" required>
+        </div>
+  <!---->
+        <!---->
+        </div>
+
+        <!---->
+        <!---->
+  
+      
+        <div class="col-md-5 mb-5 tipo-funcionario" id="select-professor" style="display: none;">
+            <label for="pessoa_id_prof" class="form-label ms-5 text-primary fw-bold"><i class="bi-mortarboard fs-4"></i> Professor</label>
+            <select name="pessoa_id" id="pessoa_id_prof" class="form-select ms-5">
+                {% for p in professores %}
+                    <option value="{{ p.id }}" {% if selecionado and tipo == 'professor' and p.id == selecionado.id %}selected{% endif %}>
+                        {{ p.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+  <!---->
+        <!---->
+        <div class="col-md-5 mb-5 tipo-funcionario" id="select-coordenador" style="display: none;">
+            <label for="pessoa_id_coord" class="form-label ms-5 text-primary fw-bold"><i class="bi-person-badge fs-4"></i>Coordenador</label>
+            <select name="pessoa_id" id="pessoa_id_coord" class="form-select ms-5">
+                {% for c in coordenadores %}
+                    <option value="{{ c.id }}" {% if selecionado and tipo == 'coordenador' and c.id == selecionado.id %}selected{% endif %}>
+                        {{ c.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    
+  <!---->
+   
+        <!---->
+        <!---->
+        <!---->
+
+
+
+<div class="row mt-4 justify-content-center mb-4">
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary btn-custom">
+            <i class="bi bi-search me-1"></i> Buscar
+        </button>
+    </div>
+
+    {% if registros %}
+        <div class="col-auto">
+            <button name="export_pdf" class="btn btn-danger btn-custom">
+                <i class="bi bi-file-earmark-pdf me-1"></i> Exportar PDF
+            </button>
+        </div>
+
+        <div class="col-auto">
+            <button name="export_excel" class="btn btn-success btn-custom">
+                <i class="bi bi-file-earmark-spreadsheet me-1"></i> Exportar CSV
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+        <!---->
+        <!---->
+        <!---->
+        
+    </form>
+
+</div>
+  <!--Begin::Messages-->
+{% include "layout/message.html" %}
+<!--End::Messages-->
+ <!---->
+ <!---->
+ <!---->
+
+
+{% if registros %}
+    <div class="row mt-4">
+        {% for r in registros %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg border-0 rounded-4 animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-3">
+                        <i class="bi bi-calendar-event me-2"></i>
+                        {{ r.data|date:"j \d\e F \d\e Y" }}
+                    </h5>
+                    
+                    <p class="card-text mb-2">
+                        <i class="bi bi-clock text-success me-2"></i>
+                        <strong>Entrada:</strong> {{ r.hora_entrada }}
+                    </p>
+
+                    <p class="card-text mb-2">
+                        <i class="bi bi-clock-history text-danger me-2"></i>
+                        <strong>Saída:</strong> {{ r.hora_saida }}
+                    </p>
+
+                    <p class="card-text">
+                        <i class="bi bi-person-badge me-2 text-dark"></i>
+                        <strong>Cargo:</strong>
+                        <span class="badge bg-primary text-uppercase">{{ r.cargo }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+ <!---->
+ <!---->
+ <!---->
+
+
+<script>
+    function toggleSelects() {
+        var tipo = document.getElementById("tipo").value;
+        document.getElementById("select-professor").style.display = tipo === 'professor' ? 'block' : 'none';
+        document.getElementById("select-coordenador").style.display = tipo === 'coordenador' ? 'block' : 'none';
+    }
+
+    window.onload = toggleSelects;
+</script>
+{% endblock %}

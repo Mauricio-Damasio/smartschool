@@ -1,0 +1,51 @@
+{% extends 'apps/instituicao/administrativo/perfil/_dashboard_administrativo.html' %}
+{% load static %}
+
+{% block title %}Lista de Avaliações{% endblock %}
+
+{% block content %}
+<div class="row filtragem mb-5">
+	<div class="header mt-2 mb-4">
+  <h4 class="mb-4">Avaliações de Desempenho</h4>
+<a href="{% url "school:avaliar_desempenho" %}" class="add-link ">	<i class="bi bi-plus text-white"></i>Avaliar</a>
+  {% include "layout/message.html" %}
+</div>
+
+  <div class="card">
+    <h5 class="card-header text-white"></h5>
+    <div class="table-responsive text-nowrap">
+  <table class="table">
+    <thead>
+      <tr class="head">
+        <th class="head-item">Tipo</th>
+        <th class="head-item">Nome</th>
+        <th class="head-item">Nota</th>
+        <th class="head-item">Data</th>
+        <th class="head-item">Comentário</th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      {% for item in desempenhos %}
+        <tr class="table-primary">
+          <td class="body-itens">{{ item.desempenho.get_tipo_display }}</td>
+          <td class="body-itens">{{ item.nome_usuario }}</td>
+          <td class="body-itens">{{ item.desempenho.nota }}</td>
+          <td class="body-itens">{{ item.desempenho.data_avaliacao }}</td>
+          <td class="body-itens">{{ item.desempenho.comentario }}</td>
+          <td class="body-itens">
+            <a href="{% url 'school:gerar_pdf_desempenho' item.desempenho.id %}" class="btn btn-sm">
+              <i class="bi bi-file-earmark-pdf-fill text-primary"></i>
+            </a>
+            <a href="{% url 'school:eliminar_desempenho' item.desempenho.id %}" class="btn btn-sm ">
+              <i class="bi bi-trash text-danger"></i>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+</div>
+</div>
+</div>
+{% endblock %}

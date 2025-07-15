@@ -1,0 +1,61 @@
+{% extends "apps/ui/professor/perfil/_dashboard_professor.html" %}
+{% load static %}
+<!---->
+{% block title %}{% endblock %} {% block content %}
+{% if request.user.is_authenticated %}
+
+{% if  request.user.professor%}
+
+<div class="d-flex justify-content-center align-content-center">
+		<div class="col-md-8">
+			<div class="profile-card p-4">
+				<div class="text-center">
+					<div class="head-img text-white rounded-top py-4">
+						<p class="p-3"></p>
+					</div>
+					{% if professor.image %}
+					<img
+						src="{{ professor.image.url }}"
+						alt="Foto do Professor"
+						class="profile-image"
+					/>
+					{% else %}
+					<img
+						src="{% static 'img/default-user.png' %}"
+						alt="Sem imagem"
+						class="profile-image"
+					/>
+					{% endif %}
+				</div>
+				<div class="card-bodys mt-4">
+					<h5 class="view-nome"><strong></strong> {{ professor.nome }}</h5>
+					<h5 class="text-view">
+						<strong>Número de Agente: </strong> {{ professor.numAgente }}
+					</h5>
+					<h5 class="text-view">
+						<strong>Gênero: </strong> {{ professor.get_genero_display }}
+					</h5>
+					<h5 class="text-view">
+						<strong>Departamento: </strong> {{ departamento.nome }}
+					</h5>
+					<h5 class="text-view"><strong>Disciplinas:</strong></h5>
+					<ul class="list-group list-group-flush">
+						{% for d in disciplinas %}
+						<li class="list-group-item text-view">{{ d.nome }}</li>
+						{% empty %}
+						<li class="list-group-item text-muted text-view">
+							Nenhuma disciplina atribuída
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+{% endif %}
+{% endif %}
+
+
+{% endblock %}

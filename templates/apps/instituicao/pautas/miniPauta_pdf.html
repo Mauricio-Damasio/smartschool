@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta charset="UTF-8" />
+		<style>
+			body {
+				font-family: "Arial", sans-serif;
+				font-size: 12px;
+			}
+			.header {
+				text-align: center;
+			}
+			.logo {
+				width: 70px;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+			}
+			th,
+			td {
+				border: 1px solid #000;
+				padding: 4px;
+				text-align: center;
+			}
+			.nome {
+				text-align: left;
+			}
+			.highlight {
+				background-color: #f2c94c;
+				font-weight: bold;
+			}
+			.footer {
+				margin-top: 30px;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<img src="Angola.svg.png" class="logo" /><br />
+			<strong
+				>REPÚBLICA DE ANGOLA<br />
+				GOVERNO PROVINCIAL DO ZAIRE<br />
+				GABINETE DA EDUCAÇÃO<br />
+				INSTITUTO MÉDIO TÉCNICO DE SAÚDE - MBENZA KONGO</strong
+			><br /><br />
+			<strong>MINI PAUTA DE {{ disciplina.nome|upper }} - {{ ano }}</strong>
+		</div>
+
+		<br />
+
+		<table>
+			<tr>
+				<td><strong>PROFESSOR(A):</strong> {{ professor.nome }}</td>
+				<td><strong>CURSO:</strong> {{ turma.curso.nome }}</td>
+				<td><strong>CLASSE:</strong> {{ turma.classe.nome }}</td>
+				<td><strong>TURMA:</strong> {{ turma.nome }}</td>
+			</tr>
+		</table>
+
+		<br />
+
+		<table>
+			<thead>
+				<tr class="highlight">
+					<th rowspan="2">Nº</th>
+					<th rowspan="2">Nome Completo</th>
+					{% for t in 'I II III'.split %}
+					<th colspan="7">{{ t }}º Trimestre</th>
+					{% endfor %}
+					<th rowspan="2">MF</th>
+					<th rowspan="2">P</th>
+				</tr>
+				<tr class="highlight">
+					{% for i in range(3) %}
+					<th>AV1</th>
+					<th>AV2</th>
+					<th>AV3</th>
+					<th>AV4</th>
+					<th>MAC</th>
+					<th>NPP</th>
+					<th>NPT</th>
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for pauta in pautas %}
+				<tr>
+					<td>{{ forloop.counter|stringformat:"02d" }}</td>
+					<td class="nome">{{ pauta.aluno.nome }}</td>
+
+					{# Trimestre 1 #}
+					<td>{{ pauta.av1 }}</td>
+					<td>{{ pauta.av2 }}</td>
+					<td>{{ pauta.av3 }}</td>
+					<td>{{ pauta.av4 }}</td>
+					<td>{{ pauta.mac }}</td>
+					<td>{{ pauta.npp }}</td>
+					<td>{{ pauta.npt }}</td>
+
+					{# Trimestre 2 e 3 – exemplo com valores vazios (a preencher depois)
+					#}
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+
+					<td>{{ pauta.mt }}</td>
+					<td>
+						{% if pauta.mt >= 10 %}A{% elif pauta.mt > 0 %}R{% else %}-{% endif
+						%}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="footer">
+			<p>
+				APROVADOS: {{ aprovados }} | REPROVADOS: {{ reprovados }} | NÃO
+				AVALIADOS: {{ nao_avaliados }}
+			</p>
+		</div>
+	</body>
+</html>
