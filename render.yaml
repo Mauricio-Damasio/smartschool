@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: smartschool
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn core.wsgi"
+    plan: free
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: core.settings
+    autoDeploy: true

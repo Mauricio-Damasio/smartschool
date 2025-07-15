@@ -10,7 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Segurança
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+#DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', cast=bool, default=True)
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'smartschool-redw.onrender.com']
 
 # Aplicativos instalados
