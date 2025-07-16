@@ -3,6 +3,8 @@ from django.http import HttpRequest
 from ....models.academico.turma import Turma
 from school.models.academico.curso import Curso
 from school.models.academico.classe import Classe
+from school.models.academico.escola import Escola
+from school.models.academico.diretor_geral import Diretor
 from school.models.academico.ano_lectivo import AnoLetivo
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -11,7 +13,10 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def index(request: HttpRequest):
  
-  escola = request.user.escola
+  #Admin logado
+  diretor = Diretor.objects.get(user=request.user)
+
+  escola = Escola.objects.filter(direitor=diretor).first()
   
 
   
@@ -47,7 +52,10 @@ def visualizar(request:HttpRequest,id:int):
 
          
     # Escola logada
-    escola = request.user.escola
+     #Admin logado
+    diretor = Diretor.objects.get(user=request.user)
+
+    escola = Escola.objects.filter(direitor=diretor).first()
     
 
         # Carregar apenas os cursos da escola logada
@@ -87,7 +95,10 @@ def cadastrar(request:HttpRequest):
    
   
    # Escola logada
-   escola = request.user.escola
+   #Admin logado
+   diretor = Diretor.objects.get(user=request.user)
+
+   escola = Escola.objects.filter(direitor=diretor).first()
    
 
     # Carregar apenas os cursos da escola logada
@@ -155,7 +166,10 @@ def atualizar(request: HttpRequest, id: int):
 
       
    # Escola logada
-   escola = request.user.escola
+   #Admin logado
+   diretor = Diretor.objects.get(user=request.user)
+
+   escola = Escola.objects.filter(direitor=diretor).first()
    
 
     # Carregar apenas os cursos da escola logada

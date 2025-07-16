@@ -8,8 +8,13 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from school.models.academico.escola import Escola
+from ....utils.utils_email import enviar_dados_acesso_diretor
 
-# Listar professores
+
+
+
+
+# Listar 
 @login_required
 def index(request: HttpRequest):
   
@@ -144,6 +149,18 @@ def cadastrar(request:HttpRequest):
         
        
         direitor.save()
+
+        ####
+        # 
+        # Enviar e-mail com dados de acesso
+        #
+        email_enviado = enviar_dados_acesso_diretor(nome, username, senha, user.email)
+
+        if email_enviado:
+            messages.success(request, f'Diretor (a) {nome} cadastrado com sucesso! Dados de acesso enviados para {user.email}.')
+        else:
+            messages.error(request, f'Diretor (a) {nome} cadastrado com sucesso, mas o envio de e-mail falhou.')
+
 
         messages.success(request, f'Direitor (a) {nome} cadastrado com sucesso!')
         return redirect('school:listar_direitores')

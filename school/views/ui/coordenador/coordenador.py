@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpRequest
 from ....models.academico.coordenador import Coordenador
 from school.models.academico.curso import Curso
+from school.models.academico.escola import Escola
+from school.models.academico.diretor_geral import Diretor
 from school.models.academico.departamento import Departamento
 from django.contrib import messages
 import re
@@ -9,13 +11,51 @@ from datetime import date
 from django.utils.crypto import get_random_string
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
+from ....utils.utils_email import enviar_dados_acesso_coordenador
+
+from school.models.academico.professor import Professor
+from school.models.academico.aluno import Aluno
+from school.models.relatorio.minipauta import MiniPauta
+from school.models.relatorio.horario import Horario
+from django.db import models
+
+# Perfil coordenador
+def dashboard_coordenador(request):
+    
+
+
+    total_alunos = Aluno.objects.count()
+    total_professores = Professor.objects.count()
+    total_pautas = MiniPauta.objects.count()
+    total_horarios = Horario.objects.count()
+
+    # Exemplo: Alunos por curso (para gráfico de pizza)
+    alunos_por_curso = (
+        Aluno.objects.values('turma__curso__nome')
+        .order_by('turma__curso__nome')
+        .annotate(total=models.Count('id'))
+    )
+
+    dados = {
+        'total_alunos': total_alunos,
+        'total_professores': total_professores,
+        'total_pautas': total_pautas,
+        'total_horarios': total_horarios,
+        'alunos_por_curso': alunos_por_curso,
+    }
+    return render(request, 'apps/ui/coordenador/perfil/home.html',dados)
+
+
+
 
 # Listar coordenadores
 @login_required
 def index(request: HttpRequest):
   
-  #Escola logada
-  escola = request.user.escola
+   #Admin logado
+  diretor = Diretor.objects.get(user=request.user)
+
+  escola = Escola.objects.filter(direitor=diretor).first()
   
   # Carregar todos os dados para os selects
   coordenadores = Coordenador.objects.filter(curso__escola=escola).order_by('-id')
@@ -74,8 +114,10 @@ def email_valido(email):
 def cadastrar(request:HttpRequest):
    
   
-    #Escola logada
-   escola = request.user.escola
+    #Admin logado
+   diretor = Diretor.objects.get(user=request.user)
+
+   escola = Escola.objects.filter(direitor=diretor).first()
     
    # Carregar todos os dados para os selects
 
@@ -171,6 +213,16 @@ def cadastrar(request:HttpRequest):
            
         )
         
+         ####
+        # 
+        # Enviar e-mail com dados de acesso
+        #
+        email_enviado = enviar_dados_acesso_coordenador(nome, username, senha, user.email)
+
+        if email_enviado:
+            messages.success(request, f'Coordenador(a) {nome} cadastrado(a) com sucesso! Dados de acesso enviados para {user.email}.')
+        else:
+            messages.error(request, f'Coordenador(a) {nome} cadastrado(a)  com sucesso, mas o envio de e-mail falhou.')
     
 
         messages.success(request, f'Coordenador (a) {nome} cadastrado com sucesso!')
@@ -186,8 +238,10 @@ def atualizar(request: HttpRequest, id: int):
     #
     coordenador = get_object_or_404(Coordenador, pk=id)
     
-    #escola
-    escola = request.user.escola
+     #Admin logado
+    diretor = Diretor.objects.get(user=request.user)
+
+    escola = Escola.objects.filter(direitor=diretor).first()
     
     departamentos = Departamento.objects.filter(curso__escola= escola)
     cursos = Curso.objects.filter(escola=escola)
@@ -214,9 +268,18 @@ def atualizar(request: HttpRequest, id: int):
         if not all([nome, numAgente, genero, departamento_id, curso_id]):
             messages.error(request, "Todos os campos obrigatórios devem ser preenchidos.")
             return render(request, 'apps/ui/coordenador/atualizar.html', dados)
+        
+        
 
         departamento = get_object_or_404(Departamento, pk=departamento_id)
         curso = get_object_or_404(Curso, pk=curso_id)
+        
+        # Verifica se o curso já possui um coordenador diferente do atual
+        coordenador_existente = Coordenador.objects.filter(curso=curso).exclude(id=coordenador.id).first()
+        if coordenador_existente:
+            messages.error(request, f"O curso '{curso.nome}' já possui um coordenador registrado.")
+            return render(request, 'apps/ui/coordenador/atualizar.html', dados)
+
 
         coordenador.nome = nome
         coordenador.genero = genero

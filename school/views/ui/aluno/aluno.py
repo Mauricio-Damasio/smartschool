@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpRequest
 from ....models.academico.aluno import Aluno
-from ....models.academico.curso import Curso
-from ....models.academico.classe import Classe
+from ....models.academico.diretor_geral import Diretor
+from ....models.academico.escola import Escola
 from ....models.academico.turma import Turma
 from ....models.academico.professor import Professor
 from ....models.academico.disciplina import Disciplina
@@ -18,29 +18,54 @@ from django.db.models import Count
 # Email
 from school.utils.utils_email import enviar_dados_acesso_aluno
 
+from django.db.models import Avg, Sum
+
+
+
+
 #
 @login_required
 def dashboard_aluno(request):
     
-    #estatisticas
-    turmas = Turma.objects.all()
-    
-    aluno = Aluno.objects.get(user=request.user)
+   
+   #
+    aluno = request.user.aluno  
+
+    # Notas reais por mês 
     mini_pautas = MiniPauta.objects.filter(aluno=aluno)
 
-    alunos_por_turma = turmas.annotate(total_alunos=Count('aluno'))
+    notas_por_mes = {}
+    faltas_por_mes = {}
+
+    '''for pauta in mini_pautas:
+        mes = pauta.data_registo.strftime("%b")  # 
+        notas_por_mes.setdefault(mes, []).append(pauta.mt or 0)
+        faltas_por_mes[mes] = faltas_por_mes.get(mes, 0) + pauta.faltas'''
+
+    meses = list(notas_por_mes.keys())
+    notas = [round(sum(n)/len(n), 1) for n in notas_por_mes.values()]
+    faltas = [faltas_por_mes[m] for m in meses]
+
+    media_geral = MiniPauta.objects.filter(aluno=aluno).aggregate(media=Avg('mt'))['media'] or 0
+
+    total_aulas = 60  # 
+ 
+
+    aulas_hoje = 5  ################
 
     dados = {
-        'total_alunos': Aluno.objects.count(),
-        'total_professores': Professor.objects.count(),
-        'total_turmas': Turma.objects.count(),
-        'total_disciplinas': Disciplina.objects.count(),
-        'alunos_por_turma': alunos_por_turma,
-        'aluno': aluno, 'mini_pautas': mini_pautas
+        "media_notas": round(media_geral, 1),
+        "aulas_ativas": aulas_hoje,
+   
+        "grafico_notas": notas,
+        "grafico_faltas": faltas,
+        "meses": meses,
     }
-    #
-  
     return render(request, 'apps/ui/aluno/perfil/home.html', dados)
+
+
+
+
 
 
 
@@ -50,7 +75,10 @@ def dashboard_aluno(request):
 def index(request: HttpRequest):
 
     # Obter a escola do usuário logado
-    escola = request.user.escola
+     #Admin logado
+    diretor = Diretor.objects.get(user=request.user)
+
+    escola = Escola.objects.filter(direitor=diretor).first()
 
     # Carregar turmas pertencentes à escola
     turmas = Turma.objects.filter(curso__escola=escola).order_by('nome')
@@ -132,7 +160,10 @@ def cadastrar(request:HttpRequest):
    
   
     # Obter a escola do usuário logado
-   escola = request.user.escola
+    #Admin logado
+   diretor = Diretor.objects.get(user=request.user)
+
+   escola = Escola.objects.filter(direitor=diretor).first()
 
     # Carregar turmas pertencentes à escola
    turmas = Turma.objects.filter(curso__escola=escola).order_by('nome')
@@ -263,7 +294,10 @@ def atualizar(request:HttpRequest, id:int):
    
   
     # Obter a escola do usuário logado
-   escola = request.user.escola
+    #Admin logado
+   diretor = Diretor.objects.get(user=request.user)
+
+   escola = Escola.objects.filter(direitor=diretor).first()
 
     # Carregar turmas pertencentes à escola
    turmas = Turma.objects.filter(curso__escola=escola).order_by('nome')

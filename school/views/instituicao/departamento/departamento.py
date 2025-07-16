@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpRequest
 from ....models.academico.departamento import Departamento
+from ....models.academico.escola import Escola
+from ....models.academico.diretor_geral import Diretor
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from school.models.academico.curso import Curso
@@ -9,8 +11,10 @@ from school.models.academico.curso import Curso
 @login_required
 def index(request: HttpRequest):
   
-  #
-  escola = request.user.escola
+   #Admin logado
+  diretor = Diretor.objects.get(user=request.user)
+
+  escola = Escola.objects.filter(direitor=diretor).first()
 
   departamentos = Departamento.objects.filter(curso__escola=escola).order_by('-id')
 
@@ -54,7 +58,10 @@ def visualizar(request:HttpRequest,id:int):
 def cadastrar(request:HttpRequest):
 
        
-   escola = request.user.escola  #Escola logada
+    #Admin logado
+   diretor = Diretor.objects.get(user=request.user)
+
+   escola = Escola.objects.filter(direitor=diretor).first()
     
    # Carregar apenas os cursos da escola logada
    cursos = Curso.objects.filter(escola=escola)
@@ -98,7 +105,10 @@ def atualizar(request: HttpRequest, id: int):
     #
     departamento = get_object_or_404(Departamento, pk=id)
          
-    escola = request.user.escola  #Escola logada
+    #Admin logado
+    diretor = Diretor.objects.get(user=request.user)
+
+    escola = Escola.objects.filter(direitor=diretor).first()
     
            # Carregar apenas os cursos da escola logada
     cursos = Curso.objects.filter(escola=escola)

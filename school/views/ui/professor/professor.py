@@ -10,29 +10,100 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from school.models.academico.turma import Turma
+from school.models.academico.escola import Escola
+from school.models.academico.diretor_geral import Diretor
 from school.models.academico.aluno import Aluno
+from school.models.documento.aula_elaborada import AulaElaborada
+from school.models.relatorio.minipauta import MiniPauta
 from django.db.models import Count
+from ....utils.utils_email import enviar_dados_acesso_professor
+from school.models.academico.disciplinaLecionada import DisciplinaLecionada
+
+from django.contrib.auth.decorators import login_required
+
+from django.db.models import Avg, Count
+
+
+
+
+#
+#DASHBOARD
+#
+
 
 
 
 @login_required
 def dashboard_professor(request):
-    professor = Professor.objects.get(user=request.user)
-    disciplinas = professor.disciplina.all() 
+    professor = request.user.professor  # Acessa o professor logado
+
+    # Disciplinas que ele leciona
+    disciplinas_lecionadas = DisciplinaLecionada.objects.filter(professor=professor)
+
+    # Turmas únicas
+    turmas = disciplinas_lecionadas.values_list('turma', flat=True).distinct()
+
+    # Total de alunos nas turmas do professor
     
-    turmas = Turma.objects.all()
-    alunos_por_turma = turmas.annotate(total_alunos=Count('aluno'))
+    total_alunos = Aluno.objects.filter(turma__in=turmas).count()
+
+    # Total de disciplinas lecionadas
+    total_disciplinas = disciplinas_lecionadas.count()
+
+    # Total de aulas no mês atual
+    from datetime import datetime
+    agora = datetime.now()
+    total_aulas_mes = AulaElaborada.objects.filter(
+        professor=professor,
+        data__month=agora.month,
+        data__year=agora.year
+    ).count()
+
+    # Presença geral
+    pautas = MiniPauta.objects.filter(
+        professor=professor,
+        turma__in=turmas
+    )
+
+    total_registros = pautas.count()
+    frequencia_geral = 0
+    if total_registros > 0:
+        frequencia_geral = int(pautas.aggregate(avg=Avg('aluno'))['avg'] or 0)
+
+    # Presença por turma
+    nomes_turmas = []
+    presencas_turmas = []
+    for t_id in turmas:
+        nome = disciplinas_lecionadas.filter(turma=t_id).first().turma.nome
+        nomes_turmas.append(nome)
+        media_turma = pautas.filter(turma_id=t_id).aggregate(avg=Avg('aluno'))['avg'] or 0
+        presencas_turmas.append(int(media_turma))
+
+    # Médias por disciplina
+    nomes_disciplinas = []
+    medias_disciplinas = []
+    for dl in disciplinas_lecionadas:
+        nome = dl.disciplina.nome
+        nomes_disciplinas.append(nome)
+        media = pautas.filter(disciplina=dl.disciplina).aggregate(avg=Avg('mt'))['avg'] or 0
+        medias_disciplinas.append(round(media, 1))
 
     dados = {
-        'total_alunos': Aluno.objects.count(),
-        'total_professores': Professor.objects.count(),
-        'total_turmas': Turma.objects.count(),
-        'total_disciplinas': Disciplina.objects.count(),
-        'alunos_por_turma': alunos_por_turma,
-        'professor': professor, 'disciplinas':disciplinas
-   
+        'total_alunos': total_alunos,
+        'total_disciplinas': total_disciplinas,
+        'total_aulas_mes': total_aulas_mes,
+        'frequencia_geral': frequencia_geral,
+        'nomes_turmas': nomes_turmas,
+        'presencas_turmas': presencas_turmas,
+        'nomes_disciplinas': nomes_disciplinas,
+        'medias_disciplinas': medias_disciplinas,
     }
-    return render(request, 'apps/ui/professor/perfil/home.html', dados)
+
+    return render(request,  'apps/ui/professor/perfil/home.html', dados)
+
+
+
+
 
 
 
@@ -43,7 +114,10 @@ def index(request: HttpRequest):
   
   #escola logada
   
-  escola = request.user.escola
+  #Admin logado
+  diretor = Diretor.objects.get(user=request.user)
+
+  escola = Escola.objects.filter(direitor=diretor).first()
   
   # Carregar todos os dados para os selects
   departamentos = Departamento.objects.filter(curso__escola=escola)
@@ -90,23 +164,44 @@ def perfil(request:HttpRequest,id:int):
   
   
 # Visualizar professor
-@login_required  
-def visualizar(request:HttpRequest,id:int):
-    professor = get_object_or_404(Professor, id=id)
-    disciplinas = professor.disciplina.all()  # Porque é ManyToMany
-    departamento = professor.departamento
+@login_required
+def visualizar(request: HttpRequest, id: int):
+    professor = get_object_or_404(Professor, pk=id)
 
-    dados = {
+    #Escola logada
+    #Admin logado
+    diretor = Diretor.objects.get(user=request.user)
+
+    escola = Escola.objects.filter(direitor=diretor).first()
+
+    if not professor.departamento.curso.escola == escola:
+        messages.error(request, "Você não tem permissão para visualizar este professor.")
+        return redirect('school:listar_atribuicao')
+
+    atribuicoes = DisciplinaLecionada.objects.filter(
+        professor=professor,
+        turma__curso__escola=escola
+    ).select_related('disciplina', 'turma', 'turma__classe', 'turma__curso')
+
+    return render(request,  'apps/ui/professor/visualizar.html', {
         'professor': professor,
-        'disciplinas': disciplinas,
-        'departamento': departamento,
-    }
-    return render(request, 'apps/ui/professor/visualizar.html', dados)
+        'atribuicoes': atribuicoes
+    })
+
+
+
+
+
+
+
+
+
   
 
 # Recebendo o email para ser verificado se é válido
 def email_valido(email):
   return re.match(r"[^@]+@[^@]+\.[^@]+", email)
+
 
 
 
@@ -116,39 +211,37 @@ def email_valido(email):
 def cadastrar(request:HttpRequest):
    
    #Escola logada
-   escola = request.user.escola
+   #Admin logado
+   diretor = Diretor.objects.get(user=request.user)
+
+   escola = Escola.objects.filter(direitor=diretor).first()
    
    # Carregar dados para os seletes
    departamentos = Departamento.objects.filter(curso__escola=escola)
-   disciplinas = Disciplina.objects.filter(curso__escola=escola)
   
-  
-   disciplinas_selecionadas = [] 
 
    if request.method == 'POST':
    
         nome = request.POST.get('nome')
         genero = request.POST.get('genero')
         image = request.FILES.get('image')
-        numAgente = request.POST.get('numAgente')
-        disciplina_id = request.POST.getlist('disciplina')
+        numAgente = request.POST.get('numAgente')        
         departamento_id = request.POST.get('departamento')
-        
-        disciplinas_selecionadas = [int(d) for d in disciplina_id]
+    
    
         
         
           # Validações
-        if not all([nome, genero, numAgente, disciplina_id,departamento_id]):
+        if not all([nome, genero, numAgente, departamento_id]):
             messages.error(request, "Todos os campos obrigatórios devem ser preenchidos.")
-            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos, 'disciplinas':disciplinas,'disciplinas_selecionadas': disciplinas_selecionadas, })
+            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos })
 
        
 
        # Verificar se o número de agente já existe
         if Professor.objects.filter(numAgente=numAgente).exists():
             messages.error(request, 'O número de agente já existe!')
-            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos, 'disciplinas':disciplinas,'disciplinas_selecionadas': disciplinas_selecionadas})
+            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos})
 
        
         departamento = get_object_or_404(Departamento, pk=departamento_id)
@@ -171,22 +264,22 @@ def cadastrar(request:HttpRequest):
         if User.objects.filter(username=username).exists() :
           
             messages.error(request, "O usuário já existe")
-            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos, 'disciplinas':disciplinas,'disciplinas_selecionadas': disciplinas_selecionadas})
+            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos})
         #
         if  not email_valido(email):
           
             messages.error(request, "E-mail inválido.")
-            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos, 'disciplinas':disciplinas,'disciplinas_selecionadas': disciplinas_selecionadas})
+            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos})
         #
         if  not username:
           
             messages.error(request, "Insira o nome do usuário!")
-            return render(request, 'apps/ui/professor/cadastrar.html',  {'departamentos':departamentos, 'disciplinas':disciplinas,'disciplinas_selecionadas': disciplinas_selecionadas})
+            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos})
 
         #
         if senha != senha_confirmar:
             messages.error(request, "As senhas não correspondem!")
-            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos, 'disciplinas':disciplinas,'disciplinas_selecionadas': disciplinas_selecionadas})
+            return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos})
         
         
         
@@ -210,26 +303,27 @@ def cadastrar(request:HttpRequest):
            
         )
         
-         # Adicionar disciplinas (ManyToMany)
-        professor.disciplina.set(disciplinas_selecionadas)
-        professor.save()
+
         
         
         
-        
-           # Enviar e-mail com dados de acesso
-        '''send_mail(
-            'Dados de Acesso ao Sistema SmartSchool',
-            f'Olá {nome},\n\nSeu cadastro como professor(a) foi realizado com sucesso!\n\nUsuário: {username}\nSenha: {password}\n\nAcesse o sistema usando suas credenciais.\n\nObrigado.',
-            settings.DEFAULT_FROM_EMAIL,
-            [user.email if user.email else f'{username}@smartschool.com'],  
-            fail_silently=False,
-        )'''
+         ####
+        # 
+        # Enviar e-mail com dados de acesso
+        #
+        email_enviado = enviar_dados_acesso_professor(nome, username, senha, user.email)
+
+        if email_enviado:
+            messages.success(request, f'Professor(a) {nome} cadastrado com sucesso! Dados de acesso enviados para {user.email}.')
+        else:
+            messages.error(request, f'Professor(a) {nome} cadastrado com sucesso, mas o envio de e-mail falhou.')
 
         messages.success(request, f'Professor (a) {nome} cadastrado com sucesso!')
         return redirect('school:listar_professores')
 
-   return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos, 'disciplinas':disciplinas,'disciplinas_selecionadas': disciplinas_selecionadas})
+   return render(request, 'apps/ui/professor/cadastrar.html', {'departamentos':departamentos})
+
+
 
 
 # Atualizar
@@ -240,34 +334,31 @@ def atualizar(request: HttpRequest, id: int):
     
     
     #Escola logada
-    escola = request.user.escola
+    #Admin logado
+    diretor = Diretor.objects.get(user=request.user)
+
+    escola = Escola.objects.filter(direitor=diretor).first()
    
     # Carregar dados para os seletes
     departamentos = Departamento.objects.filter(curso__escola=escola)
-    disciplinas = Disciplina.objects.filter(curso__escola=escola)
 
-    # Pré-selecionar disciplinas já atribuídas
-    disciplinas_selecionadas = list(professor.disciplina.values_list('id', flat=True))
 
     if request.method == 'POST':
         nome = request.POST.get('nome')
         genero = request.POST.get('genero')
         image = request.FILES.get('image') or professor.image  # Mantém a imagem se não for alterada
         numAgente = request.POST.get('numAgente')
-        disciplina_id = request.POST.getlist('disciplina')
         departamento_id = request.POST.get('departamento')
 
        
-        disciplinas_selecionadas = [int(d) for d in disciplina_id ]
-
+    
         dados = {
             'professor': professor,
             'departamentos': departamentos,
-            'disciplinas': disciplinas,
-            'disciplinas_selecionadas': disciplinas_selecionadas,
+           
         }
 
-        if not all([nome, numAgente, genero, departamento_id, disciplinas_selecionadas]):
+        if not all([nome, numAgente, genero, departamento_id]):
             messages.error(request, "Todos os campos obrigatórios devem ser preenchidos.")
             return render(request, 'apps/ui/professor/atualizar.html', dados)
 
@@ -282,7 +373,7 @@ def atualizar(request: HttpRequest, id: int):
            professor.image = image
 
         professor.save(force_update=True)
-        professor.disciplina.set(disciplinas_selecionadas)
+  
 
         messages.success(request, f'Professor(a) {nome} atualizado com sucesso!')
         return redirect('school:listar_professores')
@@ -291,8 +382,7 @@ def atualizar(request: HttpRequest, id: int):
     dados = {
         'professor': professor,
         'departamentos': departamentos,
-        'disciplinas': disciplinas,
-        'disciplinas_selecionadas': disciplinas_selecionadas,
+       
     }
 
     return render(request, 'apps/ui/professor/atualizar.html', dados)
