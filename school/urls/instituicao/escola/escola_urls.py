@@ -1,5 +1,5 @@
 from django.urls import path
-from  ....views.instituicao.escola.escola import index, visualizar,cadastrar,atualizar,eliminar,dashboard_admin,diretor_detalhe,pedagogico_detalhe, listar_cursos
+from  ....views.instituicao.escola.escola import index, visualizar,cadastrar,atualizar,eliminar,dashboard_admin,diretor_detalhe,pedagogico_detalhe, listar_cursos,administrativo_detalhe
 from ....views.instituicao.escola.estatistica import  relatorio_estatisticas_gerais
 from ....views.instituicao.escola.documentos import  gerar_certificado,filtrar_aluno
 
@@ -14,6 +14,7 @@ urlpatterns = [
     #detalhes
     path('diretor_detalhe/', diretor_detalhe, name="diretor_detalhe"),
     path('pedagogico_detalhe/', pedagogico_detalhe, name="pedagogico_detalhe"),
+    path('administrativo_detalhe/', administrativo_detalhe, name="administrativo_detalhe"),
     path('listar_cursos/',  listar_cursos, name="listar_cursos_escola"),
     
     
