@@ -74,13 +74,7 @@ def registrar(request:HttpRequest):
 
 
 
-
-
-
-
 # Login
-
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')

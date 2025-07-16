@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>smartSchool- {% block title %}{% endblock %}</title>
 
 		<!--::-HEAD-::-->
@@ -11,6 +12,7 @@
 			<!---->
 	</head>
 	<body class="">
+		<div class="container-fluid">
 		<div class="wrapper">
 			<!--::-SIDEBAR-::-->
 			{% include "layout/sidebar/sidebar.html" %}
@@ -27,6 +29,7 @@
 					{% block content %} {% endblock %}
 				</div>
 			</div>
+		</div>
 		</div>
 
 		<!--::-SCRIPTS JS-::-->

@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>smartSchool- {% block title %}{% endblock %}</title>
 		<!--Begin::-->
 		<script src="{% static 'js/chart/border-radius-stacked-number-mixed-chart.js' %}"></script>
@@ -13,6 +14,7 @@
 		{% include "layout/header.html" %} {% include "layout/status.html" %}
 	</head>
 	<body class="">
+		<div class="container-fluid">
 		<div class="wrapper">
 			<!--::-SIDEBAR-::-->
 			{% include "layout/sidebar/sidebar.html" %}
@@ -29,6 +31,7 @@
 					<!---->
 					{% endblock %}
 					<!---->
+				</div>
 				</div>
 			</div>
 		</div>
