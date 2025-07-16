@@ -62,12 +62,16 @@ TEMPLATES = [
 
 # Banco de dados PostgreSQL (Render usa DATABASE_URL)
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_smartschool_j3jo',
+        'USER': 'user_smartschool',
+        'PASSWORD': 'RJhIzuVGFhBqgKmZCiVNVoE6utlNxApn',
+        'HOST': 'dpg-d1rd3t3e5dus73dipuj0-a.oregon-postgres.render.com', 
+        'PORT': '5432',
+    }
 }
+
 
 # Validação de senha
 AUTH_PASSWORD_VALIDATORS = [
