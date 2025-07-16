@@ -3,6 +3,9 @@
 venv/
 .env
 
+README.md
+
+test_conn.py
 
 # Arquivos de configurações do sistema
 __pycache__/

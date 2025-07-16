@@ -4,8 +4,6 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from school.models.academico.aluno import Aluno
 from school.models.relatorio.minipauta import MiniPauta
-from school.models.academico.escola import Escola
-from school.models.academico.diretor_geral import Diretor
 import datetime
 from django.http import HttpRequest
 from django.contrib.auth.decorators import login_required
@@ -17,10 +15,8 @@ from django.contrib import messages
 @login_required
 def filtrar_aluno(request: HttpRequest):
 
-      #Admin logado
-    diretor = Diretor.objects.get(user=request.user)
-
-    escola = Escola.objects.filter(direitor=diretor).first()
+    # Obter a escola do usuário logado
+    escola = request.user.escola
 
     # Carregar turmas pertencentes à escola
     turmas = Turma.objects.filter(curso__escola=escola).order_by('nome')
@@ -49,15 +45,6 @@ def filtrar_aluno(request: HttpRequest):
 
 
 def gerar_certificado(request, aluno_id):
-    
-     
-      #Admin logado
-    diretor = Diretor.objects.get(user=request.user)
-
-    escola = Escola.objects.filter(direitor=diretor).first()
-
-
-    
     aluno = get_object_or_404(Aluno, pk=aluno_id)
     notas = MiniPauta.objects.filter(aluno=aluno)
     
@@ -83,7 +70,7 @@ def gerar_certificado(request, aluno_id):
         'media_final': media_final,
         'situacao': situacao,
         'data_emissao': datetime.date.today().strftime("%d de %B de %Y"),
-        'escola': escola,
+        'escola': request.user.escola,
     })
 
     html = HTML(string=html_string)

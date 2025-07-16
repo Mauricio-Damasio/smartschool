@@ -8,94 +8,6 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from school.models.academico.escola import Escola
-from ....utils.utils_email import enviar_dados_acesso_administrativo
-
-#
-from django.shortcuts import render
-from django.db.models import Count, Q
-from django.utils.timezone import now
-from datetime import datetime, timedelta
-from collections import OrderedDict
-from school.models.academico.aluno import Aluno
-from school.models.relatorio.pagamento import Pagamento
-from school.models.relatorio.assiduidade import Assiduidade
-from school.models.relatorio.minipauta import MiniPauta
-from school.models.relatorio.desempenho import Desempenho
-
-
-
-#
-#
-#
-
-
-@login_required
-def dashboard_administrativo(request):
-    #Administrativo logado
-    administrativo = DiretorAdministrativo.objects.get(user=request.user)
-    
-    escola =Escola.objects.filter(direitor_administrativo=administrativo).first()
-
-    # Totais
-    total_alunos = Aluno.objects.filter(turma__curso__escola=escola).count()
-    total_pagamentos_pagos = Pagamento.objects.filter(aluno__turma__curso__escola=escola, status='Pago').count()
-    total_pagamentos_pendentes = Pagamento.objects.filter(aluno__turma__curso__escola=escola, status='Pendente').count()
-
-    # Assiduidade atual
-    assid_professores = Assiduidade.objects.filter(professor__departamento__curso__escola=escola, cargo='Professor').count()
-    assid_coordenadores = Assiduidade.objects.filter(coordenador__curso__escola=escola, cargo='Coordenador').count()
-
-    # Desempenho (MiniPauta)
-    desempenho = {
-        'excelente': MiniPauta.objects.filter(aluno__turma__curso__escola=escola, mt__gte=17).count(),
-        'bom': MiniPauta.objects.filter(aluno__turma__curso__escola=escola, mt__gte=14, mt__lt=17).count(),
-        'regular': MiniPauta.objects.filter(aluno__turma__curso__escola=escola, mt__gte=10, mt__lt=14).count(),
-        'fraco': MiniPauta.objects.filter(aluno__turma__curso__escola=escola, mt__lt=10).count(),
-    }
-
-    # Assiduidade últimos 6 meses
-    hoje = now().date()
-    meses_labels = []
-    professores_assid = []
-    coordenadores_assid = []
-
-    for i in range(5, -1, -1):
-        mes = (hoje.replace(day=1) - timedelta(days=i * 30))
-        label = mes.strftime('%b/%Y')
-        professores = Assiduidade.objects.filter(
-            professor__departamento__curso__escola=escola,
-            data__year=mes.year,
-            data__month=mes.month,
-            cargo='Professor'
-        ).count()
-        coordenadores = Assiduidade.objects.filter(
-            coordenador__curso__escola=escola,
-            data__year=mes.year,
-            data__month=mes.month,
-            cargo='Coordenador'
-        ).count()
-
-        meses_labels.append(label)
-        professores_assid.append(professores)
-        coordenadores_assid.append(coordenadores)
-
-    dados = {
-        'total_alunos': total_alunos,
-        'total_pagamentos_pagos': total_pagamentos_pagos,
-        'total_pagamentos_pendentes': total_pagamentos_pendentes,
-        'assid_professores': assid_professores,
-        'assid_coordenadores': assid_coordenadores,
-        'desempenho': desempenho,
-        'meses_labels': meses_labels,
-        'professores_assid': professores_assid,
-        'coordenadores_assid': coordenadores_assid,
-    }
-
-    return render(request, 'apps/instituicao/administrativo/perfil/home.html', dados)
-
-#
-#
-
 
 # Listar professores
 @login_required
@@ -231,18 +143,6 @@ def cadastrar(request:HttpRequest):
         
        
         administrativo.save()
-        print(f'Usuário: {user.username}, Perfil: {hasattr(user, "administrativo")}')
-
-          ####
-        # 
-        # Enviar e-mail com dados de acesso
-        #
-        email_enviado = enviar_dados_acesso_administrativo(nome, username, senha, user.email)
-
-        if email_enviado:
-            messages.success(request, f'Diretor(a) administrativo {nome} cadastrado com sucesso! Dados de acesso enviados para {user.email}.')
-        else:
-            messages.error(request, f'Diretor(a) administrativo {nome} cadastrado com sucesso, mas o envio de e-mail falhou.')
 
         messages.success(request, f'Direitor (a) administrativo {nome} cadastrado com sucesso!')
         return redirect('school:listar_administrativos')

@@ -30,13 +30,11 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from school.models.academico.disciplinaLecionada import DisciplinaLecionada
 
-
-
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.db.models import Q
-
+TRIMESTRES = [
+    (1, "1º Trimestre"),
+    (2, "2º Trimestre"),
+    (3, "3º Trimestre"),
+]
 
 TRIMESTRES = [
     (1, "1º Trimestre"),
@@ -52,54 +50,54 @@ def mini_pauta_preencher(request):
     disciplina_id = request.GET.get('disciplina')
     trimestre = request.GET.get('trimestre')
 
-    # Buscar turmas que o professor leciona via DisciplinaLecionada
+    # Buscar turmas que o professor leciona
     turmas = Turma.objects.filter(
         id__in=DisciplinaLecionada.objects.filter(
             professor=professor
         ).values_list('turma__id', flat=True)
     ).distinct()
 
-    # Buscar disciplinas que ele leciona 'por turma associada'
-    disciplinas = Disciplina.objects.filter(
-        id__in=DisciplinaLecionada.objects.filter(
-            professor=professor
-        ).values_list('disciplina__id', flat=True)
-    ).distinct()
+    # Buscar disciplinas que o professor leciona
+    disciplinas = professor.disciplina.all()
 
+    disciplina = None
     alunos = []
     pauta_dict = {}
     trimestre_liberado = False
 
     if turma_id and disciplina_id and trimestre:
-        # Verificar se o professor realmente leciona esta disciplina nesta turma
-        relacao = DisciplinaLecionada.objects.filter(
-            professor=professor,
-            turma__id=turma_id,
-            disciplina__id=disciplina_id
-        ).first()
+        try:
+            relacao = DisciplinaLecionada.objects.get(
+                professor=professor,
+                turma__id=turma_id
+            )
 
-        if relacao:
-            # Verificar se o trimestre está desbloqueado
-            desbloqueio = TrimestreLiberado.objects.filter(
-                turma__id=turma_id,
-                disciplina__id=disciplina_id,
-                trimestre=int(trimestre)
-            ).first()
+            # Verifica se o professor leciona essa disciplina
+            if professor.disciplina.filter(id=disciplina_id).exists():
+                disciplina = Disciplina.objects.get(id=disciplina_id)
 
-            if desbloqueio and desbloqueio.liberado:
-                trimestre_liberado = True
-                alunos = Aluno.objects.filter(turma__id=turma_id).order_by('nome')
-                pautas = MiniPauta.objects.filter(
-                    aluno__in=alunos,
-                    disciplina_id=disciplina_id,
-                    trimestre=trimestre,
-                    professor=professor
-                )
-                pauta_dict = {pauta.aluno_id: pauta for pauta in pautas}
+                desbloqueio = TrimestreLiberado.objects.filter(
+                    turma__id=turma_id,
+                    disciplina__id=disciplina_id,
+                    trimestre=int(trimestre)
+                ).first()
+
+                if desbloqueio and desbloqueio.liberado:
+                    trimestre_liberado = True
+                    alunos = Aluno.objects.filter(turma__id=turma_id).order_by('nome')
+                    pautas = MiniPauta.objects.filter(
+                        aluno__in=alunos,
+                        disciplina_id=disciplina_id,
+                        trimestre=trimestre,
+                        professor=professor
+                    )
+                    pauta_dict = {pauta.aluno_id: pauta for pauta in pautas}
+                else:
+                    messages.error(request, "Este trimestre está bloqueado para esta turma e disciplina.")
             else:
-                messages.error(request, "Este trimestre está bloqueado para esta turma e disciplina.")
-        else:
-            messages.error(request, "Você não leciona esta disciplina nesta turma.")
+                messages.error(request, "Você não leciona esta disciplina.")
+        except DisciplinaLecionada.DoesNotExist:
+            messages.error(request, "Você não leciona nesta turma.")
 
     context = {
         'turmas': turmas,
@@ -118,14 +116,123 @@ def mini_pauta_preencher(request):
 
 
 
+'''TRIMESTRES = [
+    (1, "1º Trimestre"),
+    (2, "2º Trimestre"),
+    (3, "3º Trimestre"),
+]
 
+@login_required
+def mini_pauta_preencher(request):
+    professor = get_object_or_404(Professor, user=request.user)
 
+    turma_id = request.GET.get('turma')
+    disciplina_id = request.GET.get('disciplina')
+    trimestre = request.GET.get('trimestre')
 
+    # Turmas e disciplinas que o professor realmente leciona
+    turmas = Turma.objects.filter(disciplinalecionada__professor=professor).distinct()
+    disciplinas = Disciplina.objects.filter(disciplinalecionada__professor=professor).distinct()
 
+    alunos = []
+    pauta_dict = {}
+    trimestre_liberado = False
 
+    if turma_id and disciplina_id and trimestre:
+        desbloqueio = TrimestreLiberado.objects.filter(
+            turma_id=turma_id,
+            disciplina_id=disciplina_id,
+            trimestre=int(trimestre)
+        ).first()
+
+        if desbloqueio and desbloqueio.liberado:
+            trimestre_liberado = True
+            alunos = Aluno.objects.filter(turma_id=turma_id).order_by('nome')
+            pautas = MiniPauta.objects.filter(
+                aluno__in=alunos,
+                disciplina_id=disciplina_id,
+                trimestre=trimestre,
+                professor=professor
+            )
+            pauta_dict = {pauta.aluno_id: pauta for pauta in pautas}
+        else:
+            messages.error(request, "Este trimestre está bloqueado para a turma e disciplina selecionadas.")
+
+    context = {
+        'turmas': turmas,
+        'disciplinas': disciplinas,
+        'trimestres': TRIMESTRES,
+        'alunos': alunos,
+        'pauta_dict': pauta_dict,
+        'turma_id': turma_id,
+        'disciplina_id': disciplina_id,
+        'trimestre': trimestre,
+        'trimestre_liberado': trimestre_liberado,
+    }
+
+    return render(request, 'apps/ui/professor/notas/preencher_minipauta.html', context)
+
+'''
 #
-# Salvar mini pauta
 #
+
+'''TRIMESTRES = [
+    (1, "1º Trimestre"),
+    (2, "2º Trimestre"),
+    (3, "3º Trimestre"),
+]
+
+def mini_pauta_preencher(request):
+    turma_id = request.GET.get('turma')
+    disciplina_id = request.GET.get('disciplina')
+    trimestre = request.GET.get('trimestre')
+
+    turmas = Turma.objects.all()
+    disciplinas = Disciplina.objects.all()
+    alunos = []
+    pauta_dict = {}
+    trimestre_liberado = False
+
+    if turma_id and disciplina_id and trimestre:
+        desbloqueio = TrimestreLiberado.objects.filter(
+            turma_id=turma_id,
+            disciplina_id=disciplina_id,
+            trimestre=int(trimestre)
+        ).first()
+
+        if desbloqueio and desbloqueio.liberado:
+            trimestre_liberado = True
+            alunos = Aluno.objects.filter(turma_id=turma_id).order_by('nome')
+            pautas = MiniPauta.objects.filter(
+                aluno__in=alunos,
+                disciplina_id=disciplina_id,
+                trimestre=trimestre
+            )
+            pauta_dict = {pauta.aluno_id: pauta for pauta in pautas}
+        else:
+            messages.error(request, "Este trimestre está bloqueado para a turma e disciplina selecionadas.")
+
+    context = {
+        'turmas': turmas,
+        'disciplinas': disciplinas,
+        'trimestres': TRIMESTRES,
+        'alunos': alunos,
+        'pauta_dict': pauta_dict,
+        'turma_id': turma_id,
+        'disciplina_id': disciplina_id,
+        'trimestre': trimestre,
+        'trimestre_liberado': trimestre_liberado,
+    }
+
+    return render(request, 'apps/ui/professor/notas/preencher_minipauta.html', context)
+
+'''
+
+
+
+
+
+
 @csrf_protect  
 @require_POST
 def salvar_mini_pauta(request):

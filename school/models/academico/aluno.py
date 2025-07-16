@@ -17,6 +17,6 @@ class Aluno(Pessoa):
     db_table = 'aluno'
     
   def __str__(self):
-    return self.nome or "sem nome"
+    return self.nome or "Sem nome"
 
     

@@ -13,56 +13,16 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.crypto import get_random_string
 from django.contrib.auth.models import User, Group
-    
-from school.models.academico.turma import Turma      
-from school.models.academico.aluno import Aluno      
-from school.models.academico.professor import Professor      
-from school.models.academico.coordenador import Coordenador      
-from school.models.academico.disciplina import Disciplina      
-from school.models.academico.departamento import Departamento      
-from school.models.academico.diretor_geral import Diretor      
+      
 from datetime import datetime
-from ....utils.utils_email import enviar_dados_acesso_escola
+
 
 
 ##Perfil de da escola admin
 
-
-@login_required
 def dashboard_admin(request:HttpRequest):
     
-    #Admin logado
-    diretor = Diretor.objects.get(user=request.user)
-
-    escola = Escola.objects.filter(direitor=diretor).first()
-   
-
-    cursos = Curso.objects.filter(escola=escola)
-    turmas = Turma.objects.filter(curso__escola=escola)
-    alunos = Aluno.objects.filter(turma__curso__escola=escola)
-    professores = Professor.objects.filter(departamento__curso__escola=escola)
-    coordenadores = Coordenador.objects.filter(curso__escola=escola)
-    disciplinas = Disciplina.objects.filter(curso__escola=escola)
-    departamentos = Departamento.objects.filter(curso__escola=escola)
-
-    alunos_por_turma = [
-        {"turma": turma.nome, "total": alunos.filter(turma=turma).count()}
-        for turma in turmas
-    ]
-
-    dados = {
-        "total_professores": professores.count(),
-        "total_alunos": alunos.count(),
-        "total_coordenadores": coordenadores.count(),
-        "total_disciplinas": disciplinas.count(),
-        "total_turmas": turmas.count(),
-        "total_departamentos": departamentos.count(),
-        "total_cursos": cursos.count(),
-        "alunos_por_turma": alunos_por_turma,
-    }
-
-    return render(request, 'apps/instituicao/escola/perfil/home.html', dados)
-
+    return render(request, 'apps/instituicao/escola/perfil/dashboard_admin.html')
 
 
 
@@ -156,6 +116,7 @@ def cadastrar(request:HttpRequest):
         direitor_administrativo_id = request.POST.get('direitor_administrativo')
         logo = request.FILES.get('logo')
         alvara = request.FILES.get('alvara')
+        ano_fundacao_raw = request.POST.get("ano_fundacao", "").strip()
         tipo_escola = request.POST.get('tipo_escola')
        
        
@@ -178,10 +139,28 @@ def cadastrar(request:HttpRequest):
         
         
           # Validações
-        if not all([nome, nif, provincia_id, municipio_id, bairro_id, direitor_id, direitor_pedagogico_id,       direitor_administrativo_id, tipo_escola]):
+        if not all([nome, nif, provincia_id, municipio_id, bairro_id, direitor_id, direitor_pedagogico_id,       direitor_administrativo_id, tipo_escola, ano_fundacao_raw]):
             messages.error(request, "Todos os campos obrigatórios devem ser preenchidos.")
             return render(request, 'apps/instituicao/escola/cadastrar.html', dados)
-         
+          
+    
+        print(f"[DEBUG] Valor recebido para ano_fundacao: '{ano_fundacao_raw}'")
+
+
+        # Validar ano de fundação
+        try:
+            # Convertendo para data e pegando apenas o ano
+            data_fundacao = datetime.strptime(ano_fundacao_raw, "%Y-%m-%d")
+            ano_fundacao_int = data_fundacao.year
+
+            ano_atual = datetime.now().year
+            if ano_fundacao_int < 1900 or ano_fundacao_int > ano_atual:
+                messages.error(request, f"O ano de fundação deve estar entre 1900 e {ano_atual}.")
+                return render(request, 'apps/instituicao/escola/cadastrar.html', dados)
+        except (ValueError, TypeError):
+            messages.error(request, "Ano de fundação inválido. Insira uma data válida.")
+            return render(request, 'apps/instituicao/escola/cadastrar.html', dados)
+                
           
         if Escola.objects.filter(direitor=direitor_id):
             messages.error(request, "O direitor já existe.")
@@ -206,6 +185,46 @@ def cadastrar(request:HttpRequest):
       
     
       
+      ####################################################################
+        # Dados de perfil
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        senha = request.POST.get('senha') or get_random_string(8)
+        senha_confirmar = request.POST.get('senha') or get_random_string(8)
+        
+        
+         
+        ###########################
+        # Validando dados de perfil
+        ###########################
+        
+        #
+        if User.objects.filter(username=username).exists() :
+          
+            messages.error(request, "O usuário já existe")
+            return render(request, 'apps/instituicao/escola/cadastrar.html', dados)
+
+       
+        #
+        if  not username:
+          
+            messages.error(request, "Insira o nome do usuário!")
+            return render(request, 'apps/instituicao/escola/cadastrar.html', dados)
+
+       
+
+        #
+        if senha != senha_confirmar:
+            messages.error(request, "As senhas não correspondem!")
+            return render(request,'apps/instituicao/escola/cadastrar.html', dados)
+
+       
+        
+        
+        #  # #
+        user = User.objects.create_user(username=username, email=email,password=senha)
+        grupo = Group.objects.get(name='Escola')
+        user.groups.add(grupo)
         
       
         ###################################################################################
@@ -223,8 +242,9 @@ def cadastrar(request:HttpRequest):
             bairro=bairro,
             logo=logo,
             alvara=alvara,
+            ano_fundacao=ano_fundacao_raw,
             tipo_escola=tipo_escola,
-       
+            user=user,
         )
         
         
@@ -243,8 +263,7 @@ def cadastrar(request:HttpRequest):
 
 
 
-         ####
-      
+        
 
         messages.success(request, f'Escola {nome} cadastrada com sucesso!')
         return redirect('school:listar_escolas')
@@ -297,6 +316,7 @@ def atualizar(request: HttpRequest, id: int):
         direitor_administrativo_id = request.POST.get('direitor_administrativo')
         logo = request.FILES.get('logo') or escola.logo
         alvara = request.FILES.get('alvara')
+        ano_fundacao = request.POST.get('ano_fundacao')
         tipo_escola = request.POST.get('tipo_escola')
         
        
@@ -359,6 +379,7 @@ def atualizar(request: HttpRequest, id: int):
         escola.bairro=bairro
         
         escola.alvara=alvara
+        escola.ano_fundacao=ano_fundacao
         escola.tipo_escola=tipo_escola
         
         if logo:
@@ -426,10 +447,7 @@ def eliminar(request:HttpRequest, id:int):
 
 def diretor_detalhe(request:HttpRequest):
     
-     #Admin logado
-    diretor = Diretor.objects.get(user=request.user)
-
-    escola = Escola.objects.filter(direitor=diretor).first()
+    escola = request.user.escola  #Escola logada
     
     direitor = escola.direitor #direitor da escola logada
     
@@ -440,24 +458,11 @@ def diretor_detalhe(request:HttpRequest):
 #Visualizar pedagógicos
 def pedagogico_detalhe(request:HttpRequest):
     
-     #Admin logado
-    diretor = Diretor.objects.get(user=request.user)
-
-    escola = Escola.objects.filter(direitor=diretor).first()
+    escola = request.user.escola  #Escola logada
+    
     pedagogico = escola.direitor_pedagogico #pedagogico da escola logada
     
     return render(request, 'apps/instituicao/escola/perfil/pedagogico_detalhe.html', {'pedagogico': pedagogico})
-   
-#Visualizar administrativo
-def administrativo_detalhe(request:HttpRequest):
-    
-     #Admin logado
-    diretor = Diretor.objects.get(user=request.user)
-
-    escola = Escola.objects.filter(direitor=diretor).first()
-    administrativo = escola.direitor_administrativo #Administrativo da escola logada
-    
-    return render(request, 'apps/instituicao/administrativo/layout/perfil.html', {'administrativo': administrativo})
    
    
    
@@ -469,10 +474,7 @@ def administrativo_detalhe(request:HttpRequest):
 def listar_cursos(request:HttpRequest):
     
      
-     #Admin logado
-    diretor = Diretor.objects.get(user=request.user)
-
-    escola = Escola.objects.filter(direitor=diretor).first()
+    escola = request.user.escola  #Escola logada
     
            # Carregar apenas os cursos da escola logada
     cursos = Curso.objects.filter(escola=escola)

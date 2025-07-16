@@ -60,15 +60,18 @@ TEMPLATES = [
     },
 ]
 
-# Banco de dados PostgreSQL (Render usa DATABASE_URL)
+# Banco de dados PostgreSQL 
 DATABASES = {
-     'default': {
+    
+     
+      'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'db_smartschool_j3jo',
         'USER': 'user_smartschool',
         'PASSWORD': 'RJhIzuVGFhBqgKmZCiVNVoE6utlNxApn',
         'HOST': 'dpg-d1rd3t3e5dus73dipuj0-a.oregon-postgres.render.com', 
         'PORT': '5432',
+    
     }
 }
 

@@ -16,84 +16,31 @@ from django.db.models import Count
 
 # Email
 from school.utils.utils_email import enviar_dados_acesso_pedagogico
-from school.models.academico.disciplinaLecionada import DisciplinaLecionada
-from school.models.relatorio.trimestre_liberado import TrimestreLiberado
+from django.core.mail import send_mail
+from django.conf import settings
 
-from school.models.relatorio.minipauta import MiniPauta
-import json
+
 
 #Dashboard
 
-
-
 @login_required
 def dashboard_pedagogico(request):
-    pedagogico = Pedagogico.objects.get(user=request.user)
-    escola = Escola.objects.filter(direitor_pedagogico=pedagogico).first()
+    
+    #
+   
+    turmas = Turma.objects.all()
+    alunos_por_turma = turmas.annotate(total_alunos=Count('aluno'))
 
-    # Total de atribuições de disciplinas a professores
-    total_atribuicoes = DisciplinaLecionada.objects.filter(
-        professor__departamento__curso__escola=escola
-    ).count()
-
-    # Trimestres desbloqueados na escola
-    trimestres_desbloqueados = TrimestreLiberado.objects.filter(
-        turma__curso__escola=escola,
-        liberado=True
-    ).count()
-
-    # Alunos da escola
-    alunos = Aluno.objects.filter(turma__curso__escola=escola)
-
-    # Mini pautas dos alunos
-    minipautas = MiniPauta.objects.filter(aluno__in=alunos)
-
-    alunos_aprovados = minipautas.filter(mf__gte=10).values('aluno').distinct().count()
-    alunos_reprovados = minipautas.filter(mf__lt=10).values('aluno').distinct().count()
-
-    # Obtemos a string representativa de cada classe com str()
-    classes_objs = sorted(set(aluno.turma.classe for aluno in alunos), key=lambda c: str(c))
-    classes = [str(cls) for cls in classes_objs]
-
-    dados_aprovados = [
-        minipautas.filter(
-            mf__gte=10, aluno__turma__classe=cls_obj
-        ).values('aluno').distinct().count()
-        for cls_obj in classes_objs
-    ]
-
-    dados_reprovados = [
-        minipautas.filter(
-            mf__lt=10, aluno__turma__classe=cls_obj
-        ).values('aluno').distinct().count()
-        for cls_obj in classes_objs
-    ]
-
-    # Gráfico de disciplinas mais atribuídas
-    atribuicoes = DisciplinaLecionada.objects.filter(
-        professor__departamento__curso__escola=escola
-    )
-    disciplinas_dict = {}
-    for atrib in atribuicoes:
-        nome = atrib.disciplina.nome
-        disciplinas_dict[nome] = disciplinas_dict.get(nome, 0) + 1
-
-    # Dados a enviar ao template
     dados = {
-        'total_atribuicoes': total_atribuicoes,
-        'trimestres_desbloqueados': trimestres_desbloqueados,
-        'alunos_aprovados': alunos_aprovados,
-        'alunos_reprovados': alunos_reprovados,
-        'classes': json.dumps(classes),  # strings 
-        'dados_aprovados': json.dumps(dados_aprovados),
-        'dados_reprovados': json.dumps(dados_reprovados),
-        'disciplinas': json.dumps(list(disciplinas_dict.keys())),
-        'atribuicoes_por_disciplina': json.dumps(list(disciplinas_dict.values())),
+        'total_alunos': Aluno.objects.count(),
+        'total_professores': Professor.objects.count(),
+        'total_turmas': Turma.objects.count(),
+        'total_disciplinas': Disciplina.objects.count(),
+        'alunos_por_turma': alunos_por_turma,
+      
+   
     }
-
     return render(request, 'apps/instituicao/pedagogico/perfil/home.html', dados)
-
-
 
 
 #Perfil

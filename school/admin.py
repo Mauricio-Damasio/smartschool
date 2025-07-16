@@ -22,15 +22,8 @@ from .models.localizacao.provincia import Provincia
 from .models.localizacao.municipio import Municipio
 from .models.localizacao.bairro import Bairro
 from .models.relatorio.minipauta import MiniPauta
-from .models.relatorio.assiduidade import Assiduidade
-from .models.relatorio.desempenho import Desempenho
-from .models.relatorio.ponto import Ponto
 from .models.academico.ano_lectivo import AnoLetivo
-from .models.relatorio.pagamento import Pagamento
-from .models.relatorio.frequencia import  Frequencia
-from .models.relatorio.horario import  Horario
 
-from .models.documento.aula_elaborada import  AulaElaborada
 
 
 
@@ -52,10 +45,3 @@ admin.site.register(Departamento)
 admin.site.register(MiniPauta)
 admin.site.register(AnoLetivo)
 admin.site.register(DisciplinaLecionada)
-admin.site.register(Assiduidade)
-admin.site.register(Desempenho)
-admin.site.register(Ponto)
-admin.site.register(Pagamento)
-admin.site.register(Frequencia)
-admin.site.register(AulaElaborada)
-admin.site.register(Horario)

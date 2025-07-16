@@ -98,7 +98,7 @@ def login_view(request):
                 return redirect('school:dashboard_superAdmin')
              
             #Escola Admin  
-            elif hasattr(user, 'diretor'):
+            elif hasattr(user, 'escola'):
                 return redirect('school:dashboard_admin')
             
             #Aluno  
@@ -110,7 +110,7 @@ def login_view(request):
                 return redirect('school:dashboard_professor')
             
             #Diretor  
-            elif hasattr(user, '#'):
+            elif hasattr(user, 'direitor'):
                 return redirect('school:dashboard_direitor')
               
             #Pedagógico 
@@ -118,14 +118,14 @@ def login_view(request):
                 return redirect('school:dashboard_pedagogico')
              
             #Administrativo  
-            elif hasattr(user, 'diretoradministrativo'):
+            elif hasattr(user, 'administrativo'):
                 return redirect('school:dashboard_administrativo')
               
             #Coordenador
             elif hasattr(user, 'coordenador'):
                 return redirect('school:dashboard_coordenador')
             else:
-                messages.error(request, 'Usuário sem perfil associado.')
+                messages.warning(request, 'Usuário sem perfil associado.')
                 return redirect('school:login_view')
         else:
             messages.error(request, 'Usuário ou senha incorretos.')
