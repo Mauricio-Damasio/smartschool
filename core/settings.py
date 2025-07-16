@@ -66,10 +66,10 @@ DATABASES = {
      
       'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_smartschool_j3jo',
-        'USER': 'user_smartschool',
-        'PASSWORD': 'RJhIzuVGFhBqgKmZCiVNVoE6utlNxApn',
-        'HOST': 'dpg-d1rd3t3e5dus73dipuj0-a.oregon-postgres.render.com', 
+        'NAME': 'db_smartschool_m6ma',
+        'USER': 'smart',
+        'PASSWORD': '9N1zDr1abzx4xd3Q5Qkerd1dOifmRK41',
+        'HOST': 'dpg-d1rro8be5dus73c4qc8g-a.oregon-postgres.render.com', 
         'PORT': '5432',
     
     }
