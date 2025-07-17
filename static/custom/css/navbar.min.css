@@ -41,17 +41,46 @@
 	border-left: 1px solid cyan;
 	border-radius: 15px;
 	display: flex;
+	align-items: center;
 }
 
-/*Faixa baixo*/
+/*Faixa abaixo*/
 .navbar-itens {
 	display: flex;
+	margin-bottom: 10px;
 	border-bottom: 1px solid #f80f8f;
 	transition: all 0.3s ease;
 	width: 100%;
 	border-radius: 15px;
+	align-items: center;
+	justify-content: space-between;
 }
 
+/* Responsividade mobile */
+@media (max-width: 991.98px) {
+	#faixa-navbar-up {
+		border-top: 1px solid #f80f8f;
+		border-right: 1px solid cyan;
+		border-left: 1px solid cyan;
+		border-radius: 15px;
+		/*flex-direction: column;*/
+		display: flex;
+		align-items: stretch;
+		padding: 0.5rem;
+		background: linear-gradient(to bottom, rgb(20, 65, 150), rgb(6, 24, 58));
+	}
+
+	.navbar-itens {
+		border-top: 1px solid #f80f8f;
+		border-right: 1px solid cyan;
+		border-left: 1px solid cyan;
+		border-radius: 15px;
+		display: flex;
+		/*flex-direction: column;*/
+		align-items: flex-start;
+		background: linear-gradient(to bottom, rgb(20, 65, 150), rgb(6, 24, 58));
+	}
+}
 /**********************************/
 /*Home*/
 .home-nav a {

@@ -77,6 +77,7 @@ def registrar(request:HttpRequest):
 # Login
 def login_view(request):
     if request.method == 'POST':
+      
         username = request.POST.get('username')
         senha = request.POST.get('senha')
         user = authenticate(request, username=username, password=senha)
@@ -133,53 +134,3 @@ def logout_view(request):
     return redirect('school:web_page')
 
 
-'''def login_view(request:HttpRequest):
-  
-  if request.method == 'POST':
-    
-    username = request.POST.get('username')
-    senha = request.POST.get('senha')
-    
-    
-    # Verificar campos vazios
-    if not username and not senha:
-      messages.error(request, 'Todos os campos são obrigatórios!')
-      return redirect('school:login_view')
-    
-    if not username:
-      messages.error(request, 'O username é obrigatório!')
-      return redirect('school:login_view')
-    
-    if not senha:
-      messages.error(request, 'A senha é obrigatória!')
-      return redirect('school:login_view')
-    
-    # Verificar se o usuário existe
-    try:
-      
-      User.objects.get(username=username)
-    
-    except User.DoesNotExist:
-      
-      messages.error(request , 'Usuário não encontrado!')
-      return redirect('school:login_view')
-      
-    
-    # Autenticando usuário
-    user = authenticate(username=username, password=senha)
-    
-    # Verificar se não é vazio
-    if user is not None:
-      
-      login(request, user)
-      messages.success(request, f'Bem-vindo(a), {username}!')
-      return redirect('school:home_page')
-    
-    else:
-      messages.error(request, 'Senha incorreta!')
-      return redirect('school:login_view')
-      
-    
-  return render(request, 'apps/auth/loginAndRegister.html')
-  
-  '''

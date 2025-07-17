@@ -11,16 +11,22 @@
 		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
 		<link rel="stylesheet" href="{% static 'auth/css/auth.min.css' %}" />
 		<link rel="stylesheet" href="{% static 'custom/css/messages.css' %}" />
+			
 	</head>
 	<body>
 		<div class="container-fluid">
 		<div class="overlay">
 			<div class="panel"></div>
+			
 			<div class="wrapper">
-				<!--Begin::Header-->
-				{% include "apps/auth/ui/header.html" %}
-				<!--End::Header-->
+			
 
+<!---->
+		
+					<!--Begin::Header-->
+					{% include "apps/auth/ui/header.html" %}
+					<!--End::Header-->
+			
 				<!--Begin::Messages-->
 				{% include "layout/message.html" %}
 				<!--End::Messages-->

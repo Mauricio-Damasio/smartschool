@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Segurança
 SECRET_KEY = config('SECRET_KEY')
 #DEBUG = config('DEBUG', default=False, cast=bool)
-DEBUG = config('DEBUG', cast=bool, default=True)
+DEBUG = config('DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'smartschool-redw.onrender.com']
 
@@ -65,13 +65,14 @@ DATABASES = {
     
      
       'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+          
+         'ENGINE': 'django.db.backends.postgresql',
+         
         'NAME': 'db_smartschool_m6ma',
         'USER': 'smart',
         'PASSWORD': '9N1zDr1abzx4xd3Q5Qkerd1dOifmRK41',
-        'HOST': 'dpg-d1rro8be5dus73c4qc8g-a.oregon-postgres.render.com', 
+        'HOST': 'dpg-d1rro8be5dus73c4qc8g-a.oregon-postgres.render.com',
         'PORT': '5432',
-    
     }
 }
 
